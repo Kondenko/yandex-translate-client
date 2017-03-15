@@ -1,0 +1,27 @@
+ext {
+    rx_version = "2.0.1"
+    dagger_version = "2.9"
+    retrofit_version = "2.2.0"
+    support_lib_version = "25.2.0"
+    constraint_layout_version = "1.0.0"
+    junit_version = "4.12"
+}
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:2.3.0'
+    }
+}
+
+allprojects {
+    repositories {
+        jcenter()
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
