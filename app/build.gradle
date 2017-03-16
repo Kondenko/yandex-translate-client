@@ -30,6 +30,9 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    packagingOptions {
+        exclude 'META-INF/rxjava.properties' // Fixes DuplicateFileException
+    }
 }
 
 dependencies {
@@ -45,8 +48,8 @@ dependencies {
     annotationProcessor "com.google.dagger:dagger-compiler:$dagger_version"
 
     // RX
-    compile "io.reactivex.rxjava2:rxandroid:$rx_version"
     compile "io.reactivex.rxjava2:rxjava:$rx_version"
+    compile "io.reactivex.rxjava2:rxandroid:$rx_version"
 
     // Support
     compile "com.android.support:support-v4:$support_lib_version"
