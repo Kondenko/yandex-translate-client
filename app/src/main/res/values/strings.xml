@@ -1,3 +1,11 @@
 <resources>
-    <string name="app_name">Yamblz</string>
+    <string name="app_name">Yamblz 2017</string>
+
+    <string name="bottomnav_item_translation">Translation </string>
+    <string name="bottomnav_item_history">History</string>
+    <string name="bottomnav_item_bookmarks">Bookmarks</string>
+
+
+    <string name="translation_hint">Text to translate</string>
+
 </resources>

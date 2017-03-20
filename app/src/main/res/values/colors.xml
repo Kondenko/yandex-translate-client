@@ -1,6 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#ffdc61</color>
-    <color name="colorPrimaryDark">#e1c255</color>
-    <color name="colorAccent">#000000</color>
+
+    <!-- Main set -->
+    <color name="color_primary">#ffdc61</color>
+    <color name="color_primary_dark">#e1c255</color>
+    <color name="color_accent">#000000</color>
+
+    <!-- Background -->
+    <color name="color_all_background_dark">#f0f0e6</color>
+    <color name="color_all_background_light">#ffffff</color>
+
+    <!-- Icons -->
+    <color name="color_all_icon_enabled">#89000000</color>
+    <color name="color_all_icon_disabled">#42000000</color>
+
+    <!-- Text -->
+    <color name="color_all_text_primary">#DD000000</color>
+    <color name="color_all_text_secondary">#89000000</color>
+    <color name="color_all_text_disabled">#60000000</color>
+
+
 </resources>

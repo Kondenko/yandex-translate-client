@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="size_all_icon">24dp</dimen>
+    <dimen name="size_all_button_icon">48dp</dimen>
+    <dimen name="padding_all_small">8dp</dimen>
+    <dimen name="padding_all_large">16dp</dimen>
+
+    <dimen name="height_translation_textfield">128dp</dimen>
+    <dimen name="elevation_translation_textfield">2dp</dimen>
+
+</resources>
