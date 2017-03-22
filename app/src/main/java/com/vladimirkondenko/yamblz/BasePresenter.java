@@ -1,14 +1,31 @@
 package com.vladimirkondenko.yamblz;
 
 
-public abstract class BasePresenter {
+public abstract class BasePresenter<T extends BaseView> {
 
-    protected BaseView view;
+    protected T view;
 
-    protected BasePresenter() {}
+    protected BasePresenter() {
+    }
 
-    protected BasePresenter(BaseView view) {
+    public BasePresenter(T view) {
         this.view = view;
+    }
+
+    protected void attachView(T view) {
+        this.view = view;
+    }
+
+    protected void detachView() {
+        view = null;
+    }
+
+    protected final boolean isViewAttached() {
+        return view != null;
+    }
+
+    protected final T getView() {
+        return view;
     }
 
 }

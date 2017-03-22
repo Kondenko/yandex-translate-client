@@ -7,8 +7,6 @@ abstract class BasePresenterModule<T extends BaseView> {
 
     protected T view;
 
-    BasePresenterModule() {}
-
     BasePresenterModule(T view) {
         this.view = view;
     }
