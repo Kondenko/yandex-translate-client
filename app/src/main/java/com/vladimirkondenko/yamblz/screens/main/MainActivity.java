@@ -2,17 +2,19 @@ package com.vladimirkondenko.yamblz.screens.main;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.LayoutInflaterCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.Toast;
 
+import com.jakewharton.rxbinding2.view.RxView;
+import com.jakewharton.rxbinding2.widget.RxAdapterView;
 import com.vladimirkondenko.yamblz.App;
 import com.vladimirkondenko.yamblz.R;
 import com.vladimirkondenko.yamblz.dagger.modules.MainPresenterModule;
@@ -20,8 +22,13 @@ import com.vladimirkondenko.yamblz.databinding.ActivityMainBinding;
 import com.vladimirkondenko.yamblz.model.LanguagesHolder;
 import com.vladimirkondenko.yamblz.screens.translation.TranslationFragment;
 import com.vladimirkondenko.yamblz.utils.LanguageSpinnerAdapter;
+import com.vladimirkondenko.yamblz.utils.Utils;
+
+import org.reactivestreams.Subscription;
 
 import javax.inject.Inject;
+
+import io.reactivex.disposables.Disposable;
 
 public class MainActivity extends AppCompatActivity implements MainView {
 
@@ -30,17 +37,16 @@ public class MainActivity extends AppCompatActivity implements MainView {
     @Inject
     public MainPresenter presenter;
 
-    private ActivityMainBinding binding;
+    private Spinner spinnerInputLangs;
+    private Spinner spinnerTranslationLangs;
 
-    private Toolbar toolbar;
-    private Spinner spinnerFrom;
-    private Spinner spinnerTo;
+    private Disposable inputSpinnerSubscription;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
         // Dependency Injection
         App.plus(new MainPresenterModule(this)).inject(this);
@@ -60,12 +66,13 @@ public class MainActivity extends AppCompatActivity implements MainView {
             return false;
         });
 
-        // Setup initial state
+        // Setup initial screen
         setFragment(translationFragment);
+
         // Show language selection spinners in the toolbar
         initToolbarView();
 
-        presenter.getLanguages();
+        presenter.getInputLanguages(this);
     }
 
     @Override
@@ -78,6 +85,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
     protected void onPause() {
         super.onPause();
         presenter.detachView();
+        resetRxBindings();
         App.clearMainPresenterComponent();
     }
 
@@ -89,25 +97,39 @@ public class MainActivity extends AppCompatActivity implements MainView {
     }
 
     private void initToolbarView() {
-        toolbar = (Toolbar) LayoutInflater.from(this).inflate(R.layout.layout_translation_toolbar, null);
+        Toolbar toolbar = (Toolbar) LayoutInflater.from(this).inflate(R.layout.layout_translation_toolbar, null);
         setSupportActionBar(toolbar);
         ActionBar supportActionBar = getSupportActionBar();
         if (supportActionBar != null) {
             supportActionBar.setDisplayShowCustomEnabled(true);
-            spinnerFrom = (Spinner) findViewById(R.id.spinner_translation_lang_from);
-            spinnerTo = (Spinner) findViewById(R.id.spinner_translation_lang_to);
+            spinnerInputLangs = (Spinner) findViewById(R.id.spinner_translation_lang_from);
+            spinnerTranslationLangs = (Spinner) findViewById(R.id.spinner_translation_lang_to);
+        }
+    }
+
+    private void resetRxBindings() {
+        Utils.dispose(inputSpinnerSubscription);
+    }
+
+    @Override
+    public void onLoadInputLanguages(LanguagesHolder languages) {
+        if (spinnerInputLangs != null) {
+            LanguageSpinnerAdapter spinnerAdapterInputLangs = new LanguageSpinnerAdapter(this, languages);
+            spinnerInputLangs.setAdapter(spinnerAdapterInputLangs);
+            inputSpinnerSubscription = RxAdapterView
+                    .itemSelections(spinnerInputLangs)
+                    .subscribe(position -> {
+                        String language = spinnerAdapterInputLangs.getItem(position);
+                        presenter.getTranslationLanguages(language);
+                    });
         }
     }
 
     @Override
-    public void loadLanguages(LanguagesHolder inputLangs, LanguagesHolder translationLangs) {
-        if (spinnerFrom != null) {
-            LanguageSpinnerAdapter adapterInput = new LanguageSpinnerAdapter(this, inputLangs);
-            spinnerFrom.setAdapter(adapterInput);
-        }
-        if (spinnerTo != null) {
-            LanguageSpinnerAdapter adapterTranslation = new LanguageSpinnerAdapter(this, translationLangs);
-            spinnerTo.setAdapter(adapterTranslation);
+    public void onLoadTranslationLanguages(LanguagesHolder languages) {
+        if (spinnerTranslationLangs != null) {
+            LanguageSpinnerAdapter spinnerAdapterTranslationLangs = new LanguageSpinnerAdapter(this, languages);
+            spinnerTranslationLangs.setAdapter(spinnerAdapterTranslationLangs);
         }
     }
 

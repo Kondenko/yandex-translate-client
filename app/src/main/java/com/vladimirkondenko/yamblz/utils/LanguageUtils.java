@@ -1,25 +1,30 @@
 package com.vladimirkondenko.yamblz.utils;
 
+import android.content.Context;
+
+import com.google.gson.GsonBuilder;
 import com.vladimirkondenko.yamblz.Const;
+import com.vladimirkondenko.yamblz.model.LanguagesHolder;
 
 import java.util.Locale;
 
 public class LanguageUtils {
 
-    /**
-     * Returns user's default locale if available, default locale otherwise.
-     */
-    public static String getDeviceLanguage() {
+    public static LanguagesHolder getInputLanguages(Context context) {
         String locale = Locale.getDefault().getLanguage();
-        return locale != null ? locale : Const.DEFAULT_LOCALE_TO;
-    }
-
-    /**
-     * Returns a locale which will be used to display all languages
-     * from which text can be translated.
-     */
-    public static String getDefaultLocale() {
-        return Const.DEFAULT_LOCALE_FROM;
+        int jsonResId;
+        String forLanguage;
+        if (locale.equalsIgnoreCase(Const.LOCALE_RU)) {
+            jsonResId = Const.INPUT_LANGUAGES_JSON_RES_RU;
+            forLanguage = Const.LOCALE_RU;
+        } else {
+            jsonResId = Const.INPUT_LANGUAGES_JSON_RES_EN;
+            forLanguage = Const.LOCALE_EN;
+        }
+        String json = Utils.getJsonFromAsset(context, jsonResId);
+        LanguagesHolder languagesHolder = new GsonBuilder().create().fromJson(json, LanguagesHolder.class);
+        languagesHolder.forLanguage = forLanguage;
+        return languagesHolder;
     }
 
 }

@@ -1,6 +1,6 @@
 package com.vladimirkondenko.yamblz.screens.main;
 
-import android.support.v4.util.Pair;
+import android.content.Context;
 
 import com.vladimirkondenko.yamblz.BaseLifecyclePresenter;
 import com.vladimirkondenko.yamblz.model.LanguagesHolder;
@@ -10,13 +10,8 @@ import com.vladimirkondenko.yamblz.utils.rxlifecycle.PresenterEvent;
 
 import javax.inject.Inject;
 
-import io.reactivex.Single;
-import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-
-import static org.openjdk.tools.javac.jvm.ByteCodes.error;
 
 public class MainPresenter extends BaseLifecyclePresenter<MainView> {
 
@@ -41,25 +36,21 @@ public class MainPresenter extends BaseLifecyclePresenter<MainView> {
         lifecycleSubject.onNext(PresenterEvent.DETACH);
     }
 
-    public void getLanguages() {
-        Single<LanguagesHolder> from = getLanguagesForLocale(LanguageUtils.getDeviceLanguage());
-        from.subscribe(
-          languagesForDefaultLanguage -> {
-              getLanguagesForLocale(languagesForDefaultLanguage.languages.keySet().iterator().next())
-              .subscribe(
-                      translationLanguages -> view.loadLanguages(languagesForDefaultLanguage, translationLanguages),
-                      error -> view.onError(error)
-              );
-          },
-          error -> view.onError(error)
-        );
+    public void getInputLanguages(Context context) {
+        LanguagesHolder inputLanguages = LanguageUtils.getInputLanguages(context);
+        view.onLoadInputLanguages(inputLanguages);
     }
 
-    private Single<LanguagesHolder> getLanguagesForLocale(String languageCode) {
-        return languagesService.getAvailableLanguages(languageCode)
+    public void getTranslationLanguages(String languageCode) {
+        languagesService.getAvailableLanguages(languageCode)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.bindToLifecycle());
+                .compose(this.bindToLifecycle())
+                .subscribe(
+                        languages -> view.onLoadTranslationLanguages(languages),
+                        error -> view.onError(error)
+                );
     }
+
 
 }

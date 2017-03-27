@@ -2,6 +2,7 @@ ext {
     rx_android_version = "2.0.1"
     rx_java_version = "2.0.7"
     rx_lifecycle_version = "2.0.1"
+    rx_bindings_version = "2.0.0"
     dagger_version = "2.9"
     retrofit_version = "2.2.0"
     support_lib_version = "25.3.0"
