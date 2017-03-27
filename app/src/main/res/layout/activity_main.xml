@@ -11,11 +11,20 @@
         android:layout_height="match_parent"
         >
 
+        <include
+            android:id="@+id/include_main_toolbar"
+            layout="@layout/layout_translation_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            />
+
         <FrameLayout
             android:id="@+id/framelayout_main_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@+id/bottomnav_main"
+            android:layout_below="@id/include_main_toolbar"
             android:background="@color/color_all_background_dark"
             />
 

@@ -1,7 +1,7 @@
 package com.vladimirkondenko.yamblz.dagger.modules;
 
 
-import com.vladimirkondenko.yamblz.dagger.PerFragment;
+import com.vladimirkondenko.yamblz.dagger.PerView;
 import com.vladimirkondenko.yamblz.screens.translation.TranslationPresenter;
 import com.vladimirkondenko.yamblz.screens.translation.TranslationView;
 import com.vladimirkondenko.yamblz.service.AvailableLanguagesService;
@@ -18,15 +18,9 @@ public class TranslationPresenterModule extends BasePresenterModule<TranslationV
     }
 
     @Provides
-    @PerFragment
-    public TranslationPresenter provideTranslationPresenter(AvailableLanguagesService service) {
-        return new TranslationPresenter(service, view);
-    }
-
-    @Provides
-    @PerFragment
-    public AvailableLanguagesService provideAvailableLanguagesService(Retrofit retrofit) {
-        return retrofit.create(AvailableLanguagesService.class);
+    @PerView
+    public TranslationPresenter provideTranslationPresenter() {
+        return new TranslationPresenter(view);
     }
 
 }

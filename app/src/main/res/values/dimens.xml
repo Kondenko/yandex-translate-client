@@ -5,8 +5,13 @@
     <dimen name="size_all_button_icon">48dp</dimen>
     <dimen name="padding_all_small">8dp</dimen>
     <dimen name="padding_all_large">16dp</dimen>
+    <dimen name="elevation_all_toolbar">4dp</dimen>
+
 
     <dimen name="height_translation_textfield">128dp</dimen>
+    <dimen name="width_translation_spinner_item">112dp</dimen>
+    <dimen name="height_translation_spinner_item">48dp</dimen>
     <dimen name="elevation_translation_textfield">2dp</dimen>
+    <dimen name="width_translation_language_spinner_min">96dp</dimen>
 
 </resources>

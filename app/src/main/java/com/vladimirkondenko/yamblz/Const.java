@@ -1,7 +1,17 @@
 package com.vladimirkondenko.yamblz;
 
+
+
 public final class Const {
 
     public static final String API_KEY = "trnsl.1.1.20170315T172313Z.162bccb965880b7c.9feba3a457e1a4989e1bb689842c94d6bc9186e4";
+
+    public static final String BASE_URL = "https://translate.yandex.net/api/v1.5/";
+
+    // Request keys
+    public static final String REQUEST_KEY_API_KEY = "key";
+
+    public static final String DEFAULT_LOCALE_FROM = "en";
+    public static final String DEFAULT_LOCALE_TO = "ru";
 
 }

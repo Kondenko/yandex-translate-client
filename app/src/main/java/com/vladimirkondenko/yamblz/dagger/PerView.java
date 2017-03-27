@@ -9,4 +9,4 @@ import javax.inject.Scope;
 @Documented
 @Scope
 @Retention(RetentionPolicy.RUNTIME)
-public @interface PerFragment { }
+public @interface PerView { }
