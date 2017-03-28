@@ -5,6 +5,5 @@ import com.vladimirkondenko.yamblz.model.LanguagesHolder;
 
 public interface MainView extends BaseView {
     void onLoadLanguages(LanguagesHolder languages);
-    void onSelectTranslationLanguage(String lang);
     void onError(Throwable error);
 }

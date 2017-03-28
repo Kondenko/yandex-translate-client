@@ -143,13 +143,6 @@ public class MainActivity extends AppCompatActivity implements MainView {
     }
 
     @Override
-    public void onSelectTranslationLanguage(String lang) {
-        if (spinnerTranslationLang != null) {
-            spinnerTranslationLang.setSelection(spinnerAdapterTranslationLangs.getItemPosition(lang));
-        }
-    }
-
-    @Override
     public void onError(Throwable error) {
         if (error != null) {
             error.printStackTrace();
