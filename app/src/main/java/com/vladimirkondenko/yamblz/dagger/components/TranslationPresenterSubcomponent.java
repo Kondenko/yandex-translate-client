@@ -11,5 +11,5 @@ import dagger.Subcomponent;
 @Subcomponent(modules = {TranslationPresenterModule.class})
 public interface TranslationPresenterSubcomponent extends BasePresenterSubcomponent<TranslationFragment, TranslationPresenter> {
     @Override
-    public void inject(TranslationFragment view);
+    void inject(TranslationFragment view);
 }

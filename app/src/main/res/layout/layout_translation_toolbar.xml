@@ -1,21 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<android.support.v7.widget.Toolbar
-    android:id="@+id/toolbar_main"
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="?attr/actionBarSize"
-    android:background="?attr/colorPrimary"
-    android:elevation="@dimen/elevation_all_toolbar"
-    android:paddingEnd="@dimen/padding_all_large"
-    android:paddingStart="@dimen/padding_all_large"
-    app:popupTheme="@style/AppTheme"
     >
 
     <RelativeLayout
+        android:id="@+id/relativelayout_translation_toolbar_root"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_gravity="fill_horizontal"
         >
 
         <ImageButton
@@ -23,29 +16,28 @@
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
             android:layout_centerInParent="true"
+            android:layout_gravity="center"
             android:background="?selectableItemBackgroundBorderless"
             app:srcCompat="@drawable/ic_switch_language_black_24dp"
             />
 
         <Spinner
-            android:id="@+id/spinner_translation_lang_from"
+            android:id="@+id/spinner_translation_lang_input"
+            style="@style/LanguageSpinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_toStartOf="@id/button_translation_switch_language"
-            style="@style/LanguageSpinner"
             />
 
         <Spinner
-            android:id="@+id/spinner_translation_lang_to"
+            android:id="@+id/spinner_translation_lang_translation"
+            style="@style/LanguageSpinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_toEndOf="@id/button_translation_switch_language"
-            style="@style/LanguageSpinner"
             />
 
-
-
     </RelativeLayout>
-</android.support.v7.widget.Toolbar>
+
+</layout>

@@ -18,14 +18,14 @@ public class MainPresenterModule extends BasePresenterModule<MainView> {
 
     @Provides
     @PerView
-    public MainPresenter provideMainPresenter(AvailableLanguagesService service) {
-        return new MainPresenter(service, view);
+    public AvailableLanguagesService provideAvailableLanguagesService(Retrofit retrofit) {
+        return retrofit.create(AvailableLanguagesService.class);
     }
 
     @Provides
     @PerView
-    public AvailableLanguagesService provideAvailableLanguagesService(Retrofit retrofit) {
-        return retrofit.create(AvailableLanguagesService.class);
+    public MainPresenter provideMainPresenter(AvailableLanguagesService service) {
+        return new MainPresenter(service, view);
     }
 
 }

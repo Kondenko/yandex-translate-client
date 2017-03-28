@@ -11,6 +11,8 @@ import android.widget.TextView;
 import com.vladimirkondenko.yamblz.R;
 import com.vladimirkondenko.yamblz.model.LanguagesHolder;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -24,10 +26,19 @@ public class LanguageSpinnerAdapter extends BaseAdapter {
 
     private LayoutInflater inflater;
 
+    public LanguageSpinnerAdapter(@NonNull Context context) {
+        this(context, new LanguagesHolder());
+    }
+
     public LanguageSpinnerAdapter(@NonNull Context context, LanguagesHolder languagesHolder) {
+        setLangs(languagesHolder);
+        inflater = LayoutInflater.from(context);
+    }
+
+    public void setLangs(LanguagesHolder languagesHolder) {
         this.dataset = languagesHolder.languages;
         keys = dataset.keySet().toArray(new String[dataset.size()]);
-        inflater = LayoutInflater.from(context);
+        notifyDataSetChanged();
     }
 
     @Override
@@ -41,8 +52,15 @@ public class LanguageSpinnerAdapter extends BaseAdapter {
 
     @Override
     public String getItem(int i) {
-        return keys[i];
+        if (keys.length == 0) return "";
+        String item = keys[i];
+        return item != null ? item : "";
     }
+
+    public int getItemPosition(String lang) {
+        return Arrays.binarySearch(keys, lang);
+    }
+
     @Override
     public long getItemId(int i) {
         return i;

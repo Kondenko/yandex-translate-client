@@ -9,6 +9,6 @@ import retrofit2.http.Query;
 public interface AvailableLanguagesService {
 
     @POST("tr.json/getLangs")
-    public Single<LanguagesHolder> getAvailableLanguages(@Query("ui") String ui);
+    Single<LanguagesHolder> getAvailableLanguages(@Query("ui") String ui);
 
 }

@@ -1,6 +1,7 @@
 package com.vladimirkondenko.yamblz.screens.translation;
 
 
+import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -28,36 +29,44 @@ public class TranslationFragment extends Fragment implements TranslationView {
 
     private FragmentTranslationBinding binding;
 
+    private String languageInput;
+    private String languageTranslation;
+
     public TranslationFragment() {
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Dependency Injection
-        App.plus(new TranslationPresenterModule(this)).inject(this);
-        // Data Binding
+        App.plusTranslationSubcomponent(new TranslationPresenterModule(this)).inject(this);
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_translation, container, false);
         binding.buttonTranslationClearInput.setOnClickListener(view -> binding.edittextTranslationInput.getText().clear());
         return binding.getRoot();
     }
 
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+     @Override
+    public void onStart() {
+        super.onStart();
         presenter.attachView(this);
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        // Release scoped presenter
         presenter.detachView();
         App.clearTranslationPresenterComponent();
     }
 
+    public void setInputLanguage(String lang) {
+        languageInput = lang;
+    }
+
+    public void setTranslationLanguage(String lang) {
+        languageTranslation = lang;
+    }
+
     @Override
-    public void showError(Throwable t) {
+    public void onError(Throwable t) {
         if (t != null) {
             t.printStackTrace();
         }

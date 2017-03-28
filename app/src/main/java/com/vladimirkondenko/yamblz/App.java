@@ -31,14 +31,14 @@ public class App extends Application {
         return appComponent;
     }
 
-    public static TranslationPresenterSubcomponent plus(TranslationPresenterModule module) {
+    public static TranslationPresenterSubcomponent plusTranslationSubcomponent(TranslationPresenterModule module) {
         if (translationPresenterComponent == null) {
             translationPresenterComponent = appComponent.plus(module);
         }
         return translationPresenterComponent;
     }
 
-    public static MainPresenterSubcomponent plus(MainPresenterModule module) {
+    public static MainPresenterSubcomponent plusMainSubcomponent(MainPresenterModule module) {
         if (mainPresenterSubcomponent == null) {
             mainPresenterSubcomponent = appComponent.plus(module);
         }

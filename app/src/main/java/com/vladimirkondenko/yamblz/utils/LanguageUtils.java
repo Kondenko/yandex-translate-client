@@ -1,6 +1,7 @@
 package com.vladimirkondenko.yamblz.utils;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.google.gson.GsonBuilder;
 import com.vladimirkondenko.yamblz.Const;
@@ -8,10 +9,12 @@ import com.vladimirkondenko.yamblz.model.LanguagesHolder;
 
 import java.util.Locale;
 
+import static org.openjdk.tools.javac.jvm.ByteCodes.ret;
+
 public class LanguageUtils {
 
     public static LanguagesHolder getInputLanguages(Context context) {
-        String locale = Locale.getDefault().getLanguage();
+        String locale = getDeviceLocale();
         int jsonResId;
         String forLanguage;
         if (locale.equalsIgnoreCase(Const.LOCALE_RU)) {
@@ -27,4 +30,15 @@ public class LanguageUtils {
         return languagesHolder;
     }
 
+    public static String getPreferredLocale() {
+        String locale = Locale.getDefault().getLanguage();
+        if (locale.equalsIgnoreCase(Const.LOCALE_RU)) {
+            return Const.LOCALE_RU;
+        }
+        return Const.LOCALE_EN;
+    }
+
+    public static String getDeviceLocale() {
+        return Locale.getDefault().getLanguage();
+    }
 }

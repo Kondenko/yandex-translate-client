@@ -7,9 +7,9 @@ import com.vladimirkondenko.yamblz.screens.main.MainPresenter;
 
 import dagger.Subcomponent;
 
-@Subcomponent(modules = {MainPresenterModule.class})
 @PerView
+@Subcomponent(modules = {MainPresenterModule.class})
 public interface MainPresenterSubcomponent extends BasePresenterSubcomponent<MainActivity, MainPresenter> {
     @Override
-    public void inject(MainActivity fragment);
+    void inject(MainActivity view);
 }

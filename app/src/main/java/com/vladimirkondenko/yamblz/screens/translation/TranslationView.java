@@ -1,7 +1,8 @@
 package com.vladimirkondenko.yamblz.screens.translation;
 
 import com.vladimirkondenko.yamblz.BaseView;
+import com.vladimirkondenko.yamblz.model.LanguagesHolder;
 
 public interface TranslationView extends BaseView {
-    public void showError(Throwable t);
+    void onError(Throwable t);
 }

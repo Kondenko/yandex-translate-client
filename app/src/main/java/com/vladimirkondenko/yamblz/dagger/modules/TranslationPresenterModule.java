@@ -17,6 +17,7 @@ public class TranslationPresenterModule extends BasePresenterModule<TranslationV
         super(view);
     }
 
+
     @Provides
     @PerView
     public TranslationPresenter provideTranslationPresenter() {

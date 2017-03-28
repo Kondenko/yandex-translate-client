@@ -3,10 +3,12 @@ package com.vladimirkondenko.yamblz.screens.main;
 import android.content.Context;
 
 import com.vladimirkondenko.yamblz.BaseLifecyclePresenter;
+import com.vladimirkondenko.yamblz.Const;
 import com.vladimirkondenko.yamblz.model.LanguagesHolder;
 import com.vladimirkondenko.yamblz.service.AvailableLanguagesService;
 import com.vladimirkondenko.yamblz.utils.LanguageUtils;
-import com.vladimirkondenko.yamblz.utils.rxlifecycle.PresenterEvent;
+
+import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -19,26 +21,32 @@ public class MainPresenter extends BaseLifecyclePresenter<MainView> {
     private AvailableLanguagesService languagesService;
 
     @Inject
-    public MainPresenter(AvailableLanguagesService service, MainView view) {
-        this.languagesService = service;
+    public MainPresenter(AvailableLanguagesService languagesService, MainView view) {
         this.view = view;
+        this.languagesService = languagesService;
     }
 
-    @Override
-    public void attachView(MainView view) {
-        super.attachView(view);
-        lifecycleSubject.onNext(PresenterEvent.ATTACH);
+    public void onCreate(Context context) {
+        getLanguages(context);
     }
 
-    @Override
-    public void detachView() {
-        super.detachView();
-        lifecycleSubject.onNext(PresenterEvent.DETACH);
+    public String getInitialTranslationLang(LanguagesHolder languagesHolder) {
+        if (Const.LOCALE_RU.equalsIgnoreCase(languagesHolder.forLanguage)) return Const.LOCALE_EN;
+        Set<String> languages = languagesHolder.languages.keySet();
+        for (String lang : languages) {
+            if (!languagesHolder.forLanguage.equals(lang)) return lang;
+        }
+        return Const.LOCALE_EN;
     }
 
-    public void getInputLanguages(Context context) {
-        LanguagesHolder inputLanguages = LanguageUtils.getInputLanguages(context);
-        view.onLoadInputLanguages(inputLanguages);
+    public void getLanguages(Context context) {
+        LanguagesHolder preferredLangs = LanguageUtils.getInputLanguages(context);
+        String deviceLocale = LanguageUtils.getDeviceLocale();
+        if (preferredLangs.languages.keySet().contains(deviceLocale)) {
+            getTranslationLanguages(deviceLocale);
+        } else {
+            view.onLoadLanguages(preferredLangs);
+        }
     }
 
     public void getTranslationLanguages(String languageCode) {
@@ -47,10 +55,12 @@ public class MainPresenter extends BaseLifecyclePresenter<MainView> {
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(this.bindToLifecycle())
                 .subscribe(
-                        languages -> view.onLoadTranslationLanguages(languages),
+                        languages -> {
+                            languages.forLanguage = languageCode;
+                            view.onLoadLanguages(languages);
+                        },
                         error -> view.onError(error)
                 );
     }
-
 
 }
