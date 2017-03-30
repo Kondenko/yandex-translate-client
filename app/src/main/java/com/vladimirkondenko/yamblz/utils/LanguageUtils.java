@@ -9,8 +9,6 @@ import com.vladimirkondenko.yamblz.model.LanguagesHolder;
 
 import java.util.Locale;
 
-import static org.openjdk.tools.javac.jvm.ByteCodes.ret;
-
 public class LanguageUtils {
 
     public static LanguagesHolder getInputLanguages(Context context) {
