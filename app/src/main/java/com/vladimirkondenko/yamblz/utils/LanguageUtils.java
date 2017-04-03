@@ -1,7 +1,7 @@
 package com.vladimirkondenko.yamblz.utils;
 
 import android.content.Context;
-import android.util.Log;
+import android.support.annotation.RawRes;
 
 import com.google.gson.GsonBuilder;
 import com.vladimirkondenko.yamblz.Const;
@@ -22,10 +22,14 @@ public class LanguageUtils {
             jsonResId = Const.INPUT_LANGUAGES_JSON_RES_EN;
             forLanguage = Const.LOCALE_EN;
         }
-        String json = Utils.getJsonFromAsset(context, jsonResId);
-        LanguagesHolder languagesHolder = new GsonBuilder().create().fromJson(json, LanguagesHolder.class);
+        LanguagesHolder languagesHolder = getLangsFromRawRes(context, jsonResId);
         languagesHolder.forLanguage = forLanguage;
         return languagesHolder;
+    }
+
+    public static LanguagesHolder getLangsFromRawRes(Context context, @RawRes int jsonResId) {
+        String json = Utils.getJsonFromAsset(context, jsonResId);
+        return new GsonBuilder().create().fromJson(json, LanguagesHolder.class);
     }
 
     public static String getPreferredLocale() {

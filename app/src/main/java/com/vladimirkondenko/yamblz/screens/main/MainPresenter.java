@@ -5,7 +5,7 @@ import android.content.Context;
 import com.vladimirkondenko.yamblz.BaseLifecyclePresenter;
 import com.vladimirkondenko.yamblz.Const;
 import com.vladimirkondenko.yamblz.model.LanguagesHolder;
-import com.vladimirkondenko.yamblz.service.AvailableLanguagesService;
+import com.vladimirkondenko.yamblz.service.LanguagesService;
 import com.vladimirkondenko.yamblz.utils.LanguageUtils;
 
 import java.util.Set;
@@ -17,13 +17,14 @@ import io.reactivex.schedulers.Schedulers;
 
 public class MainPresenter extends BaseLifecyclePresenter<MainView> {
 
-    private MainView view;
-    private AvailableLanguagesService languagesService;
+    private LanguagesService languagesService;
+
+    public MainPresenter(){}
 
     @Inject
-    public MainPresenter(AvailableLanguagesService languagesService, MainView view) {
-        this.view = view;
+    public MainPresenter(LanguagesService languagesService, MainView view) {
         this.languagesService = languagesService;
+        attachView(view);
     }
 
     public void onCreate(Context context) {
@@ -43,24 +44,23 @@ public class MainPresenter extends BaseLifecyclePresenter<MainView> {
         LanguagesHolder preferredLangs = LanguageUtils.getInputLanguages(context);
         String deviceLocale = LanguageUtils.getDeviceLocale();
         if (preferredLangs.languages.keySet().contains(deviceLocale)) {
-            getTranslationLanguages(deviceLocale);
+            getLanguageForLocale(deviceLocale);
         } else {
             view.onLoadLanguages(preferredLangs);
         }
     }
 
-    public void getTranslationLanguages(String languageCode) {
+    public void getLanguageForLocale(String languageCode) {
         languagesService.getAvailableLanguages(languageCode)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(this.bindToLifecycle())
-                .subscribe(
-                        languages -> {
-                            languages.forLanguage = languageCode;
-                            view.onLoadLanguages(languages);
-                        },
-                        error -> view.onError(error)
-                );
+                .doOnSuccess( languages -> languages.forLanguage = languageCode)
+                .subscribe(view::onLoadLanguages, view::onError);
+    }
+
+    public LanguagesService getService() {
+        return languagesService;
     }
 
 }

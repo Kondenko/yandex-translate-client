@@ -1,6 +1,5 @@
 apply plugin: "com.android.application"
 apply plugin: "me.tatarka.retrolambda"
-//apply plugin: "com.neenbedankt.android-apt"
 
 android {
     compileSdkVersion 25
@@ -27,20 +26,35 @@ android {
     dataBinding {
         enabled = true
     }
+    sourceSets {
+        test.java.srcDirs += generatedSourcesDir
+    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
     packagingOptions {
+        exclude 'META-INF/services/javax.annotation.processing.Processor'
         exclude 'META-INF/rxjava.properties' // Fixes DuplicateFileException
     }
-        configurations.all {
-            resolutionStrategy.force 'com.google.code.findbugs:jsr305:2.0.1'
-        }
+    configurations.all {
+        resolutionStrategy.force 'com.google.code.findbugs:jsr305:2.0.1'
+    }
+}
+
+tasks.withType(JavaCompile) {
+    // Prevents the "endPosTable already set" exception
+    // http://bugs.java.com/bugdatabase/view_bug.do?bug_id=8067747
+    if (file(generatedSourcesDir).exists()) {
+        FileCollection collection = files { file(generatedSourcesDir).listFiles() }
+        collection.each { delete it }
+    }
 }
 
 dependencies {
     compile fileTree(dir: "libs", include: ["*.jar"])
+
+    provided 'org.glassfish:javax.annotation:10.0-b28'
 
     // Retrofit
     compile "com.squareup.retrofit2:retrofit:$retrofit_version"
@@ -49,7 +63,7 @@ dependencies {
 
     // Dagger
     compile "com.google.dagger:dagger:$dagger_version"
-    provided "com.google.dagger:dagger-compiler:$dagger_version"
+    annotationProcessor "com.google.dagger:dagger-compiler:$dagger_version"
 
     // RX
     compile "io.reactivex.rxjava2:rxandroid:$rx_android_version"
@@ -67,10 +81,14 @@ dependencies {
 
     // Testing
     testCompile "junit:junit:$junit_version"
-    testCompile "org.robolectric:robolectric:3.3.1"
-    testCompile "org.mockito:mockito-core:$mockito_version"
-    testCompile "com.squareup.okhttp3:mockwebserver:$okhttp_version"
+    testCompile "org.robolectric:robolectric:$robolectric_version"
     androidTestCompile("com.android.support.test.espresso:espresso-core:2.2.2", {
         exclude group: "com.android.support", module: "support-annotations"
     })
+
+    testCompile "org.mockito:mockito-core:$mockito_version"
+    testCompile "com.squareup.okhttp3:mockwebserver:$okhttp_version"
+
+    testCompile "com.google.dagger:dagger:$dagger_version"
+    testAnnotationProcessor "com.google.dagger:dagger-compiler:$dagger_version"
 }

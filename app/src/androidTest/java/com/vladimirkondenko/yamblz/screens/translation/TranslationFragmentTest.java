@@ -1,6 +1,5 @@
-package com.vladimirkondenko.yamblz.screens.fragments.translation;
+package com.vladimirkondenko.yamblz.screens.translation;
 
-import android.app.FragmentTransaction;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 

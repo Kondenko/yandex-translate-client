@@ -5,21 +5,22 @@ import com.vladimirkondenko.yamblz.screens.main.MainPresenter;
 import com.vladimirkondenko.yamblz.screens.main.MainView;
 import com.vladimirkondenko.yamblz.service.LanguagesService;
 
+import org.mockito.Mockito;
+
 import dagger.Module;
 import dagger.Provides;
-import retrofit2.Retrofit;
 
 @Module
-public class MainPresenterModule extends BasePresenterModule<MainView> {
+public class TestMainPresenterModule extends BasePresenterModule<MainView> {
 
-    public MainPresenterModule(MainView view) {
+    public TestMainPresenterModule(MainView view) {
         super(view);
     }
 
     @Provides
     @PerView
-    public LanguagesService provideAvailableLanguagesService(Retrofit retrofit) {
-        return retrofit.create(LanguagesService.class);
+    public LanguagesService provideAvailableLanguagesService() {
+        return Mockito.mock(LanguagesService.class);
     }
 
     @Provides

@@ -12,9 +12,9 @@ import com.vladimirkondenko.yamblz.dagger.modules.TranslationPresenterModule;
 
 public class App extends Application {
 
-    private static AppComponent appComponent = null;
-    private static TranslationPresenterSubcomponent translationPresenterComponent;
-    private static MainPresenterSubcomponent mainPresenterSubcomponent;
+    protected static AppComponent appComponent = null;
+    protected static TranslationPresenterSubcomponent translationPresenterComponent;
+    protected static MainPresenterSubcomponent mainPresenterSubcomponent;
 
     @Override
     public void onCreate() {

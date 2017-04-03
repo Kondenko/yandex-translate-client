@@ -8,23 +8,19 @@ public abstract class BasePresenter<T extends BaseView> {
     protected BasePresenter() {
     }
 
-    public BasePresenter(T view) {
+    public void attachView(T view) {
         this.view = view;
     }
 
-    protected void attachView(T view) {
-        this.view = view;
-    }
-
-    protected void detachView() {
+    public void detachView() {
         view = null;
     }
 
-    protected final boolean isViewAttached() {
+    public final boolean isViewAttached() {
         return view != null;
     }
 
-    protected final T getView() {
+    public final T getView() {
         return view;
     }
 
