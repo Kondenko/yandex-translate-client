@@ -5,7 +5,7 @@ import android.support.annotation.RawRes;
 
 import com.google.gson.GsonBuilder;
 import com.vladimirkondenko.yamblz.Const;
-import com.vladimirkondenko.yamblz.model.LanguagesHolder;
+import com.vladimirkondenko.yamblz.model.entities.LanguagesHolder;
 
 import java.util.Locale;
 

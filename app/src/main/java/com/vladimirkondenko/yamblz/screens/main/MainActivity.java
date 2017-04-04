@@ -16,7 +16,7 @@ import com.vladimirkondenko.yamblz.R;
 import com.vladimirkondenko.yamblz.dagger.modules.MainPresenterModule;
 import com.vladimirkondenko.yamblz.databinding.ActivityMainBinding;
 import com.vladimirkondenko.yamblz.databinding.LayoutTranslationToolbarBinding;
-import com.vladimirkondenko.yamblz.model.LanguagesHolder;
+import com.vladimirkondenko.yamblz.model.entities.LanguagesHolder;
 import com.vladimirkondenko.yamblz.screens.translation.TranslationFragment;
 import com.vladimirkondenko.yamblz.utils.LanguageSpinnerAdapter;
 import com.vladimirkondenko.yamblz.utils.Utils;

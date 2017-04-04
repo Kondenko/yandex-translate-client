@@ -1,10 +1,10 @@
-package com.vladimirkondenko.yamblz.services;
+package com.vladimirkondenko.yamblz.model.services;
 
 import com.vladimirkondenko.yamblz.CustomRobolectricTestRunner;
 import com.vladimirkondenko.yamblz.R;
 import com.vladimirkondenko.yamblz.TestApp;
 import com.vladimirkondenko.yamblz.dagger.modules.TestServiceModule;
-import com.vladimirkondenko.yamblz.model.LanguagesHolder;
+import com.vladimirkondenko.yamblz.model.entities.LanguagesHolder;
 import com.vladimirkondenko.yamblz.utils.Utils;
 
 import org.junit.After;

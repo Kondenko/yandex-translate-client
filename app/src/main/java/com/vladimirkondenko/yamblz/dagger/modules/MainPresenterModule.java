@@ -1,9 +1,9 @@
 package com.vladimirkondenko.yamblz.dagger.modules;
 
 import com.vladimirkondenko.yamblz.dagger.PerView;
+import com.vladimirkondenko.yamblz.model.services.LanguagesService;
 import com.vladimirkondenko.yamblz.screens.main.MainPresenter;
 import com.vladimirkondenko.yamblz.screens.main.MainView;
-import com.vladimirkondenko.yamblz.services.LanguagesService;
 
 import dagger.Module;
 import dagger.Provides;

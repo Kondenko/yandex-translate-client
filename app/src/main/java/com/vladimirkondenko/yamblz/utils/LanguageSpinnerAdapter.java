@@ -9,13 +9,10 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.vladimirkondenko.yamblz.R;
-import com.vladimirkondenko.yamblz.model.LanguagesHolder;
+import com.vladimirkondenko.yamblz.model.entities.LanguagesHolder;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 public class LanguageSpinnerAdapter extends BaseAdapter {
 

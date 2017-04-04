@@ -3,7 +3,7 @@ package com.vladimirkondenko.yamblz.dagger.components;
 
 import com.vladimirkondenko.yamblz.dagger.PerTest;
 import com.vladimirkondenko.yamblz.dagger.modules.TestServiceModule;
-import com.vladimirkondenko.yamblz.services.LanguagesServiceTest;
+import com.vladimirkondenko.yamblz.model.services.LanguagesServiceTest;
 
 import dagger.Subcomponent;
 
