@@ -1,9 +1,9 @@
 package com.vladimirkondenko.yamblz.screens.main;
 
-import com.vladimirkondenko.CustomRobolectricTestRunner;
-import com.vladimirkondenko.RxRule;
 import com.vladimirkondenko.yamblz.Const;
+import com.vladimirkondenko.yamblz.CustomRobolectricTestRunner;
 import com.vladimirkondenko.yamblz.R;
+import com.vladimirkondenko.yamblz.RxRule;
 import com.vladimirkondenko.yamblz.TestApp;
 import com.vladimirkondenko.yamblz.dagger.modules.TestMainPresenterModule;
 import com.vladimirkondenko.yamblz.model.LanguagesHolder;

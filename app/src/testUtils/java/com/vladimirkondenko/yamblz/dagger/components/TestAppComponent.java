@@ -12,6 +12,6 @@ import dagger.Component;
 @Singleton
 @Component(modules = {TestNetModule.class})
 public interface TestAppComponent {
-    TestMainPresenterSubcomponent plus(TestMainPresenterModule module);
-    TestServiceSubcomponent plus(TestServiceModule module);
+    com.vladimirkondenko.yamblz.dagger.components.TestMainPresenterSubcomponent plus(TestMainPresenterModule module);
+    com.vladimirkondenko.yamblz.dagger.components.TestServiceSubcomponent plus(TestServiceModule module);
 }

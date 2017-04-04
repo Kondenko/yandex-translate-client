@@ -9,6 +9,6 @@ import dagger.Subcomponent;
 
 @PerTest
 @Subcomponent(modules = {TestServiceModule.class})
-    public interface TestServiceSubcomponent {
+public interface TestServiceSubcomponent {
     void inject(LanguagesServiceTest test);
 }

@@ -1,7 +1,4 @@
-package com.vladimirkondenko;
-
-import com.vladimirkondenko.yamblz.BuildConfig;
-import com.vladimirkondenko.yamblz.TestApp;
+package com.vladimirkondenko.yamblz;
 
 import org.junit.runners.model.InitializationError;
 import org.robolectric.RobolectricTestRunner;

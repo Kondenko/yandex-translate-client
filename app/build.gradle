@@ -27,7 +27,7 @@ android {
         enabled = true
     }
     sourceSets {
-        test.java.srcDirs += generatedSourcesDir
+        test.java.srcDirs += [generatedSourcesDir, 'src/testUtils/java']
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8

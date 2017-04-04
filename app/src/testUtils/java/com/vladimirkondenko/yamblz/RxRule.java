@@ -1,4 +1,4 @@
-package com.vladimirkondenko;
+package com.vladimirkondenko.yamblz;
 
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;

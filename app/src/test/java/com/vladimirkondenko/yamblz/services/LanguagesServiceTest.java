@@ -1,6 +1,6 @@
 package com.vladimirkondenko.yamblz.services;
 
-import com.vladimirkondenko.CustomRobolectricTestRunner;
+import com.vladimirkondenko.yamblz.CustomRobolectricTestRunner;
 import com.vladimirkondenko.yamblz.R;
 import com.vladimirkondenko.yamblz.TestApp;
 import com.vladimirkondenko.yamblz.dagger.modules.TestServiceModule;
