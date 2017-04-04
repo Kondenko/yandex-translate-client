@@ -1,7 +1,7 @@
 package com.vladimirkondenko.yamblz.dagger.modules;
 
 import com.vladimirkondenko.yamblz.dagger.PerTest;
-import com.vladimirkondenko.yamblz.service.LanguagesService;
+import com.vladimirkondenko.yamblz.services.LanguagesService;
 
 import dagger.Module;
 import dagger.Provides;

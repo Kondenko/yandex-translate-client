@@ -1,4 +1,4 @@
-package com.vladimirkondenko.yamblz.service;
+package com.vladimirkondenko.yamblz.services;
 
 import com.vladimirkondenko.CustomRobolectricTestRunner;
 import com.vladimirkondenko.yamblz.R;

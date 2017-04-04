@@ -5,7 +5,7 @@ import android.content.Context;
 import com.vladimirkondenko.yamblz.BaseLifecyclePresenter;
 import com.vladimirkondenko.yamblz.Const;
 import com.vladimirkondenko.yamblz.model.LanguagesHolder;
-import com.vladimirkondenko.yamblz.service.LanguagesService;
+import com.vladimirkondenko.yamblz.services.LanguagesService;
 import com.vladimirkondenko.yamblz.utils.LanguageUtils;
 
 import java.util.Set;

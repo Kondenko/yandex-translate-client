@@ -7,7 +7,7 @@ import com.vladimirkondenko.yamblz.R;
 import com.vladimirkondenko.yamblz.TestApp;
 import com.vladimirkondenko.yamblz.dagger.modules.TestMainPresenterModule;
 import com.vladimirkondenko.yamblz.model.LanguagesHolder;
-import com.vladimirkondenko.yamblz.service.LanguagesService;
+import com.vladimirkondenko.yamblz.services.LanguagesService;
 import com.vladimirkondenko.yamblz.utils.LanguageUtils;
 
 import org.junit.After;
