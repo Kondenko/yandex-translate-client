@@ -8,17 +8,20 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.vladimirkondenko.yamblz.Const;
 import com.vladimirkondenko.yamblz.R;
 import com.vladimirkondenko.yamblz.model.entities.LanguagesHolder;
 
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 public class LanguageSpinnerAdapter extends BaseAdapter {
 
     private static final int layout = R.layout.item_translation_language_spinner;
 
-    private HashMap<String, String> dataset;
+    private Context context;
+
+    private LinkedHashMap<String, String> dataset = new LinkedHashMap<>();
     private String[] keys;
 
     private LayoutInflater inflater;
@@ -29,11 +32,19 @@ public class LanguageSpinnerAdapter extends BaseAdapter {
 
     public LanguageSpinnerAdapter(@NonNull Context context, LanguagesHolder languagesHolder) {
         setLangs(languagesHolder);
+        this.context = context;
         inflater = LayoutInflater.from(context);
     }
 
-    public void setLangs(LanguagesHolder languagesHolder) {
-        this.dataset = languagesHolder.languages;
+    public void setLangs(LanguagesHolder langs) {
+        setLangs(langs, false);
+    }
+
+    public void setLangs(LanguagesHolder languagesHolder, boolean addAutodetectOption) {
+        if (addAutodetectOption) {
+            dataset.put(Const.LOCALE_DETECT, context.getString(R.string.main_detect_language));
+        }
+        dataset.putAll(languagesHolder.getLanguages());
         keys = dataset.keySet().toArray(new String[dataset.size()]);
         notifyDataSetChanged();
     }

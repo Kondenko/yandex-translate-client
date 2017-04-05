@@ -14,6 +14,7 @@ public final class Const {
     public static final int INPUT_LANGUAGES_JSON_RES_EN = R.raw.input_languages_en;
     public static final int INPUT_LANGUAGES_JSON_RES_RU = R.raw.input_languages_ru;
 
+    public static final String LOCALE_DETECT = "auto";
     public static final String LOCALE_EN = "en";
     public static final String LOCALE_RU = "ru";
 

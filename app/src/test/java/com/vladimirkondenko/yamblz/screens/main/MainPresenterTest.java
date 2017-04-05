@@ -15,6 +15,8 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RuntimeEnvironment;
@@ -25,6 +27,7 @@ import javax.inject.Inject;
 
 import io.reactivex.Single;
 
+import static com.vladimirkondenko.yamblz.Const.LOCALE_EN;
 import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
@@ -38,6 +41,9 @@ public class MainPresenterTest {
 
     @Rule
     public RxRule rxRule = new RxRule();
+
+    @Captor
+    public ArgumentCaptor<LanguagesHolder> captor = ArgumentCaptor.forClass(LanguagesHolder.class);
 
     @Mock
     private MainView view;
@@ -67,30 +73,39 @@ public class MainPresenterTest {
     @Test
     public void checkRuEnSetup() {
         LanguagesHolder languagesHolder = getLanguages(Const.LOCALE_RU);
-        assertEquals(presenter.getInitialTranslationLang(languagesHolder), Const.LOCALE_EN);
+        assertEquals(presenter.getInitialTranslationLang(languagesHolder), LOCALE_EN);
     }
 
     @Test
     public void checkEnSetup() {
-        LanguagesHolder languagesHolder = getLanguages(Const.LOCALE_EN);
-        languagesHolder.forLanguage = Const.LOCALE_EN;
-        assertNotEquals(presenter.getInitialTranslationLang(languagesHolder), Const.LOCALE_EN);
+        LanguagesHolder languagesHolder = getLanguages(LOCALE_EN);
+        languagesHolder.setUserLanguage(Const.LOCALE_EN);
+        assertNotEquals(presenter.getInitialTranslationLang(languagesHolder), LOCALE_EN);
     }
 
     @Test
     public void checkError() {
-        String locale = Const.LOCALE_EN;
+        String locale = LOCALE_EN;
         LanguagesHolder languagesHolder = getLanguages(locale);
-        languagesHolder.forLanguage = "";
+        languagesHolder.setUserLanguage("");
         assertNotEquals(presenter.getInitialTranslationLang(languagesHolder), locale);
     }
 
     @Test
     public void shouldFetchLanguages() {
-        String locale = Const.LOCALE_EN;
+        String locale = LOCALE_EN;
         when(service.getAvailableLanguages(anyString())).thenReturn(Single.just(getLanguages(locale)));
-        presenter.getLanguageForLocale(locale);
+        presenter.getLanguages(RuntimeEnvironment.application.getBaseContext());
         verify(view).onLoadLanguages(any(LanguagesHolder.class));
+    }
+
+    @Test
+    public void shouldContainLanguageDetection() {
+        String locale = LOCALE_EN;
+        when(service.getAvailableLanguages(anyString())).thenReturn(Single.just(getLanguages(locale)));
+        presenter.getLanguages(RuntimeEnvironment.application.getBaseContext());
+        verify(view).onLoadLanguages(captor.capture());
+        assertTrue(captor.getValue().getLanguages().containsKey(Const.LOCALE_DETECT));
     }
 
     private LanguagesHolder getLanguages(String locale) {
@@ -98,7 +113,7 @@ public class MainPresenterTest {
                 RuntimeEnvironment.application.getApplicationContext(),
                 Const.LOCALE_RU.equals(locale) ? R.raw.input_languages_ru : R.raw.input_languages_en
         );
-        langs.forLanguage = locale;
+        langs.setUserLanguage(locale);
         return langs;
     }
 

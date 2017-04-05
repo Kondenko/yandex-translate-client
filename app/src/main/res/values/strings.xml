@@ -5,6 +5,7 @@
     <string name="bottomnav_item_history">History</string>
     <string name="bottomnav_item_bookmarks">Bookmarks</string>
 
+    <string name="main_detect_language">Detect language</string>
 
     <string name="translation_hint">Text to translate</string>
 

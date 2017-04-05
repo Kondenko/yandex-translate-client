@@ -19,7 +19,8 @@ public class MainPresenter extends BaseLifecyclePresenter<MainView> {
 
     private LanguagesService languagesService;
 
-    public MainPresenter(){}
+    public MainPresenter() {
+    }
 
     @Inject
     public MainPresenter(LanguagesService languagesService, MainView view) {
@@ -32,10 +33,10 @@ public class MainPresenter extends BaseLifecyclePresenter<MainView> {
     }
 
     public String getInitialTranslationLang(LanguagesHolder languagesHolder) {
-        if (Const.LOCALE_RU.equalsIgnoreCase(languagesHolder.forLanguage)) return Const.LOCALE_EN;
-        Set<String> languages = languagesHolder.languages.keySet();
+        if (Const.LOCALE_RU.equalsIgnoreCase(languagesHolder.getUserLanguage())) return Const.LOCALE_EN;
+        Set<String> languages = languagesHolder.getLanguages().keySet();
         for (String lang : languages) {
-            if (!languagesHolder.forLanguage.equals(lang)) return lang;
+            if (!languagesHolder.getUserLanguage().equals(lang)) return lang;
         }
         return Const.LOCALE_EN;
     }
@@ -43,19 +44,19 @@ public class MainPresenter extends BaseLifecyclePresenter<MainView> {
     public void getLanguages(Context context) {
         LanguagesHolder preferredLangs = LanguageUtils.getInputLanguages(context);
         String deviceLocale = LanguageUtils.getDeviceLocale();
-        if (preferredLangs.languages.keySet().contains(deviceLocale)) {
+        if (preferredLangs.getLanguages().keySet().contains(deviceLocale)) {
             getLanguageForLocale(deviceLocale);
         } else {
             view.onLoadLanguages(preferredLangs);
         }
     }
 
-    public void getLanguageForLocale(String languageCode) {
+    private void getLanguageForLocale(String languageCode) {
         languagesService.getAvailableLanguages(languageCode)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(this.bindToLifecycle())
-                .doOnSuccess( languages -> languages.forLanguage = languageCode)
+                .doOnSuccess(languages -> languages.setUserLanguage(languageCode))
                 .subscribe(view::onLoadLanguages, view::onError);
     }
 

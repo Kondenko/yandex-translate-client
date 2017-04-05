@@ -24,7 +24,7 @@ buildscript {
     }
 
     dependencies {
-        classpath "com.android.tools.build:gradle:$gradle_version"
+        classpath 'com.android.tools.build:gradle:2.3.1'
         classpath "me.tatarka:gradle-retrolambda:$retrolambda_version"
     }
 }

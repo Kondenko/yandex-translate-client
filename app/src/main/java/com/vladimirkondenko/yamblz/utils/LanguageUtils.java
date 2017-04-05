@@ -23,7 +23,7 @@ public class LanguageUtils {
             forLanguage = Const.LOCALE_EN;
         }
         LanguagesHolder languagesHolder = getLangsFromRawRes(context, jsonResId);
-        languagesHolder.forLanguage = forLanguage;
+        languagesHolder.setUserLanguage(forLanguage);
         return languagesHolder;
     }
 
