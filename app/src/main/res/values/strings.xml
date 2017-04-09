@@ -9,4 +9,8 @@
 
     <string name="translation_hint">Text to translate</string>
 
+    <!-- Errors -->
+    <string name="all_error_generic">Sorry, error occurred</string>
+    <string name="translation_error_text_too_long">Text is too long</string>
+
 </resources>

@@ -4,7 +4,7 @@ import com.vladimirkondenko.yamblz.CustomRobolectricTestRunner;
 import com.vladimirkondenko.yamblz.R;
 import com.vladimirkondenko.yamblz.TestApp;
 import com.vladimirkondenko.yamblz.dagger.modules.TestServiceModule;
-import com.vladimirkondenko.yamblz.model.entities.LanguagesHolder;
+import com.vladimirkondenko.yamblz.model.entities.Languages;
 import com.vladimirkondenko.yamblz.utils.Utils;
 
 import org.junit.After;
@@ -25,27 +25,27 @@ import okhttp3.mockwebserver.MockWebServer;
 public class LanguagesServiceTest {
 
     @Inject
-    public MockWebServer server;
+    public LanguagesService service;
 
     @Inject
-    public LanguagesService service;
+    public MockWebServer server;
 
     @Before
     public void setUp() {
-        TestApp.plusTestServiceSubcomponent(new TestServiceModule()).inject(this);
+        TestApp.get().plusTestServiceSubcomponent(new TestServiceModule()).inject(this);
     }
 
     @After
     public void tearDown() throws IOException {
         server.shutdown();
-        TestApp.clearTestServiceSubcomponent();
+        TestApp.get().clearTestServiceSubcomponent();
     }
 
     @Test
     public void shouldReturnLanguages() {
-        String json = Utils.getJsonFromAsset(RuntimeEnvironment.application.getBaseContext(), R.raw.input_languages_ru);
+        String json = Utils.getJsonFromRawResources(RuntimeEnvironment.application.getBaseContext(), R.raw.input_languages_ru);
         server.enqueue(new MockResponse().setBody(json));
-        TestObserver<LanguagesHolder> testObserver = TestObserver.create();
+        TestObserver<Languages> testObserver = TestObserver.create();
         service.getAvailableLanguages("ru").subscribe(testObserver);
         testObserver.assertNoErrors();
         testObserver.assertComplete();

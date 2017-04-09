@@ -5,6 +5,11 @@ import android.support.annotation.RawRes;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.Map;
 
 import io.reactivex.disposables.Disposable;
 
@@ -12,7 +17,18 @@ public abstract class Utils {
 
     private static final String DEFAULT_JSON_ENCODING = "UTF-8";
 
-    public static String getJsonFromAsset(Context context, @RawRes int rawResourceName) {
+    public static <K , V extends Comparable> LinkedHashMap<K, V> sortByValues(LinkedHashMap<K, V> map) {
+        LinkedHashMap<K, V> sortedMap = new LinkedHashMap<>();
+        LinkedList<Map.Entry<K, V>> entries = new LinkedList<>(map.entrySet());
+        Collections.sort(entries, (entryA, entryB) -> entryA.getValue().compareTo(entryB.getValue()));
+        for (Iterator<Map.Entry<K, V>> it = entries.iterator(); it.hasNext(); ) {
+            Map.Entry<K, V> entry = it.next();
+            sortedMap.put(entry.getKey(), entry.getValue());
+        }
+        return sortedMap;
+    }
+
+    public static String getJsonFromRawResources(Context context, @RawRes int rawResourceName) {
         String json = "";
         try {
             InputStream is = context.getResources().openRawResource(rawResourceName);

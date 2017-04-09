@@ -1,21 +1,30 @@
 package com.vladimirkondenko.yamblz.screens.translation;
 
 
-import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.jakewharton.rxbinding2.view.RxView;
+import com.jakewharton.rxbinding2.widget.RxTextView;
 import com.vladimirkondenko.yamblz.App;
 import com.vladimirkondenko.yamblz.R;
 import com.vladimirkondenko.yamblz.dagger.modules.TranslationPresenterModule;
 import com.vladimirkondenko.yamblz.databinding.FragmentTranslationBinding;
+import com.vladimirkondenko.yamblz.utils.ErrorCodes;
+import com.vladimirkondenko.yamblz.utils.Utils;
 
 import javax.inject.Inject;
+
+import io.reactivex.disposables.Disposable;
 
 /**
  * The main fragment which provides primary translator features.
@@ -32,19 +41,43 @@ public class TranslationFragment extends Fragment implements TranslationView {
     private String languageInput;
     private String languageTranslation;
 
+
+    private Disposable edittextTranslationInputSubscription;
+    private Disposable buttonTranslationClearInputSubscription;
+
     public TranslationFragment() {
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        App.plusTranslationSubcomponent(new TranslationPresenterModule(this)).inject(this);
+        App.get().plusTranslationSubcomponent(new TranslationPresenterModule(this)).inject(this);
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_translation, container, false);
-        binding.buttonTranslationClearInput.setOnClickListener(view -> binding.edittextTranslationInput.getText().clear());
+
+        EditText edittextTranslationInput = binding.edittextTranslationInput;
+        TextView textviewTranslationResult = binding.textviewTranslationResult;
+
+        buttonTranslationClearInputSubscription = RxView.clicks(binding.buttonTranslationClearInput)
+                .subscribe(o -> {
+                    edittextTranslationInput.getText().clear();
+                    textviewTranslationResult.setText("");
+                });
+
+        edittextTranslationInputSubscription = RxTextView.editorActionEvents(edittextTranslationInput)
+                .subscribe(event -> {
+                    if (event.actionId() == KeyEvent.KEYCODE_ENTER) {
+                        if (edittextTranslationInput.getText().length() == 0) {
+                            textviewTranslationResult.setText("");
+                        } else {
+                            presenter.translate(languageInput, languageTranslation, edittextTranslationInput.getText().toString());
+                        }
+                    }
+                });
+
         return binding.getRoot();
     }
 
-     @Override
+    @Override
     public void onStart() {
         super.onStart();
         presenter.attachView(this);
@@ -53,8 +86,9 @@ public class TranslationFragment extends Fragment implements TranslationView {
     @Override
     public void onStop() {
         super.onStop();
+        Utils.disposeAll(buttonTranslationClearInputSubscription, edittextTranslationInputSubscription);
         presenter.detachView();
-        App.clearTranslationPresenterComponent();
+        App.get().clearTranslationPresenterComponent();
     }
 
     public void setInputLanguage(String lang) {
@@ -66,9 +100,30 @@ public class TranslationFragment extends Fragment implements TranslationView {
     }
 
     @Override
-    public void onError(Throwable t) {
+    public void onTranslationSuccess(String result) {
+        Log.i(TAG, "onTranslationSuccess: " + result);
+        binding.textviewTranslationResult.setText(result);
+    }
+
+    @Override
+    public void onError(Throwable t, int errorCode) {
         if (t != null) {
             t.printStackTrace();
         }
+        displayErrorMessage(errorCode);
     }
+
+    private void displayErrorMessage(int errorCode) {
+        int errorMessageResId;
+        switch (errorCode) {
+            case ErrorCodes.TEXT_TOO_LONG: {
+                errorMessageResId = R.string.translation_error_text_too_long;
+            }
+            default: {
+                errorMessageResId = R.string.all_error_generic;
+            }
+        }
+        Toast.makeText(getContext(), errorMessageResId, Toast.LENGTH_SHORT).show();
+    }
+
 }

@@ -1,7 +1,10 @@
 package com.vladimirkondenko.yamblz.screens.translation;
 
-import com.vladimirkondenko.yamblz.BaseView;
+import android.support.annotation.Nullable;
+
+import com.vladimirkondenko.yamblz.utils.BaseView;
 
 public interface TranslationView extends BaseView {
-    void onError(Throwable t);
+    void onTranslationSuccess(String result);
+    void onError(@Nullable Throwable t, int errorCode);
 }

@@ -16,7 +16,7 @@ import com.vladimirkondenko.yamblz.R;
 import com.vladimirkondenko.yamblz.dagger.modules.MainPresenterModule;
 import com.vladimirkondenko.yamblz.databinding.ActivityMainBinding;
 import com.vladimirkondenko.yamblz.databinding.LayoutTranslationToolbarBinding;
-import com.vladimirkondenko.yamblz.model.entities.LanguagesHolder;
+import com.vladimirkondenko.yamblz.model.entities.Languages;
 import com.vladimirkondenko.yamblz.screens.translation.TranslationFragment;
 import com.vladimirkondenko.yamblz.utils.LanguageSpinnerAdapter;
 import com.vladimirkondenko.yamblz.utils.Utils;
@@ -37,8 +37,8 @@ public class MainActivity extends AppCompatActivity implements MainView {
     private Spinner spinnerInputLangs;
     private Spinner spinnerTranslationLangs;
 
-    private LanguageSpinnerAdapter spinnerAdapterInputLangs;
-    private LanguageSpinnerAdapter spinnerAdapterTranslationLangs;
+    private LanguageSpinnerAdapter adapterInputLangs;
+    private LanguageSpinnerAdapter adapterTranslationLangs;
 
     private Disposable inputSpinnerSubscription;
     private Disposable translationSpinnerSubscription;
@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
-        App.plusMainSubcomponent(new MainPresenterModule(this)).inject(this);
+        App.get().plusMainSubcomponent(new MainPresenterModule(this)).inject(this);
 
         TranslationFragment translationFragment = new TranslationFragment();
         binding.bottomnavMain.setOnNavigationItemSelectedListener(item -> {
@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
         // Set initial screen
         setTranslationFragment(translationFragment);
 
-        presenter.onCreate(this);
+        presenter.onCreate();
     }
 
     @Override
@@ -89,16 +89,16 @@ public class MainActivity extends AppCompatActivity implements MainView {
     protected void onStop() {
         super.onStop();
         Utils.disposeAll(inputSpinnerSubscription, translationSpinnerSubscription);
-        App.clearMainPresenterComponent();
+        App.get().clearMainPresenterComponent();
     }
 
     @Override
-    public void onLoadLanguages(LanguagesHolder langs) {
-        if (spinnerAdapterInputLangs != null && spinnerAdapterTranslationLangs != null) {
-            spinnerAdapterInputLangs.setLangs(langs, true);
-            spinnerAdapterTranslationLangs.setLangs(langs);
-            spinnerInputLangs.setSelection(spinnerAdapterInputLangs.getItemPosition(langs.getUserLanguage()));
-            spinnerTranslationLangs.setSelection(spinnerAdapterInputLangs.getItemPosition(presenter.getInitialTranslationLang(langs)));
+    public void onLoadLanguages(Languages langs) {
+        if (adapterInputLangs != null && adapterTranslationLangs != null) {
+            adapterInputLangs.setLangs(langs, true);
+            adapterTranslationLangs.setLangs(langs);
+            spinnerInputLangs.setSelection(adapterInputLangs.getItemPosition(langs.getUserLanguageCode()));
+            spinnerTranslationLangs.setSelection(adapterTranslationLangs.getItemPosition(presenter.getInitialTranslationLang(langs)));
             presenter.getInitialTranslationLang(langs);
         }
     }
@@ -114,29 +114,33 @@ public class MainActivity extends AppCompatActivity implements MainView {
         setFragment(fragment);
         // Toolbar layout
         ActionBar supportActionBar = getSupportActionBar();
-        LayoutTranslationToolbarBinding toolbarBinding = DataBindingUtil
-                .inflate(getLayoutInflater(), R.layout.layout_translation_toolbar, binding.relativelayoutMainRoot, false);
+        LayoutTranslationToolbarBinding toolbarBinding = DataBindingUtil.inflate(
+                getLayoutInflater(),
+                R.layout.layout_translation_toolbar,
+                binding.relativelayoutMainRoot,
+                false
+        );
         supportActionBar.setDisplayShowCustomEnabled(true);
         supportActionBar.setCustomView(toolbarBinding.relativelayoutTranslationToolbarRoot, new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.MATCH_PARENT));
         // Spinners
         spinnerInputLangs = toolbarBinding.spinnerTranslationLangInput;
         spinnerTranslationLangs = toolbarBinding.spinnerTranslationLangTranslation;
         // Adapters
-        spinnerAdapterInputLangs = new LanguageSpinnerAdapter(this);
-        spinnerAdapterTranslationLangs = new LanguageSpinnerAdapter(this);
-        spinnerInputLangs.setAdapter(spinnerAdapterInputLangs);
-        spinnerTranslationLangs.setAdapter(spinnerAdapterTranslationLangs);
+        adapterInputLangs = new LanguageSpinnerAdapter(this);
+        adapterTranslationLangs = new LanguageSpinnerAdapter(this);
+        spinnerInputLangs.setAdapter(adapterInputLangs);
+        spinnerTranslationLangs.setAdapter(adapterTranslationLangs);
         // Reactive event listeners
         inputSpinnerSubscription = RxAdapterView
                 .itemSelections(toolbarBinding.spinnerTranslationLangInput)
                 .subscribe(position -> {
-                    String language = spinnerAdapterInputLangs.getItem(position);
+                    String language = adapterInputLangs.getItem(position);
                     fragment.setInputLanguage(language);
                 });
         translationSpinnerSubscription = RxAdapterView
                 .itemSelections(toolbarBinding.spinnerTranslationLangTranslation)
                 .subscribe(position -> {
-                    String language = spinnerAdapterTranslationLangs.getItem(position);
+                    String language = adapterTranslationLangs.getItem(position);
                     fragment.setTranslationLanguage(language);
                 });
     }

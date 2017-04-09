@@ -30,7 +30,7 @@ public class ApiKeyInterceptorTest {
 
     @Before
     public void setUp() throws Exception {
-        TestApp.getTestAppComponent().inject(this);
+        TestApp.get().getTestAppComponent().inject(this);
     }
 
     @After

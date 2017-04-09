@@ -1,11 +1,9 @@
 package com.vladimirkondenko.yamblz.dagger.components;
 
-import android.support.v4.app.Fragment;
+import com.vladimirkondenko.yamblz.utils.BasePresenter;
+import com.vladimirkondenko.yamblz.utils.BaseView;
 
-import com.vladimirkondenko.yamblz.BasePresenter;
-import com.vladimirkondenko.yamblz.BaseView;
-
-public interface BasePresenterSubcomponent<F extends BaseView, P extends BasePresenter> {
+public interface BasePresenterSubcomponent<V extends BaseView, P extends BasePresenter> {
     P presenter();
-    void inject(F fragment);
+    void inject(V view);
 }

@@ -11,10 +11,10 @@ import java.util.List;
 /**
  * Holds all available for translation languages for a single language.
  */
-public final class LanguagesHolder {
+public final class Languages {
 
     // The language in which all other languages are stored in the languages variable
-    private String userLanguage = Const.LOCALE_EN;
+    private String userLanguageCode = Const.LANG_CODE_EN;
 
     @SerializedName("dirs")
     @Expose
@@ -25,16 +25,21 @@ public final class LanguagesHolder {
     @Expose
     private LinkedHashMap<String, String> languages = new LinkedHashMap<>();
 
-    public void setUserLanguage(String userLanguage) {
-        this.userLanguage = userLanguage;
-    }
-
-    public String getUserLanguage() {
-        return userLanguage;
+    public String getUserLanguageCode() {
+        return userLanguageCode;
 
     }
+
+    public void setUserLanguageCode(String userLanguageCode) {
+        this.userLanguageCode = userLanguageCode;
+    }
+
     public LinkedHashMap<String, String> getLanguages() {
         return languages;
+    }
+
+    public void setLanguages(LinkedHashMap<String, String> languages) {
+        this.languages = languages;
     }
 
     @Override

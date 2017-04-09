@@ -1,7 +1,10 @@
 package com.vladimirkondenko.yamblz.dagger.modules;
 
+import android.content.Context;
+
 import com.vladimirkondenko.yamblz.dagger.PerView;
 import com.vladimirkondenko.yamblz.model.services.LanguagesService;
+import com.vladimirkondenko.yamblz.screens.main.MainInteractor;
 import com.vladimirkondenko.yamblz.screens.main.MainPresenter;
 import com.vladimirkondenko.yamblz.screens.main.MainView;
 
@@ -25,8 +28,14 @@ public class TestMainPresenterModule extends BasePresenterModule<MainView> {
 
     @Provides
     @PerView
-    public MainPresenter provideMainPresenter(LanguagesService service) {
-        return new MainPresenter(service, view);
+    public MainInteractor provideMainInteractor(Context context, LanguagesService service) {
+        return Mockito.mock(MainInteractor.class);
+    }
+
+    @Provides
+    @PerView
+    public MainPresenter provideMainPresenter(MainInteractor interactor) {
+        return new MainPresenter(view, interactor);
     }
 
 }

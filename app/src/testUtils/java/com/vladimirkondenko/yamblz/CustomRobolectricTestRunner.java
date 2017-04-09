@@ -7,7 +7,7 @@ import org.robolectric.annotation.Config;
 public class CustomRobolectricTestRunner extends RobolectricTestRunner {
 
     /**
-     * Creates a runner to run {@code testClass}. Looks in your working directory for your AndroidManifest.xml file
+     * Creates a runner to run {@code testClass}. Looks interactor your working directory for your AndroidManifest.xml file
      * and res directory by default. Use the {@link Config} annotation to configure.
      *
      * @param testClass the test class to be run
@@ -23,7 +23,7 @@ public class CustomRobolectricTestRunner extends RobolectricTestRunner {
                 .setSdk(25)
                 .setApplication(TestApp.class)
                 .setConstants(BuildConfig.class)
-                .setManifest("/src/main/AndroidManifest.xml")
+                .setManifest("AndroidManifest.xml")
                 .build();
     }
 }

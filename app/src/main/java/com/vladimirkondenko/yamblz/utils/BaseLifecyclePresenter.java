@@ -1,7 +1,8 @@
-package com.vladimirkondenko.yamblz;
+package com.vladimirkondenko.yamblz.utils;
 
 import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.trello.rxlifecycle2.LifecycleProvider;
 import com.trello.rxlifecycle2.LifecycleTransformer;
@@ -13,9 +14,16 @@ import io.reactivex.Observable;
 import io.reactivex.subjects.BehaviorSubject;
 
 
-public class BaseLifecyclePresenter<V extends BaseView> extends BasePresenter<V> implements LifecycleProvider<Integer> {
+public abstract class BaseLifecyclePresenter<V extends BaseView, I extends BaseInteractor> extends BasePresenter<V, I> implements LifecycleProvider<Integer> {
+
+    private static final String TAG = "BaseLifecyclePresenter";
 
     protected final BehaviorSubject<Integer> lifecycleSubject = BehaviorSubject.create();
+
+    protected BaseLifecyclePresenter(V view, I interactor) {
+        this.attachView(view);
+        this.interactor = interactor;
+    }
 
     @Override
     @NonNull
@@ -39,6 +47,7 @@ public class BaseLifecyclePresenter<V extends BaseView> extends BasePresenter<V>
     @CallSuper
     public void attachView(V view) {
         super.attachView(view);
+        Log.i(TAG, "attachView");
         lifecycleSubject.onNext(PresenterEvent.ATTACH);
     }
 
@@ -46,6 +55,7 @@ public class BaseLifecyclePresenter<V extends BaseView> extends BasePresenter<V>
     @CallSuper
     public void detachView() {
         super.detachView();
+        Log.i(TAG, "detachView");
         lifecycleSubject.onNext(PresenterEvent.DETACH);
     }
 

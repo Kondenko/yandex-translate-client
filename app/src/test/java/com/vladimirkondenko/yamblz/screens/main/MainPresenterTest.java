@@ -6,8 +6,7 @@ import com.vladimirkondenko.yamblz.R;
 import com.vladimirkondenko.yamblz.RxRule;
 import com.vladimirkondenko.yamblz.TestApp;
 import com.vladimirkondenko.yamblz.dagger.modules.TestMainPresenterModule;
-import com.vladimirkondenko.yamblz.model.entities.LanguagesHolder;
-import com.vladimirkondenko.yamblz.model.services.LanguagesService;
+import com.vladimirkondenko.yamblz.model.entities.Languages;
 import com.vladimirkondenko.yamblz.utils.LanguageUtils;
 
 import org.junit.After;
@@ -27,12 +26,10 @@ import javax.inject.Inject;
 
 import io.reactivex.Single;
 
-import static com.vladimirkondenko.yamblz.Const.LOCALE_EN;
 import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -43,7 +40,7 @@ public class MainPresenterTest {
     public RxRule rxRule = new RxRule();
 
     @Captor
-    public ArgumentCaptor<LanguagesHolder> captor = ArgumentCaptor.forClass(LanguagesHolder.class);
+    public ArgumentCaptor<Languages> captor = ArgumentCaptor.forClass(Languages.class);
 
     @Mock
     private MainView view;
@@ -52,17 +49,17 @@ public class MainPresenterTest {
     public MainPresenter presenter;
 
     @Inject
-    public LanguagesService service;
+    public MainInteractor interactor;
 
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        TestApp.plusTestMainPresenterSubcomponent(new TestMainPresenterModule(view)).inject(this);
+        TestApp.get().plusTestMainPresenterSubcomponent(new TestMainPresenterModule(view)).inject(this);
     }
 
     @After
     public void tearDown() throws IOException {
-        TestApp.clearTestMainPresenterSubcomponent();
+        TestApp.get().clearTestMainPresenterSubcomponent();
     }
 
     @Test
@@ -72,48 +69,39 @@ public class MainPresenterTest {
 
     @Test
     public void checkRuEnSetup() {
-        LanguagesHolder languagesHolder = getLanguages(Const.LOCALE_RU);
-        assertEquals(presenter.getInitialTranslationLang(languagesHolder), LOCALE_EN);
+        Languages languages = getLanguages(Const.LANG_CODE_RU);
+        assertEquals(presenter.getInitialTranslationLang(languages), Const.LANG_CODE_EN);
     }
 
     @Test
     public void checkEnSetup() {
-        LanguagesHolder languagesHolder = getLanguages(LOCALE_EN);
-        languagesHolder.setUserLanguage(Const.LOCALE_EN);
-        assertNotEquals(presenter.getInitialTranslationLang(languagesHolder), LOCALE_EN);
+        Languages languages = getLanguages(Const.LANG_CODE_EN);
+        languages.setUserLanguageCode(Const.LANG_CODE_EN);
+        assertNotEquals(presenter.getInitialTranslationLang(languages), Const.LANG_CODE_EN);
     }
 
     @Test
     public void checkError() {
-        String locale = LOCALE_EN;
-        LanguagesHolder languagesHolder = getLanguages(locale);
-        languagesHolder.setUserLanguage("");
-        assertNotEquals(presenter.getInitialTranslationLang(languagesHolder), locale);
+        String locale = Const.LANG_CODE_EN;
+        Languages languages = getLanguages(locale);
+        languages.setUserLanguageCode("");
+        assertEquals(presenter.getInitialTranslationLang(languages), locale);
     }
 
     @Test
     public void shouldFetchLanguages() {
-        String locale = LOCALE_EN;
-        when(service.getAvailableLanguages(anyString())).thenReturn(Single.just(getLanguages(locale)));
-        presenter.getLanguages(RuntimeEnvironment.application.getBaseContext());
-        verify(view).onLoadLanguages(any(LanguagesHolder.class));
+        String locale = Const.LANG_CODE_EN;
+        when(interactor.getLanguages()).thenReturn(Single.just(getLanguages(locale)));
+        presenter.getLanguages();
+        verify(view).onLoadLanguages(any(Languages.class));
     }
 
-    @Test
-    public void shouldContainLanguageDetection() {
-        String locale = LOCALE_EN;
-        when(service.getAvailableLanguages(anyString())).thenReturn(Single.just(getLanguages(locale)));
-        presenter.getLanguages(RuntimeEnvironment.application.getBaseContext());
-        verify(view).onLoadLanguages(captor.capture());
-        assertTrue(captor.getValue().getLanguages().containsKey(Const.LOCALE_DETECT));
-    }
-
-    private LanguagesHolder getLanguages(String locale) {
-        LanguagesHolder langs = LanguageUtils.getLangsFromRawRes(
+    private Languages getLanguages(String locale) {
+        Languages langs = LanguageUtils.getLangsFromRawRes(
                 RuntimeEnvironment.application.getApplicationContext(),
-                Const.LOCALE_RU.equals(locale) ? R.raw.input_languages_ru : R.raw.input_languages_en
+                Const.LANG_CODE_RU.equals(locale) ? R.raw.input_languages_ru : R.raw.input_languages_en
         );
-        langs.setUserLanguage(locale);
+        langs.setUserLanguageCode(locale);
         return langs;
     }
 

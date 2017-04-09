@@ -30,18 +30,16 @@ public class TranslationFragmentTest {
     @Before
     public void setUp() throws Exception {
         onView(withChild(withId(R.id.item_bottomnav_translation))).perform(pressMenuKey());
-        /*
-        MainActivity activity = mActivityRule.getActivity();
-        activity.setFragment(new TranslationFragment());
-        */
     }
 
     @Test
     public void testClearTextButton() {
         int inputFieldId = R.id.edittext_translation_input;
+        int resultFieldId = R.id.textview_translation_result;
         onView(withId(inputFieldId)).perform(typeText("Test"), closeSoftKeyboard());
         onView(withId(R.id.button_translation_clear_input)).perform(click());
         onView(withId(inputFieldId)).check(matches(withText("")));
+        onView(withId(resultFieldId)).check(matches(withText("")));
     }
 
 }

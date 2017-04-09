@@ -37,7 +37,7 @@
                 android:padding="@dimen/padding_all_large"
                 android:textAlignment="viewStart"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                tools:text="This is an example of text input"
+                tools:text="Hello, world"
                 />
 
             <ImageButton
@@ -69,7 +69,7 @@
                 android:layout_height="match_parent"
                 android:padding="@dimen/padding_all_large"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                tools:text="А это результат перевода"
+                tools:text="Привет, мир"
                 />
 
         </FrameLayout>
