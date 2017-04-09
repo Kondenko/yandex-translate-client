@@ -28,7 +28,6 @@ android {
     }
     sourceSets {
         test.java.srcDirs += [generatedSourcesDir, 'src/testUtils/java']
-//        test.resources.srcDirs +=
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -55,7 +54,9 @@ tasks.withType(JavaCompile) {
 dependencies {
     compile fileTree(dir: "libs", include: ["*.jar"])
 
-    provided 'org.glassfish:javax.annotation:10.0-b28'
+    provided "org.glassfish:javax.annotation:10.0-b28"
+
+    compile "org.greenrobot:eventbus:$eventbus_version"
 
     // Retrofit
     compile "com.squareup.retrofit2:retrofit:$retrofit_version"

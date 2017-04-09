@@ -1,6 +1,7 @@
 ext {
     generatedSourcesDir = 'build/generated/source/apt/test/debug'
 
+    eventbus_version = "3.0.0"
     rx_android_version = "2.0.1"
     rx_java_version = "2.0.7"
     rx_lifecycle_version = "2.0.1"
