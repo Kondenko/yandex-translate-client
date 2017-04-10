@@ -1,8 +1,6 @@
 package com.vladimirkondenko.yamblz.utils;
 
 
-import android.util.Log;
-
 public abstract class BasePresenter<V extends BaseView, I extends BaseInteractor> {
 
     private static final String TAG = "BasePresenter";
@@ -11,12 +9,10 @@ public abstract class BasePresenter<V extends BaseView, I extends BaseInteractor
     protected I interactor;
 
     public void attachView(V view) {
-        Log.i(TAG, "attachView");
         this.view = view;
     }
 
     public void detachView() {
-        Log.i(TAG, "detachView");
         view = null;
     }
 

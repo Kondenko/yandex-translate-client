@@ -2,7 +2,6 @@ package com.vladimirkondenko.yamblz.utils;
 
 import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.trello.rxlifecycle2.LifecycleProvider;
 import com.trello.rxlifecycle2.LifecycleTransformer;
@@ -47,7 +46,6 @@ public abstract class BaseLifecyclePresenter<V extends BaseView, I extends BaseI
     @CallSuper
     public void attachView(V view) {
         super.attachView(view);
-        Log.i(TAG, "attachView");
         lifecycleSubject.onNext(PresenterEvent.ATTACH);
     }
 
@@ -55,7 +53,6 @@ public abstract class BaseLifecyclePresenter<V extends BaseView, I extends BaseI
     @CallSuper
     public void detachView() {
         super.detachView();
-        Log.i(TAG, "detachView");
         lifecycleSubject.onNext(PresenterEvent.DETACH);
     }
 

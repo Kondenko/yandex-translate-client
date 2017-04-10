@@ -18,6 +18,7 @@
     <color name="color_all_text_primary">#DD000000</color>
     <color name="color_all_text_secondary">#89000000</color>
     <color name="color_all_text_disabled">#60000000</color>
+    <color name="color_all_text_loading">#10000000</color>
 
 
 </resources>

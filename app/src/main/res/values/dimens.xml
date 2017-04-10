@@ -9,6 +9,7 @@
 
 
     <dimen name="height_translation_textfield">128dp</dimen>
+    <dimen name="corner_radius_translation_textfield_loading">90dp</dimen>
     <dimen name="width_translation_spinner_item">128dp</dimen>
     <dimen name="height_translation_spinner_item">48dp</dimen>
     <dimen name="elevation_translation_textfield">2dp</dimen>

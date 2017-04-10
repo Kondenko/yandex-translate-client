@@ -17,7 +17,7 @@ public class MainPresenter extends BaseLifecyclePresenter<MainView, MainInteract
         getLanguages();
     }
 
-    public String getInitialTranslationLang(Languages languages) {
+    public String getInitialOutputLang(Languages languages) {
         switch (languages.getUserLanguageCode()) {
             case Const.LANG_CODE_EN: {
                 return languages.getLanguages().keySet().iterator().next();

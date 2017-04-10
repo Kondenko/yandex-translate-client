@@ -37,6 +37,7 @@
                 android:padding="@dimen/padding_all_large"
                 android:textAlignment="viewStart"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:imeOptions="actionDone"
                 tools:text="Hello, world"
                 />
 
@@ -50,7 +51,6 @@
                 android:padding="@dimen/padding_all_large"
                 app:srcCompat="@drawable/ic_clear_text_black_24dp"
                 />
-
 
         </FrameLayout>
 

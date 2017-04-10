@@ -3,9 +3,9 @@ package com.vladimirkondenko.yamblz.screens.translation;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,8 +19,16 @@ import com.vladimirkondenko.yamblz.App;
 import com.vladimirkondenko.yamblz.R;
 import com.vladimirkondenko.yamblz.dagger.modules.TranslationPresenterModule;
 import com.vladimirkondenko.yamblz.databinding.FragmentTranslationBinding;
+import com.vladimirkondenko.yamblz.utils.Bus;
 import com.vladimirkondenko.yamblz.utils.ErrorCodes;
+import com.vladimirkondenko.yamblz.utils.LanguageUtils;
 import com.vladimirkondenko.yamblz.utils.Utils;
+import com.vladimirkondenko.yamblz.utils.events.InputLanguageSelectionEvent;
+import com.vladimirkondenko.yamblz.utils.events.LanguageDetectionEvent;
+import com.vladimirkondenko.yamblz.utils.events.OutputLanguageSelectionEvent;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import javax.inject.Inject;
 
@@ -33,14 +41,12 @@ public class TranslationFragment extends Fragment implements TranslationView {
 
     private final String TAG = "TranslationFragment";
 
+    private static final int TYPING_DELAY_SEC = 1;
+
     @Inject
     public TranslationPresenter presenter;
 
     private FragmentTranslationBinding binding;
-
-    private String languageInput;
-    private String languageTranslation;
-
 
     private Disposable edittextTranslationInputSubscription;
     private Disposable buttonTranslationClearInputSubscription;
@@ -63,15 +69,13 @@ public class TranslationFragment extends Fragment implements TranslationView {
                     textviewTranslationResult.setText("");
                 });
 
-        edittextTranslationInputSubscription = RxTextView.editorActionEvents(edittextTranslationInput)
-                .subscribe(event -> {
-                    if (event.actionId() == KeyEvent.KEYCODE_ENTER) {
-                        if (edittextTranslationInput.getText().length() == 0) {
+        edittextTranslationInputSubscription = RxTextView.textChanges(edittextTranslationInput)
+                .subscribe(charSequence -> {
+                        if (charSequence.length() == 0) {
                             textviewTranslationResult.setText("");
                         } else {
-                            presenter.translate(languageInput, languageTranslation, edittextTranslationInput.getText().toString());
+                            presenter.translate(charSequence.toString());
                         }
-                    }
                 });
 
         return binding.getRoot();
@@ -81,22 +85,35 @@ public class TranslationFragment extends Fragment implements TranslationView {
     public void onStart() {
         super.onStart();
         presenter.attachView(this);
+        Bus.subscribe(this);
     }
 
     @Override
     public void onStop() {
         super.onStop();
+        Bus.unsubscribe(this);
         Utils.disposeAll(buttonTranslationClearInputSubscription, edittextTranslationInputSubscription);
         presenter.detachView();
         App.get().clearTranslationPresenterComponent();
     }
 
-    public void setInputLanguage(String lang) {
-        languageInput = lang;
+    @Override
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onDetectLanguageEvent(LanguageDetectionEvent event) {
+        String lang = LanguageUtils.parseDirection(event.getDetectedLang())[0];
+        Snackbar.make(binding.framelayoutTranslationResult, "Language detected: " + lang, Toast.LENGTH_SHORT).show();
     }
 
-    public void setTranslationLanguage(String lang) {
-        languageTranslation = lang;
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void inputLanguageChanged(InputLanguageSelectionEvent event) {
+        presenter.setInputLanguage(event.getInputLang());
+        presenter.translate(getTextToTranslate());
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void translationLanguageChanged(OutputLanguageSelectionEvent event) {
+        presenter.setOutputLanguage(event.getOutputLang());
+        presenter.translate(getTextToTranslate());
     }
 
     @Override
@@ -111,6 +128,10 @@ public class TranslationFragment extends Fragment implements TranslationView {
             t.printStackTrace();
         }
         displayErrorMessage(errorCode);
+    }
+
+    private String getTextToTranslate() {
+        return binding.edittextTranslationInput.getText().toString();
     }
 
     private void displayErrorMessage(int errorCode) {

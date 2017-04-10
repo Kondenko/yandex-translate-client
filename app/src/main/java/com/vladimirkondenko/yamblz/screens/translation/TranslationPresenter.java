@@ -9,22 +9,33 @@ import javax.inject.Inject;
 
 public class TranslationPresenter extends BaseLifecyclePresenter<TranslationView, TranslationInteractor> {
 
+    private String inputLanguage;
+    private String outputLanguage;
+
     @Inject
     public TranslationPresenter(TranslationView view, TranslationInteractor interactor) {
         super(view, interactor);
     }
 
-    public void translate(String langFrom, String langTo, String text) {
+    public void translate(String text) {
         if (text.length() == Const.MAX_TEXT_LENGTH) {
             view.onError(null, ErrorCodes.TEXT_TOO_LONG);
         } else {
-            interactor.translate(langFrom, langTo, text)
+            interactor.translate(inputLanguage, outputLanguage, text)
                     .compose(bindToLifecycle())
                     .subscribe(
                             translation -> view.onTranslationSuccess(translation.getText().get(0)),
                             throwable -> view.onError(throwable, 0)
                     );
         }
+    }
+
+    public void setInputLanguage(String inputLanguage) {
+        this.inputLanguage = inputLanguage;
+    }
+
+    public void setOutputLanguage(String outputLanguage) {
+        this.outputLanguage = outputLanguage;
     }
 
 }

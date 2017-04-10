@@ -18,8 +18,11 @@ import com.vladimirkondenko.yamblz.databinding.ActivityMainBinding;
 import com.vladimirkondenko.yamblz.databinding.LayoutTranslationToolbarBinding;
 import com.vladimirkondenko.yamblz.model.entities.Languages;
 import com.vladimirkondenko.yamblz.screens.translation.TranslationFragment;
+import com.vladimirkondenko.yamblz.utils.Bus;
 import com.vladimirkondenko.yamblz.utils.LanguageSpinnerAdapter;
 import com.vladimirkondenko.yamblz.utils.Utils;
+import com.vladimirkondenko.yamblz.utils.events.InputLanguageSelectionEvent;
+import com.vladimirkondenko.yamblz.utils.events.OutputLanguageSelectionEvent;
 
 import javax.inject.Inject;
 
@@ -35,13 +38,13 @@ public class MainActivity extends AppCompatActivity implements MainView {
     private ActivityMainBinding binding;
 
     private Spinner spinnerInputLangs;
-    private Spinner spinnerTranslationLangs;
+    private Spinner spinnerOutputLangs;
 
     private LanguageSpinnerAdapter adapterInputLangs;
-    private LanguageSpinnerAdapter adapterTranslationLangs;
+    private LanguageSpinnerAdapter adapterOutputLangs;
 
     private Disposable inputSpinnerSubscription;
-    private Disposable translationSpinnerSubscription;
+    private Disposable outputSpinnerSubscription;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,18 +91,18 @@ public class MainActivity extends AppCompatActivity implements MainView {
     @Override
     protected void onStop() {
         super.onStop();
-        Utils.disposeAll(inputSpinnerSubscription, translationSpinnerSubscription);
+        Utils.disposeAll(inputSpinnerSubscription, outputSpinnerSubscription);
         App.get().clearMainPresenterComponent();
     }
 
     @Override
     public void onLoadLanguages(Languages langs) {
-        if (adapterInputLangs != null && adapterTranslationLangs != null) {
+        if (adapterInputLangs != null && adapterOutputLangs != null) {
             adapterInputLangs.setLangs(langs, true);
-            adapterTranslationLangs.setLangs(langs);
+            adapterOutputLangs.setLangs(langs);
             spinnerInputLangs.setSelection(adapterInputLangs.getItemPosition(langs.getUserLanguageCode()));
-            spinnerTranslationLangs.setSelection(adapterTranslationLangs.getItemPosition(presenter.getInitialTranslationLang(langs)));
-            presenter.getInitialTranslationLang(langs);
+            spinnerOutputLangs.setSelection(adapterOutputLangs.getItemPosition(presenter.getInitialOutputLang(langs)));
+            presenter.getInitialOutputLang(langs);
         }
     }
 
@@ -124,24 +127,24 @@ public class MainActivity extends AppCompatActivity implements MainView {
         supportActionBar.setCustomView(toolbarBinding.relativelayoutTranslationToolbarRoot, new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.MATCH_PARENT));
         // Spinners
         spinnerInputLangs = toolbarBinding.spinnerTranslationLangInput;
-        spinnerTranslationLangs = toolbarBinding.spinnerTranslationLangTranslation;
+        spinnerOutputLangs = toolbarBinding.spinnerTranslationLangTranslation;
         // Adapters
         adapterInputLangs = new LanguageSpinnerAdapter(this);
-        adapterTranslationLangs = new LanguageSpinnerAdapter(this);
+        adapterOutputLangs = new LanguageSpinnerAdapter(this);
         spinnerInputLangs.setAdapter(adapterInputLangs);
-        spinnerTranslationLangs.setAdapter(adapterTranslationLangs);
+        spinnerOutputLangs.setAdapter(adapterOutputLangs);
         // Reactive event listeners
         inputSpinnerSubscription = RxAdapterView
                 .itemSelections(toolbarBinding.spinnerTranslationLangInput)
                 .subscribe(position -> {
                     String language = adapterInputLangs.getItem(position);
-                    fragment.setInputLanguage(language);
+                    Bus.post(new InputLanguageSelectionEvent(language));
                 });
-        translationSpinnerSubscription = RxAdapterView
+        outputSpinnerSubscription = RxAdapterView
                 .itemSelections(toolbarBinding.spinnerTranslationLangTranslation)
                 .subscribe(position -> {
-                    String language = adapterTranslationLangs.getItem(position);
-                    fragment.setTranslationLanguage(language);
+                    String language = adapterOutputLangs.getItem(position);
+                    Bus.post(new OutputLanguageSelectionEvent(language));
                 });
     }
 
