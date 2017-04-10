@@ -22,8 +22,8 @@
             android:elevation="@dimen/elevation_all_toolbar"
             app:contentInsetLeft="0dp"
             app:contentInsetStart="0dp"
-            android:paddingStart="@dimen/padding_all_large"
-            android:paddingEnd="@dimen/padding_all_large"
+            android:paddingStart="@dimen/padding_all_small"
+            android:paddingEnd="@dimen/padding_all_small"
             app:popupTheme="@style/AppTheme"
             />
 

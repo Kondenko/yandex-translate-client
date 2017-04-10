@@ -8,6 +8,7 @@
 
     <!-- Background -->
     <color name="color_all_background_dark">#f0f0e6</color>
+    <color name="color_all_background_light_gray">#f7f7f7</color>
     <color name="color_all_background_light">#ffffff</color>
 
     <!-- Icons -->

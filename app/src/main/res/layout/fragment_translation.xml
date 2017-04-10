@@ -4,11 +4,11 @@
         tools:context="com.vladimirkondenko.yamblz.screens.translation.TranslationFragment"
     >
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:animateLayoutChanges="true"
         >
 
         <FrameLayout
@@ -33,24 +33,43 @@
                 android:background="@null"
                 android:gravity="top|start"
                 android:hint="@string/translation_hint"
+                android:imeOptions="actionDone"
                 android:inputType="textMultiLine"
                 android:padding="@dimen/padding_all_large"
                 android:textAlignment="viewStart"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:imeOptions="actionDone"
                 tools:text="Hello, world"
                 />
 
             <ImageButton
                 android:id="@+id/button_translation_clear_input"
                 style="@style/Widget.AppCompat.Button.Borderless"
-                android:background="?selectableItemBackgroundBorderless"
                 android:layout_width="@dimen/size_all_button_icon"
                 android:layout_height="@dimen/size_all_button_icon"
                 android:layout_gravity="top|end"
+                android:background="?selectableItemBackgroundBorderless"
                 android:padding="@dimen/padding_all_large"
                 app:srcCompat="@drawable/ic_clear_text_black_24dp"
                 />
+
+            <FrameLayout
+                android:id="@+id/framelayout_detected_lang"
+                style="@style/LayoutDetectedLanguage"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_translation_detected_language_layout"
+                android:visibility="gone"
+                tools:visibility="visible"
+                >
+
+                <TextView
+                    android:id="@+id/textview_detected_lang"
+                    style="@style/TextDetectedLanguage"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    tools:text="Spanish"
+                    />
+
+            </FrameLayout>
 
         </FrameLayout>
 

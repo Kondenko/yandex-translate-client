@@ -18,11 +18,15 @@ import com.vladimirkondenko.yamblz.databinding.ActivityMainBinding;
 import com.vladimirkondenko.yamblz.databinding.LayoutTranslationToolbarBinding;
 import com.vladimirkondenko.yamblz.model.entities.Languages;
 import com.vladimirkondenko.yamblz.screens.translation.TranslationFragment;
-import com.vladimirkondenko.yamblz.utils.Bus;
 import com.vladimirkondenko.yamblz.utils.LanguageSpinnerAdapter;
 import com.vladimirkondenko.yamblz.utils.Utils;
+import com.vladimirkondenko.yamblz.utils.events.Bus;
 import com.vladimirkondenko.yamblz.utils.events.InputLanguageSelectionEvent;
 import com.vladimirkondenko.yamblz.utils.events.OutputLanguageSelectionEvent;
+import com.vladimirkondenko.yamblz.utils.events.SelectLanguageEvent;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import javax.inject.Inject;
 
@@ -79,12 +83,14 @@ public class MainActivity extends AppCompatActivity implements MainView {
     @Override
     protected void onResume() {
         super.onResume();
+        Bus.subscribe(this);
         presenter.attachView(this);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        Bus.unsubscribe(this);
         presenter.detachView();
     }
 
@@ -100,7 +106,6 @@ public class MainActivity extends AppCompatActivity implements MainView {
         if (adapterInputLangs != null && adapterOutputLangs != null) {
             adapterInputLangs.setLangs(langs, true);
             adapterOutputLangs.setLangs(langs);
-            spinnerInputLangs.setSelection(adapterInputLangs.getItemPosition(langs.getUserLanguageCode()));
             spinnerOutputLangs.setSelection(adapterOutputLangs.getItemPosition(presenter.getInitialOutputLang(langs)));
             presenter.getInitialOutputLang(langs);
         }
@@ -111,6 +116,11 @@ public class MainActivity extends AppCompatActivity implements MainView {
         if (error != null) {
             error.printStackTrace();
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onSelectDetectedLanguage(SelectLanguageEvent event) {
+        spinnerInputLangs.setSelection(adapterInputLangs.getItemPosition(event.getSelectedLang()), true);
     }
 
     private void setTranslationFragment(TranslationFragment fragment) {
