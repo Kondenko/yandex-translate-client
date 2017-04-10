@@ -12,7 +12,6 @@ import com.vladimirkondenko.yamblz.Const;
 import com.vladimirkondenko.yamblz.R;
 import com.vladimirkondenko.yamblz.model.entities.Languages;
 
-import java.util.Arrays;
 import java.util.LinkedHashMap;
 
 public class LanguageSpinnerAdapter extends BaseAdapter {
@@ -66,7 +65,10 @@ public class LanguageSpinnerAdapter extends BaseAdapter {
     }
 
     public int getItemPosition(String lang) {
-        return Arrays.binarySearch(keys, lang);
+        for (int i = 0; i < keys.length; i++) {
+            if (keys[i].equals(lang)) return i;
+        }
+        return -1;
     }
 
     @Override
