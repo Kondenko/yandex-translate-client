@@ -20,14 +20,14 @@
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
             android:elevation="@dimen/elevation_all_toolbar"
+            android:paddingEnd="@dimen/padding_all_small"
+            android:paddingStart="@dimen/padding_all_small"
             app:contentInsetLeft="0dp"
             app:contentInsetStart="0dp"
-            android:paddingStart="@dimen/padding_all_small"
-            android:paddingEnd="@dimen/padding_all_small"
             app:popupTheme="@style/AppTheme"
             />
 
-          <FrameLayout
+        <FrameLayout
             android:id="@+id/framelayout_main_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -41,9 +41,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            app:itemIconTint="@color/bottomnav_icon_statelist"
+            android:background="?attr/colorPrimary"
+            android:elevation="@dimen/elevation_all_bottomnav"
+            app:itemIconTint="@color/all_icon_statelist"
             app:itemTextColor="@color/bottomnav_text_statelist"
             app:menu="@menu/menu_bottomnav"
+            tools:targetApi="lollipop"
             />
 
     </RelativeLayout>

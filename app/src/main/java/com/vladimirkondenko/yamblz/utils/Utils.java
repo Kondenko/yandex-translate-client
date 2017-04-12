@@ -1,7 +1,13 @@
 package com.vladimirkondenko.yamblz.utils;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
+import android.support.annotation.ColorRes;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.RawRes;
+import android.support.v4.graphics.drawable.DrawableCompat;
+import android.support.v7.content.res.AppCompatResources;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,6 +22,20 @@ import io.reactivex.disposables.Disposable;
 public abstract class Utils {
 
     private static final String DEFAULT_JSON_ENCODING = "UTF-8";
+
+    public static Drawable getTintedDrawable(Context context, @DrawableRes int drawableId, @ColorRes int colorSelector) {
+        Drawable drawable = DrawableCompat.wrap(Utils.getDrawable(context, drawableId));
+        DrawableCompat.setTintList(drawable.mutate(), AppCompatResources.getColorStateList(context, colorSelector));
+        return drawable;
+    }
+
+    public static Drawable getDrawable(Context context, @DrawableRes int drawableId) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            return context.getResources().getDrawable(drawableId);
+        } else {
+            return context.getResources().getDrawable(drawableId, context.getTheme());
+        }
+    }
 
     public static <K , V extends Comparable> LinkedHashMap<K, V> sortByValues(LinkedHashMap<K, V> map) {
         LinkedHashMap<K, V> sortedMap = new LinkedHashMap<>();
