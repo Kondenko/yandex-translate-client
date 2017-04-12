@@ -1,8 +1,8 @@
 package com.vladimirkondenko.yamblz.screens.translation;
 
 import com.vladimirkondenko.yamblz.Const;
-import com.vladimirkondenko.yamblz.utils.BaseLifecyclePresenter;
 import com.vladimirkondenko.yamblz.utils.ErrorCodes;
+import com.vladimirkondenko.yamblz.utils.base.BaseLifecyclePresenter;
 
 import javax.inject.Inject;
 

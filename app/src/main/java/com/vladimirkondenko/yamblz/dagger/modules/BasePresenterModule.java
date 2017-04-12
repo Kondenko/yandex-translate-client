@@ -1,7 +1,7 @@
 package com.vladimirkondenko.yamblz.dagger.modules;
 
 
-import com.vladimirkondenko.yamblz.utils.BaseView;
+import com.vladimirkondenko.yamblz.utils.base.BaseView;
 
 public abstract class BasePresenterModule<T extends BaseView> {
 

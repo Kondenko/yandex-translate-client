@@ -3,8 +3,8 @@ package com.vladimirkondenko.yamblz.screens.translation;
 import com.vladimirkondenko.yamblz.Const;
 import com.vladimirkondenko.yamblz.model.entities.Translation;
 import com.vladimirkondenko.yamblz.model.services.TranslationService;
-import com.vladimirkondenko.yamblz.utils.BaseInteractor;
 import com.vladimirkondenko.yamblz.utils.LanguageUtils;
+import com.vladimirkondenko.yamblz.utils.base.BaseInteractor;
 import com.vladimirkondenko.yamblz.utils.events.Bus;
 import com.vladimirkondenko.yamblz.utils.events.LanguageDetectionEvent;
 

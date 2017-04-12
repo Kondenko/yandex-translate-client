@@ -1,4 +1,4 @@
-package com.vladimirkondenko.yamblz.utils;
+package com.vladimirkondenko.yamblz.utils.base;
 
 
 public abstract class BasePresenter<V extends BaseView, I extends BaseInteractor> {

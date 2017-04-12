@@ -5,9 +5,9 @@ import android.content.Context;
 
 import com.vladimirkondenko.yamblz.model.entities.Languages;
 import com.vladimirkondenko.yamblz.model.services.LanguagesService;
-import com.vladimirkondenko.yamblz.utils.BaseInteractor;
 import com.vladimirkondenko.yamblz.utils.LanguageUtils;
 import com.vladimirkondenko.yamblz.utils.Utils;
+import com.vladimirkondenko.yamblz.utils.base.BaseInteractor;
 
 import java.util.LinkedHashMap;
 

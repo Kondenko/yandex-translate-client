@@ -1,4 +1,4 @@
-package com.vladimirkondenko.yamblz.utils;
+package com.vladimirkondenko.yamblz.utils.base;
 
 import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;

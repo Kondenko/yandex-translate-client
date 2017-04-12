@@ -2,7 +2,7 @@ package com.vladimirkondenko.yamblz.screens.main;
 
 import com.vladimirkondenko.yamblz.Const;
 import com.vladimirkondenko.yamblz.model.entities.Languages;
-import com.vladimirkondenko.yamblz.utils.BaseLifecyclePresenter;
+import com.vladimirkondenko.yamblz.utils.base.BaseLifecyclePresenter;
 
 import javax.inject.Inject;
 
