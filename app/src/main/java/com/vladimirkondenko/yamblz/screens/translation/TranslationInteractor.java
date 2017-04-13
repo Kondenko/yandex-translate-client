@@ -24,14 +24,14 @@ public class TranslationInteractor extends BaseInteractor {
     }
 
     public Single<Translation> translate(String fromLang, String toLang, String text) {
-        boolean shouldDetectLanguage = fromLang.equals(Const.LANG_CODE_AUTO);
+        boolean shouldDetectLanguage = fromLang == null || fromLang.equals(Const.LANG_CODE_AUTO);
         String lang = shouldDetectLanguage ? toLang : LanguageUtils.langsToDirection(fromLang, toLang);
-        return service.getTranslation(lang, text)
+        return Single.defer(() -> service.getTranslation(lang, text)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSuccess(translation -> {
                     if (shouldDetectLanguage) Bus.post(new LanguageDetectionEvent(translation.getLang()));
-                });
+                }));
     }
 
 }

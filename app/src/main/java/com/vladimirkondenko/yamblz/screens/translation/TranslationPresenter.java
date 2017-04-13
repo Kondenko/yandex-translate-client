@@ -1,10 +1,13 @@
 package com.vladimirkondenko.yamblz.screens.translation;
 
 import com.vladimirkondenko.yamblz.Const;
+import com.vladimirkondenko.yamblz.model.entities.Translation;
 import com.vladimirkondenko.yamblz.utils.ErrorCodes;
 import com.vladimirkondenko.yamblz.utils.base.BaseLifecyclePresenter;
 
 import javax.inject.Inject;
+
+import io.reactivex.Single;
 
 
 public class TranslationPresenter extends BaseLifecyclePresenter<TranslationView, TranslationInteractor> {
@@ -12,23 +15,30 @@ public class TranslationPresenter extends BaseLifecyclePresenter<TranslationView
     private String inputLanguage;
     private String outputLanguage;
 
+    private Single<Translation> translationSingle = null;
+
     @Inject
     public TranslationPresenter(TranslationView view, TranslationInteractor interactor) {
         super(view, interactor);
     }
 
-    public void translate(String text) {
+    public void enqueueTranslation(String text) {
         if (text.length() != 0 && inputLanguage != null && outputLanguage != null) {
             if (text.length() == Const.MAX_TEXT_LENGTH) {
                 view.onError(null, ErrorCodes.TEXT_TOO_LONG);
             } else {
-                interactor.translate(inputLanguage, outputLanguage, text)
-                        .compose(bindToLifecycle())
-                        .subscribe(
-                                translation -> view.onTranslationSuccess(translation.getText().get(0)),
-                                throwable -> view.onError(throwable, 0)
-                        );
+                translationSingle = interactor.translate(inputLanguage, outputLanguage, text)
+                        .compose(bindToLifecycle());
             }
+        }
+    }
+
+    public void executePendingTranslation() {
+        if (translationSingle != null && isViewAttached()) {
+            translationSingle.subscribe(
+                    translation -> view.onTranslationSuccess(translation.getText().get(0)),
+                    throwable -> view.onError(throwable, 0)
+            );
         }
     }
 

@@ -28,6 +28,7 @@ import com.vladimirkondenko.yamblz.utils.events.Bus;
 import com.vladimirkondenko.yamblz.utils.events.InputLanguageSelectionEvent;
 import com.vladimirkondenko.yamblz.utils.events.OutputLanguageSelectionEvent;
 import com.vladimirkondenko.yamblz.utils.events.SelectLanguageEvent;
+import com.vladimirkondenko.yamblz.utils.events.SwapLanguageEvent;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -168,6 +169,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
         // Language swapping button
         swapButtonSubscription = RxView.clicks(buttonSwapLanguage)
                 .subscribe(event -> {
+                    Bus.post(new SwapLanguageEvent());
                     // +/- 1's are used because of the "Detect language" item
                     // We have to shift the position to get the actual selected language
                     int currentInputPosition = spinnerInputLangs.getSelectedItemPosition();
