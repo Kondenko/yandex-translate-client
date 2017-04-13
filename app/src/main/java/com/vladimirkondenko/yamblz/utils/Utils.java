@@ -8,6 +8,7 @@ import android.support.annotation.DrawableRes;
 import android.support.annotation.RawRes;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.content.res.AppCompatResources;
+import android.widget.TextView;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,9 +20,20 @@ import java.util.Map;
 
 import io.reactivex.disposables.Disposable;
 
-public abstract class Utils {
+public final class Utils {
 
     private static final String DEFAULT_JSON_ENCODING = "UTF-8";
+
+    public static boolean areEmpty(TextView... textViews) {
+        for (TextView textView : textViews) {
+            if (isEmpty(textView)) return true;
+        }
+        return false;
+    }
+
+    public static boolean isEmpty(TextView textView) {
+        return textView.getText() == null || textView.getText().toString().trim().length() == 0;
+    }
 
     public static Drawable getTintedDrawable(Context context, @DrawableRes int drawableId, @ColorRes int colorSelector) {
         Drawable drawable = DrawableCompat.wrap(Utils.getDrawable(context, drawableId));

@@ -22,6 +22,7 @@ import com.vladimirkondenko.yamblz.databinding.ActivityMainBinding;
 import com.vladimirkondenko.yamblz.databinding.LayoutTranslationToolbarBinding;
 import com.vladimirkondenko.yamblz.model.entities.Languages;
 import com.vladimirkondenko.yamblz.screens.translation.TranslationFragment;
+import com.vladimirkondenko.yamblz.utils.AnimUtils;
 import com.vladimirkondenko.yamblz.utils.LanguageSpinnerAdapter;
 import com.vladimirkondenko.yamblz.utils.Utils;
 import com.vladimirkondenko.yamblz.utils.events.Bus;
@@ -143,7 +144,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
         supportActionBar.setCustomView(toolbarBinding.relativelayoutTranslationToolbarRoot, new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.MATCH_PARENT));
         // Views
         ImageButton buttonSwapLanguage = toolbarBinding.buttonTranslationSwitchLanguage;
-//        buttonSwapLanguage.setImageDrawable(Utils.getTintedDrawable(this, R.drawable.ic_switch_language_black_24dp, R.color.all_icon_statelist));
+        buttonSwapLanguage.setImageDrawable(Utils.getTintedDrawable(this, R.drawable.ic_switch_language_black_24dp, R.color.all_icon_statelist));
         spinnerInputLangs = toolbarBinding.spinnerTranslationLangInput;
         spinnerOutputLangs = toolbarBinding.spinnerTranslationLangTranslation;
         // Adapters
@@ -170,6 +171,8 @@ public class MainActivity extends AppCompatActivity implements MainView {
         swapButtonSubscription = RxView.clicks(buttonSwapLanguage)
                 .subscribe(event -> {
                     Bus.post(new SwapLanguageEvent());
+                    int animDistance = 4;
+                    int animDuration = Const.ANIM_DURATION_LANG_SWITCH_SPINNER;
                     // +/- 1's are used because of the "Detect language" item
                     // We have to shift the position to get the actual selected language
                     int currentInputPosition = spinnerInputLangs.getSelectedItemPosition();
@@ -178,52 +181,25 @@ public class MainActivity extends AppCompatActivity implements MainView {
                             .rotationBy(180)
                             .setInterpolator(new AccelerateDecelerateInterpolator())
                             .setDuration(Const.ANIM_DURATION_DEFAULT);
-                    animateSpinner(
+                    AnimUtils.slideInAndOut(
                             spinnerInputLangs,
-                            buttonSwapLanguage,
-                            false,
                             true,
-                            () -> spinnerInputLangs.setSelection(currentOutputPosition + 1)
+                            animDistance,
+                            animDuration,
+                            () -> buttonSwapLanguage.setClickable(false), // Disable button clicks to prevent multiple animations from being executed
+                            () -> {
+                                spinnerInputLangs.setSelection(currentOutputPosition + 1);
+                                buttonSwapLanguage.setClickable(true); // Enable button clicks when the animation ends
+                            }
                     );
-                    animateSpinner(
+                    AnimUtils.slideInAndOut(
                             spinnerOutputLangs,
-                            buttonSwapLanguage,
                             false,
-                            false,
+                            animDistance,
+                            animDuration,
+                            () -> {},
                             () -> spinnerOutputLangs.setSelection(currentInputPosition - 1)
                     );
-                });
-    }
-
-    /**
-     * Animates a spinner in and out to show a language change.
-     *
-     * 1. Move the spinner up or down with fade in/out animation
-     * 2. Change the text
-     * 2. Return the spinner to its original place
-     *
-     * @param spinner the view to be animated
-     * @param swapLanguageButton the swap button which should be disabled during the animation (see the details below)
-     * @param in whether to play an in or an out animation
-     * @param moveDown whether move the spinner up (and then down) or otherwise
-     * @param changeTextAction the piece of code to be executed while the spinner is hidden
-     */
-    private void animateSpinner(Spinner spinner, ImageButton swapLanguageButton, boolean in, boolean moveDown, Runnable changeTextAction) {
-        int transitionDistance = 4;
-        spinner.animate()
-                .setDuration(Const.ANIM_DURATION_LANG_SWITCH_SPINNER)
-                .setInterpolator(new AccelerateDecelerateInterpolator())
-                // Disable button clicks to prevent multiple animations from being executed
-                .withStartAction(() -> swapLanguageButton.setClickable(false))
-                .alpha(in ? 1f : 0f)
-                // Move the spinner to the top or from the bottom from its original place to animate it later
-                .y(moveDown ? spinner.getTop() - transitionDistance : spinner.getBottom() + transitionDistance)
-                .translationYBy(moveDown ? transitionDistance : -transitionDistance)
-                .withEndAction(() -> {
-                    swapLanguageButton.setClickable(true); // Enable button clicks when the animation ends
-                    changeTextAction.run(); // Replace the text while it's invisible
-                    // The out animation have been played and now the in animation should be executed
-                    if (!in) animateSpinner(spinner, swapLanguageButton, true, !moveDown, () -> {});
                 });
     }
 

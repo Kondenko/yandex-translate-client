@@ -50,4 +50,10 @@ public class TranslationPresenter extends BaseLifecyclePresenter<TranslationView
         this.outputLanguage = outputLanguage;
     }
 
+    public void swapLanguages() {
+        String temp = inputLanguage;
+        inputLanguage = outputLanguage;
+        outputLanguage = temp;
+    }
+
 }

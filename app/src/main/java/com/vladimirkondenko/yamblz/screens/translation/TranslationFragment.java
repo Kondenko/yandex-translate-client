@@ -15,9 +15,11 @@ import android.widget.Toast;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.jakewharton.rxbinding2.widget.RxTextView;
 import com.vladimirkondenko.yamblz.App;
+import com.vladimirkondenko.yamblz.Const;
 import com.vladimirkondenko.yamblz.R;
 import com.vladimirkondenko.yamblz.dagger.modules.TranslationPresenterModule;
 import com.vladimirkondenko.yamblz.databinding.FragmentTranslationBinding;
+import com.vladimirkondenko.yamblz.utils.AnimUtils;
 import com.vladimirkondenko.yamblz.utils.ErrorCodes;
 import com.vladimirkondenko.yamblz.utils.LanguageUtils;
 import com.vladimirkondenko.yamblz.utils.RxNetworkBroadcastReceiver;
@@ -90,7 +92,7 @@ public class TranslationFragment extends Fragment implements TranslationView {
                         showDetectedLangLayout(false);
                         textviewTranslationResult.setText("");
                     } else {
-                       translate(String.valueOf(text));
+                        translate();
                     }
                 });
 
@@ -126,9 +128,29 @@ public class TranslationFragment extends Fragment implements TranslationView {
     @Override
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onSwapLanguageEvent(SwapLanguageEvent event) {
-        String translatedText = String.valueOf(binding.textviewTranslationResult.getText());
-        binding.textviewTranslationResult.setText(String.valueOf(binding.edittextTranslationInput.getText()));
-        binding.edittextTranslationInput.setText(translatedText);
+        if (!Utils.areEmpty(binding.edittextTranslationInput, binding.textviewTranslationResult)) {
+            int duration = Const.ANIM_DURATION_LANG_SWITCH_SPINNER;
+            int distance = 4;
+            AnimUtils.slideInAndOut(
+                    binding.edittextTranslationInput,
+                    true,
+                    distance,
+                    duration,
+                    () -> {
+                    },
+                    () -> binding.edittextTranslationInput.setText(binding.textviewTranslationResult.getText())
+            );
+            AnimUtils.slideInAndOut(
+                    binding.textviewTranslationResult,
+                    false,
+                    distance,
+                    duration,
+                    () -> {
+                    },
+                    () -> binding.textviewTranslationResult.setText("")
+            );
+            presenter.swapLanguages();
+        }
     }
 
     @Override
@@ -150,13 +172,13 @@ public class TranslationFragment extends Fragment implements TranslationView {
     public void inputLanguageChanged(InputLanguageSelectionEvent event) {
         showDetectedLangLayout(false);
         presenter.setInputLanguage(event.getInputLang());
-        translate(getTextToTranslate());
+        translate();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void translationLanguageChanged(OutputLanguageSelectionEvent event) {
         presenter.setOutputLanguage(event.getOutputLang());
-        translate(getTextToTranslate());
+        translate();
     }
 
     @Override
@@ -173,11 +195,10 @@ public class TranslationFragment extends Fragment implements TranslationView {
         displayErrorMessage(errorCode);
     }
 
-    private void translate(String text) {
-        if (text != null) {
-            presenter.enqueueTranslation(text);
-            if (networkBroadcastReceiver.isOnline()) presenter.executePendingTranslation();
-        }
+    private void translate() {
+        String text = String.valueOf(binding.edittextTranslationInput.getText());
+        presenter.enqueueTranslation(text);
+        if (networkBroadcastReceiver.isOnline()) presenter.executePendingTranslation();
     }
 
     private void showDetectedLangLayout(boolean show) {
