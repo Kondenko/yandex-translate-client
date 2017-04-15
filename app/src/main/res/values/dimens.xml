@@ -20,9 +20,9 @@
     <dimen name="height_translation_detected_language_layout">36dp</dimen>
     <dimen name="textsize_translation_detected_language_text">14dp</dimen>
 
-    <dimen name="height_translation_offline_banner">48dp</dimen>
-    <dimen name="padding_translation_offline_banner_vertical">8dp</dimen>
+    <dimen name="height_translation_offline_banner">56dp</dimen>
     <dimen name="padding_translation_offline_banner_horizontal">16dp</dimen>
+    <dimen name="padding_translation_offline_banner_text">2dp</dimen>
 
 
 </resources>

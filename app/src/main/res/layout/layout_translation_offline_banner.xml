@@ -1,36 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     >
 
+    <!-- This layout seems bigger than it is because of the translation field shadow, therefore paddingBottom is needed -->
     <LinearLayout
         android:id="@+id/linearlayout_translation_offline_banner_root"
         android:layout_width="match_parent"
         android:layout_height="@dimen/height_translation_offline_banner"
+        android:gravity="center"
         android:orientation="vertical"
-        android:paddingBottom="@dimen/padding_translation_offline_banner_vertical"
-        android:paddingTop="@dimen/padding_translation_offline_banner_vertical"
-        android:paddingEnd="@dimen/padding_translation_offline_banner_horizontal"
-        android:paddingStart="@dimen/padding_translation_offline_banner_horizontal"
+        android:paddingBottom="@dimen/padding_all_small"
         android:visibility="gone"
+        tools:visibility="visible"
         >
 
         <TextView
+            style="@style/App.Translation.TextOfflineBannerHead"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
             android:text="@string/translation_error_offline_head"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
             />
 
         <TextView
+            style="@style/App.Translation.TextOfflineBannerSubhead"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
             android:text="@string/translation_error_offline_subhead"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
             />
+
 
     </LinearLayout>
 </layout>

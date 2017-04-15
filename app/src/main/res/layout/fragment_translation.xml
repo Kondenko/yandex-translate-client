@@ -36,9 +36,10 @@
                 android:imeOptions="actionDone"
                 android:inputType="textMultiLine"
                 android:padding="@dimen/padding_all_large"
+                android:paddingEnd="@dimen/size_all_button_icon"
                 android:textAlignment="viewStart"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                tools:text="Hello, world"
+                tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Blandit nullam dapibus egestas rutrum pellentesque mus."
                 />
 
             <ImageButton
@@ -54,7 +55,7 @@
 
             <FrameLayout
                 android:id="@+id/framelayout_detected_lang"
-                style="@style/LayoutDetectedLanguage"
+                style="@style/App.Translation.LayoutDetectedLanguage"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/height_translation_detected_language_layout"
                 android:visibility="gone"
@@ -63,7 +64,7 @@
 
                 <TextView
                     android:id="@+id/textview_detected_lang"
-                    style="@style/TextDetectedLanguage"
+                    style="@style/App.Translation.TextDetectedLanguage"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     tools:text="Spanish"
@@ -95,7 +96,7 @@
                 android:layout_height="match_parent"
                 android:padding="@dimen/padding_all_large"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                tools:text="Привет, мир"
+                tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Blandit nullam dapibus egestas rutrum pellentesque mus."
                 />
 
         </FrameLayout>
