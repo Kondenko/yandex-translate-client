@@ -23,7 +23,7 @@ public class TranslationPresenter extends BaseLifecyclePresenter<TranslationView
     }
 
     public void enqueueTranslation(String text) {
-        if (text.length() != 0 && inputLanguage != null && outputLanguage != null) {
+        if (text.length() > 0 && inputLanguage != null && outputLanguage != null) {
             if (text.length() == Const.MAX_TEXT_LENGTH) {
                 view.onError(null, ErrorCodes.TEXT_TOO_LONG);
             } else {

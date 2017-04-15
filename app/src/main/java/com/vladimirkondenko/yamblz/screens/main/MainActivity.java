@@ -157,9 +157,9 @@ public class MainActivity extends AppCompatActivity implements MainView {
                 .itemSelections(toolbarBinding.spinnerTranslationLangInput)
                 .subscribe(position -> {
                     String language = adapterInputLangs.getItem(position);
-                    Bus.post(new InputLanguageSelectionEvent(language));
                     // Disable the swap button if the language is not specified
                     toolbarBinding.buttonTranslationSwitchLanguage.setEnabled(!language.equals(Const.LANG_CODE_AUTO));
+                    Bus.post(new InputLanguageSelectionEvent(language));
                 });
         outputSpinnerSubscription = RxAdapterView
                 .itemSelections(toolbarBinding.spinnerTranslationLangTranslation)

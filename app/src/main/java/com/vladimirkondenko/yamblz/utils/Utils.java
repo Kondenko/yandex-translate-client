@@ -24,7 +24,7 @@ public final class Utils {
 
     private static final String DEFAULT_JSON_ENCODING = "UTF-8";
 
-    public static boolean areEmpty(TextView... textViews) {
+    public static boolean areFieldsEmpty(TextView... textViews) {
         for (TextView textView : textViews) {
             if (isEmpty(textView)) return true;
         }

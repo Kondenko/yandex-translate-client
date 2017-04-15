@@ -128,7 +128,8 @@ public class TranslationFragment extends Fragment implements TranslationView {
     @Override
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onSwapLanguageEvent(SwapLanguageEvent event) {
-        if (!Utils.areEmpty(binding.edittextTranslationInput, binding.textviewTranslationResult)) {
+        Log.i(TAG, "onSwapLanguageEvent");
+        if (!Utils.areFieldsEmpty(binding.edittextTranslationInput, binding.textviewTranslationResult)) {
             int duration = Const.ANIM_DURATION_LANG_SWITCH_SPINNER;
             int distance = 4;
             AnimUtils.slideInAndOut(
@@ -149,13 +150,13 @@ public class TranslationFragment extends Fragment implements TranslationView {
                     },
                     () -> binding.textviewTranslationResult.setText("")
             );
-            presenter.swapLanguages();
         }
     }
 
     @Override
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onDetectLanguageEvent(LanguageDetectionEvent event) {
+        Log.i(TAG, "onDetectLanguageEvent");
         String langCode = LanguageUtils.parseDirection(event.getDetectedLang())[0];
         Locale locale = new Locale(langCode);
         String language = locale.getDisplayLanguage();
@@ -170,6 +171,7 @@ public class TranslationFragment extends Fragment implements TranslationView {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void inputLanguageChanged(InputLanguageSelectionEvent event) {
+        Log.i(TAG, "inputLanguageChanged");
         showDetectedLangLayout(false);
         presenter.setInputLanguage(event.getInputLang());
         translate();
@@ -177,13 +179,13 @@ public class TranslationFragment extends Fragment implements TranslationView {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void translationLanguageChanged(OutputLanguageSelectionEvent event) {
+        Log.i(TAG, "translationLanguageChanged");
         presenter.setOutputLanguage(event.getOutputLang());
         translate();
     }
 
     @Override
     public void onTranslationSuccess(String result) {
-        Log.i(TAG, "onTranslationSuccess: " + result);
         binding.textviewTranslationResult.setText(result);
     }
 
@@ -196,9 +198,11 @@ public class TranslationFragment extends Fragment implements TranslationView {
     }
 
     private void translate() {
-        String text = String.valueOf(binding.edittextTranslationInput.getText());
-        presenter.enqueueTranslation(text);
-        if (networkBroadcastReceiver.isOnline()) presenter.executePendingTranslation();
+        if (!Utils.isEmpty(binding.edittextTranslationInput)) {
+            String text = String.valueOf(binding.edittextTranslationInput.getText());
+            presenter.enqueueTranslation(text);
+            if (networkBroadcastReceiver.isOnline()) presenter.executePendingTranslation();
+        }
     }
 
     private void showDetectedLangLayout(boolean show) {
