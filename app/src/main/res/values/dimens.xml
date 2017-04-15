@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="size_all_icon">24dp</dimen>
+    <dimen name="size_all_button_icon">48dp</dimen>
+    <dimen name="padding_all_small">8dp</dimen>
+    <dimen name="padding_all_large">16dp</dimen>
+    <dimen name="elevation_all_toolbar">4dp</dimen>
+    <dimen name="elevation_all_bottomnav">4dp</dimen>
+
+    <dimen name="width_translation_switch_lang_button">48dp</dimen>
+
+    <dimen name="height_translation_textfield">128dp</dimen>
+    <dimen name="corner_radius_translation_textfield_loading">90dp</dimen>
+    <dimen name="width_translation_spinner_item">176dp</dimen>
+    <dimen name="height_translation_spinner_item">48dp</dimen>
+    <dimen name="elevation_translation_textfield">2dp</dimen>
+    <dimen name="width_translation_language_spinner_min">96dp</dimen>
+
+    <dimen name="height_translation_detected_language_layout">36dp</dimen>
+    <dimen name="textsize_translation_detected_language_text">14dp</dimen>
+
+    <dimen name="height_translation_offline_banner">56dp</dimen>
+    <dimen name="padding_translation_offline_banner_horizontal">16dp</dimen>
+    <dimen name="padding_translation_offline_banner_text">2dp</dimen>
+
+
+</resources>

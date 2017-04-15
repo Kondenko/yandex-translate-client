@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/item_bottomnav_translation"
+        android:icon="@drawable/ic_translation_black_24px"
+        android:title="@string/bottomnav_item_translation"
+        />
+
+    <item
+        android:id="@+id/item_bottomnav_history"
+        android:enabled="false"
+        android:icon="@drawable/ic_history_black_24px"
+        android:title="@string/bottomnav_item_history"
+        />
+
+    <item
+        android:id="@+id/item_bottomnav_bookmarks"
+        android:enabled="false"
+        android:icon="@drawable/ic_bookmarks_black_24px"
+        android:title="@string/bottomnav_item_bookmarks"
+        />
+
+</menu>

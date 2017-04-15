@@ -1,18 +1,32 @@
 ext {
-    rx_version = "2.0.1"
+    generatedSourcesDir = 'build/generated/source/apt/test/debug'
+
+    eventbus_version = "3.0.0"
+    rx_android_version = "2.0.1"
+    rx_java_version = "2.0.7"
+    rx_lifecycle_version = "2.0.1"
+    rx_bindings_version = "2.0.0"
     dagger_version = "2.9"
     retrofit_version = "2.2.0"
-    support_lib_version = "25.2.0"
-    constraint_layout_version = "1.0.0"
+    support_lib_version = "25.3.1"
+    constraint_layout_version = "1.0.2"
     junit_version = "4.12"
+    robolectric_version = "3.3.1"
+    mockito_version = "2.7.19"
+    okhttp_version = "3.6.0"
 }
 
 buildscript {
+    ext.gradle_version = "2.3.0"
+    ext.retrolambda_version = "3.6.0"
+
     repositories {
         jcenter()
     }
+
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.0'
+        classpath 'com.android.tools.build:gradle:2.3.1'
+        classpath "me.tatarka:gradle-retrolambda:$retrolambda_version"
     }
 }
 

@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Yamblz 2017</string>
+
+    <string name="bottomnav_item_translation">Перевод</string>
+    <string name="bottomnav_item_history">История</string>
+    <string name="bottomnav_item_bookmarks">Закладки</string>
+
+    <string name="main_detect_language">Определить язык</string>
+
+    <string name="translation_hint">текст для перевода</string>
+
+</resources>

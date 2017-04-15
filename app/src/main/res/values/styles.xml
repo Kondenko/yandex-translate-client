@@ -1,11 +1,33 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/tools">
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+    <style name="LanguageSpinner">
+        <item name="android:maxWidth">@dimen/width_translation_language_spinner_min</item>
+        <item name="android:layout_centerVertical">true</item>
+    </style>
+
+    <style name="App.Translation.LayoutDetectedLanguage" parent="TextAppearance.AppCompat.Widget.Button.Borderless.Colored">
+        <item name="android:background">@color/color_all_background_light_gray</item>
+        <item name="android:paddingStart">@dimen/padding_all_large</item>
+        <item name="android:paddingEnd">@dimen/padding_all_small</item>
+        <item name="android:layout_gravity">bottom</item>
+    </style>
+
+    <style name="App.Translation.TextDetectedLanguage" parent="TextAppearance.AppCompat.Body2">
+        <item name="android:textColor">@color/color_all_text_secondary</item>
+        <item name="android:gravity">start|center_vertical</item>
+        <item name="android:textSize">@dimen/textsize_translation_detected_language_text</item>
+        <item name="android:padding">0dp</item>
+    </style>
+
+    <style name="App.Translation.TextOfflineBannerHead" parent="TextAppearance.AppCompat.Body2">
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/color_all_text_disabled</item>
+    </style>
+
+    <style name="App.Translation.TextOfflineBannerSubhead" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:gravity">center</item>
+        <item name="android:paddingTop">@dimen/padding_translation_offline_banner_text</item>
+        <item name="android:textColor">@color/color_all_text_disabled</item>
     </style>
 
 </resources>

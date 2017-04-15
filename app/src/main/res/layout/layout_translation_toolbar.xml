@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+
+    <RelativeLayout
+        android:id="@+id/relativelayout_translation_toolbar_root"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="fill_horizontal"
+        >
+
+        <android.support.v7.widget.AppCompatImageButton
+            android:id="@+id/button_translation_switch_language"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="@dimen/width_translation_switch_lang_button"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:background="?selectableItemBackgroundBorderless"
+            app:srcCompat="@drawable/ic_switch_language_black_24dp"
+            />
+
+        <Spinner
+            android:id="@+id/spinner_translation_lang_input"
+            style="@style/LanguageSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toStartOf="@id/button_translation_switch_language"
+            />
+
+        <Spinner
+            android:id="@+id/spinner_translation_lang_translation"
+            style="@style/LanguageSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/button_translation_switch_language"
+            />
+
+    </RelativeLayout>
+
+</layout>

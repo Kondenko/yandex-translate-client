@@ -1,0 +1,106 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context="com.vladimirkondenko.yamblz.screens.translation.TranslationFragment"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:animateLayoutChanges="true"
+        android:orientation="vertical"
+        >
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="128dp"
+            android:layout_marginBottom="@dimen/padding_all_small"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginTop="0dp"
+            android:background="@color/color_all_background_light"
+            android:clipToPadding="false"
+            android:elevation="@dimen/elevation_translation_textfield"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            >
+
+            <EditText
+                android:id="@+id/edittext_translation_input"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:gravity="top|start"
+                android:hint="@string/translation_hint"
+                android:imeOptions="actionDone"
+                android:inputType="textMultiLine"
+                android:padding="@dimen/padding_all_large"
+                android:paddingEnd="@dimen/size_all_button_icon"
+                android:textAlignment="viewStart"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Blandit nullam dapibus egestas rutrum pellentesque mus."
+                />
+
+            <ImageButton
+                android:id="@+id/button_translation_clear_input"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="@dimen/size_all_button_icon"
+                android:layout_height="@dimen/size_all_button_icon"
+                android:layout_gravity="top|end"
+                android:background="?selectableItemBackgroundBorderless"
+                android:padding="@dimen/padding_all_large"
+                app:srcCompat="@drawable/ic_clear_text_black_24dp"
+                />
+
+            <FrameLayout
+                android:id="@+id/framelayout_detected_lang"
+                style="@style/App.Translation.LayoutDetectedLanguage"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_translation_detected_language_layout"
+                android:visibility="gone"
+                tools:visibility="visible"
+                >
+
+                <TextView
+                    android:id="@+id/textview_detected_lang"
+                    style="@style/App.Translation.TextDetectedLanguage"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    tools:text="Spanish"
+                    />
+
+            </FrameLayout>
+
+        </FrameLayout>
+
+        <include
+            android:id="@+id/include_translation_offline_banner"
+            layout="@layout/layout_translation_offline_banner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+        <FrameLayout
+            android:id="@+id/framelayout_translation_result"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/color_all_background_light"
+            android:clipToPadding="false"
+            android:elevation="@dimen/elevation_translation_textfield"
+            >
+
+            <TextView
+                android:id="@+id/textview_translation_result"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="@dimen/padding_all_large"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Blandit nullam dapibus egestas rutrum pellentesque mus."
+                />
+
+        </FrameLayout>
+
+    </LinearLayout>
+
+</layout>
