@@ -84,7 +84,6 @@ public class MainActivity extends AppCompatActivity implements MainView {
         // Set initial screen
         setTranslationFragment(translationFragment);
 
-        presenter.onCreate();
     }
 
     @Override
@@ -92,12 +91,14 @@ public class MainActivity extends AppCompatActivity implements MainView {
         super.onResume();
         Bus.subscribe(this);
         presenter.attachView(this);
+        presenter.onResume();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         Bus.unsubscribe(this);
+        presenter.onPause();
         presenter.detachView();
     }
 
@@ -109,12 +110,21 @@ public class MainActivity extends AppCompatActivity implements MainView {
     }
 
     @Override
+    public void onSelectInputLang(String lang) {
+        spinnerInputLangs.setSelection(adapterInputLangs.getItemPosition(lang));
+    }
+
+    @Override
+    public void onSelectOutputLang(String lang) {
+        spinnerOutputLangs.setSelection(adapterOutputLangs.getItemPosition(lang));
+    }
+
+    @Override
     public void onLoadLanguages(Languages langs) {
         if (adapterInputLangs != null && adapterOutputLangs != null) {
             adapterInputLangs.setLangs(langs, true);
             adapterOutputLangs.setLangs(langs);
-            spinnerOutputLangs.setSelection(adapterOutputLangs.getItemPosition(presenter.getInitialOutputLang(langs)));
-            presenter.getInitialOutputLang(langs);
+            presenter.setupSelection(langs);
         }
     }
 
@@ -160,12 +170,14 @@ public class MainActivity extends AppCompatActivity implements MainView {
                     // Disable the swap button if the language is not specified
                     toolbarBinding.buttonTranslationSwitchLanguage.setEnabled(!language.equals(Const.LANG_CODE_AUTO));
                     Bus.post(new InputLanguageSelectionEvent(language));
+                    presenter.setInputLang(language);
                 });
         outputSpinnerSubscription = RxAdapterView
                 .itemSelections(toolbarBinding.spinnerTranslationLangTranslation)
                 .subscribe(position -> {
                     String language = adapterOutputLangs.getItem(position);
                     Bus.post(new OutputLanguageSelectionEvent(language));
+                    presenter.setOutputLang(language);
                 });
         // Language swapping button
         swapButtonSubscription = RxView.clicks(buttonSwapLanguage)
@@ -209,4 +221,5 @@ public class MainActivity extends AppCompatActivity implements MainView {
         transaction.replace(R.id.framelayout_main_container, fragment);
         transaction.commit();
     }
+
 }

@@ -26,8 +26,6 @@ import javax.inject.Inject;
 
 import io.reactivex.Single;
 
-import static junit.framework.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
@@ -92,7 +90,7 @@ public class MainPresenterTest {
     public void shouldFetchLanguages() {
         String locale = Const.LANG_CODE_EN;
         when(interactor.getLanguages()).thenReturn(Single.just(getLanguages(locale)));
-        presenter.getLanguages();
+        presenter.getLanguagesList();
         verify(view).onLoadLanguages(any(Languages.class));
     }
 

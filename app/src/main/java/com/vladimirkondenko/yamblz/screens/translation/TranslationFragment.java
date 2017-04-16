@@ -4,7 +4,6 @@ package com.vladimirkondenko.yamblz.screens.translation;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -102,8 +101,8 @@ public class TranslationFragment extends Fragment implements TranslationView {
     @Override
     public void onResume() {
         super.onResume();
-        presenter.attachView(this);
         Bus.subscribe(this);
+        presenter.attachView(this);
         networkBroadcastReceiver.register().subscribe(isOnline -> {
             binding.includeTranslationOfflineBanner.linearlayoutTranslationOfflineBannerRoot.setVisibility(isOnline ? View.GONE : View.VISIBLE);
             if (isOnline) presenter.executePendingTranslation();
@@ -127,8 +126,7 @@ public class TranslationFragment extends Fragment implements TranslationView {
 
     @Override
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onSwapLanguageEvent(SwapLanguageEvent event) {
-        Log.i(TAG, "onSwapLanguageEvent");
+    public void onSwapLanguages(SwapLanguageEvent event) {
         if (!Utils.areFieldsEmpty(binding.edittextTranslationInput, binding.textviewTranslationResult)) {
             int duration = Const.ANIM_DURATION_LANG_SWITCH_SPINNER;
             int distance = 4;
@@ -155,8 +153,7 @@ public class TranslationFragment extends Fragment implements TranslationView {
 
     @Override
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onDetectLanguageEvent(LanguageDetectionEvent event) {
-        Log.i(TAG, "onDetectLanguageEvent");
+    public void onDetectLanguage(LanguageDetectionEvent event) {
         String langCode = LanguageUtils.parseDirection(event.getDetectedLang())[0];
         Locale locale = new Locale(langCode);
         String language = locale.getDisplayLanguage();
@@ -170,17 +167,15 @@ public class TranslationFragment extends Fragment implements TranslationView {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void inputLanguageChanged(InputLanguageSelectionEvent event) {
-        Log.i(TAG, "inputLanguageChanged");
+    public void onInputLangChange(InputLanguageSelectionEvent event) {
+        presenter.selectInputLanguage(event.getInputLang());
         showDetectedLangLayout(false);
-        presenter.setInputLanguage(event.getInputLang());
         translate();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void translationLanguageChanged(OutputLanguageSelectionEvent event) {
-        Log.i(TAG, "translationLanguageChanged");
-        presenter.setOutputLanguage(event.getOutputLang());
+    public void onOutputLangChange(OutputLanguageSelectionEvent event) {
+        presenter.selectOutputLanguage(event.getOutputLang());
         translate();
     }
 

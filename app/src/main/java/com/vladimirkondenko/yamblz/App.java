@@ -7,9 +7,11 @@ import com.vladimirkondenko.yamblz.dagger.components.DaggerAppComponent;
 import com.vladimirkondenko.yamblz.dagger.components.MainPresenterSubcomponent;
 import com.vladimirkondenko.yamblz.dagger.components.TranslationPresenterSubcomponent;
 import com.vladimirkondenko.yamblz.dagger.modules.AppModule;
+import com.vladimirkondenko.yamblz.dagger.modules.DatabaseModule;
 import com.vladimirkondenko.yamblz.dagger.modules.MainPresenterModule;
 import com.vladimirkondenko.yamblz.dagger.modules.NetModule;
 import com.vladimirkondenko.yamblz.dagger.modules.TranslationPresenterModule;
+import com.vladimirkondenko.yamblz.model.database.Database;
 
 public class App extends Application {
     
@@ -24,6 +26,7 @@ public class App extends Application {
         super.onCreate();
         instance = this;
         appComponent = getAppComponent();
+        Database.init(this);
     }
 
     public static App get() {
@@ -35,6 +38,7 @@ public class App extends Application {
             appComponent = DaggerAppComponent.builder()
                     .appModule(new AppModule(this))
                     .netModule(new NetModule())
+                    .databaseModule(new DatabaseModule())
                     .build();
         }
         return appComponent;

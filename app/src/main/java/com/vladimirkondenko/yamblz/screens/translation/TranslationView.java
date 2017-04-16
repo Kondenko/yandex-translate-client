@@ -7,8 +7,8 @@ import com.vladimirkondenko.yamblz.utils.events.LanguageDetectionEvent;
 import com.vladimirkondenko.yamblz.utils.events.SwapLanguageEvent;
 
 public interface TranslationView extends BaseView {
-    void onSwapLanguageEvent(SwapLanguageEvent event);
-    void onDetectLanguageEvent(LanguageDetectionEvent event);
+    void onSwapLanguages(SwapLanguageEvent event);
+    void onDetectLanguage(LanguageDetectionEvent event);
     void onTranslationSuccess(String result);
     void onError(@Nullable Throwable t, int errorCode);
 }

@@ -42,11 +42,11 @@ public class TranslationPresenter extends BaseLifecyclePresenter<TranslationView
         }
     }
 
-    public void setInputLanguage(String inputLanguage) {
+    public void selectInputLanguage(String inputLanguage) {
         this.inputLanguage = inputLanguage;
     }
 
-    public void setOutputLanguage(String outputLanguage) {
+    public void selectOutputLanguage(String outputLanguage) {
         this.outputLanguage = outputLanguage;
     }
 
