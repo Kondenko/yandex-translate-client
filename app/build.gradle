@@ -20,8 +20,13 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            applicationIdSuffix ".release"
+        }
+        debug {
+            applicationIdSuffix ".debug"
+            minifyEnabled false
         }
     }
     dataBinding {
@@ -95,6 +100,7 @@ dependencies {
     testCompile "com.google.dagger:dagger:$dagger_version"
     testAnnotationProcessor "com.google.dagger:dagger-compiler:$dagger_version"
 
-    compile "com.facebook.stetho:stetho:$stetho_version"
-    compile "com.facebook.stetho:stetho-okhttp3:$stetho_version"
+    debugCompile "com.facebook.stetho:stetho:$stetho_version"
+    debugCompile "com.facebook.stetho:stetho-okhttp3:$stetho_version"
+    debugCompile "com.uphyca:stetho_realm:$stetho_realm_version"
 }
