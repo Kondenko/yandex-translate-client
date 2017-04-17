@@ -2,6 +2,7 @@ package com.vladimirkondenko.yamblz;
 
 import android.app.Application;
 
+import com.facebook.stetho.Stetho;
 import com.vladimirkondenko.yamblz.dagger.components.AppComponent;
 import com.vladimirkondenko.yamblz.dagger.components.DaggerAppComponent;
 import com.vladimirkondenko.yamblz.dagger.components.MainPresenterSubcomponent;
@@ -26,6 +27,7 @@ public class App extends Application {
         super.onCreate();
         instance = this;
         appComponent = getAppComponent();
+        Stetho.initializeWithDefaults(this);
         Database.init(this);
     }
 

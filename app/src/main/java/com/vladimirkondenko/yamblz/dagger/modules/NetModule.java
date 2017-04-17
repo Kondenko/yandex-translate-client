@@ -1,8 +1,10 @@
 package com.vladimirkondenko.yamblz.dagger.modules;
 
+import com.facebook.stetho.okhttp3.StethoInterceptor;
+import com.google.gson.Gson;
 import com.vladimirkondenko.yamblz.Const;
+import com.vladimirkondenko.yamblz.utils.RealmGson;
 import com.vladimirkondenko.yamblz.utils.interceptors.ApiKeyInterceptor;
-import com.vladimirkondenko.yamblz.utils.interceptors.LoggingInterceptor;
 
 import javax.inject.Singleton;
 
@@ -21,18 +23,24 @@ public class NetModule {
     public OkHttpClient provideHttpClient() {
         return new OkHttpClient.Builder()
                 .addInterceptor(new ApiKeyInterceptor(Const.API_KEY))
-                .addInterceptor(new LoggingInterceptor())
+                .addInterceptor(new StethoInterceptor()) // Must be the last interceptor
                 .build();
     }
 
     @Provides
     @Singleton
-    public Retrofit provideRetrofit(OkHttpClient client) {
+    public Gson provideGson() {
+        return RealmGson.create();
+    }
+
+    @Provides
+    @Singleton
+    public Retrofit provideRetrofit(OkHttpClient client, Gson gson) {
         return new Retrofit.Builder()
                 .client(client)
                 .baseUrl(Const.BASE_URL)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
     }
 

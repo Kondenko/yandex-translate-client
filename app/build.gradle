@@ -94,4 +94,7 @@ dependencies {
 
     testCompile "com.google.dagger:dagger:$dagger_version"
     testAnnotationProcessor "com.google.dagger:dagger-compiler:$dagger_version"
+
+    compile "com.facebook.stetho:stetho:$stetho_version"
+    compile "com.facebook.stetho:stetho-okhttp3:$stetho_version"
 }
