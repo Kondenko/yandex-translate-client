@@ -1,6 +1,7 @@
 package com.vladimirkondenko.yamblz.dagger.modules;
 
 import com.vladimirkondenko.yamblz.BuildConfig;
+import com.vladimirkondenko.yamblz.model.database.Database;
 
 import javax.inject.Singleton;
 
@@ -25,6 +26,11 @@ public class DatabaseModule {
     @Provides
     public Realm provideRealm(RealmConfiguration configuration) {
         return Realm.getInstance(configuration);
+    }
+
+    @Provides
+    public Database provideDatabase(Realm realm) {
+        return new Database(realm);
     }
 
 }

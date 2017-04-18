@@ -8,6 +8,8 @@ import com.vladimirkondenko.yamblz.BuildConfig;
 
 import java.util.regex.Pattern;
 
+import javax.inject.Inject;
+
 import io.realm.Realm;
 
 
@@ -27,5 +29,14 @@ public class Database {
         Realm.init(context);
     }
 
+    private Realm realm;
 
+    @Inject
+    public Database(Realm realm) {
+        this.realm = realm;
+    }
+
+    public Realm getRealm() {
+        return realm;
+    }
 }

@@ -3,6 +3,7 @@ package com.vladimirkondenko.yamblz.dagger.modules;
 import android.content.Context;
 
 import com.vladimirkondenko.yamblz.dagger.PerView;
+import com.vladimirkondenko.yamblz.model.database.Database;
 import com.vladimirkondenko.yamblz.model.database.LanguagesServiceImpl;
 import com.vladimirkondenko.yamblz.model.services.LanguagesDatabaseService;
 import com.vladimirkondenko.yamblz.model.services.LanguagesService;
@@ -12,7 +13,6 @@ import com.vladimirkondenko.yamblz.screens.main.MainView;
 
 import dagger.Module;
 import dagger.Provides;
-import io.realm.Realm;
 import retrofit2.Retrofit;
 
 @Module
@@ -30,14 +30,14 @@ public class MainPresenterModule extends BasePresenterModule<MainView> {
 
     @Provides
     @PerView
-    public LanguagesDatabaseService provideLanguagesDbService(Realm realm) {
-        return new LanguagesServiceImpl(realm);
+    public LanguagesDatabaseService provideLanguagesDbService(Database database) {
+        return new LanguagesServiceImpl(database);
     }
 
     @Provides
     @PerView
-    public MainInteractor provideMainInteractor(Context context, LanguagesService service, LanguagesDatabaseService dbService) {
-        return new MainInteractor(context, service, dbService);
+    public MainInteractor provideMainInteractor(Context context, LanguagesService netService, LanguagesDatabaseService dbService) {
+        return new MainInteractor(context, netService, dbService);
     }
 
     @Provides

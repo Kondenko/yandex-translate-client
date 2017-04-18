@@ -2,6 +2,9 @@ package com.vladimirkondenko.yamblz.dagger.modules;
 
 
 import com.vladimirkondenko.yamblz.dagger.PerView;
+import com.vladimirkondenko.yamblz.model.database.Database;
+import com.vladimirkondenko.yamblz.model.database.TranslationServiceImpl;
+import com.vladimirkondenko.yamblz.model.services.TranslationDatabaseService;
 import com.vladimirkondenko.yamblz.model.services.TranslationService;
 import com.vladimirkondenko.yamblz.screens.translation.TranslationInteractor;
 import com.vladimirkondenko.yamblz.screens.translation.TranslationPresenter;
@@ -26,8 +29,14 @@ public class TranslationPresenterModule extends BasePresenterModule<TranslationV
 
     @Provides
     @PerView
-    public TranslationInteractor provideTranslationInteractor(TranslationService service) {
-        return new TranslationInteractor(service);
+    public TranslationDatabaseService provideDatabaseService(Database database) {
+        return new TranslationServiceImpl(database);
+    }
+
+    @Provides
+    @PerView
+    public TranslationInteractor provideTranslationInteractor(TranslationService netService, TranslationDatabaseService databaseService) {
+        return new TranslationInteractor(netService, databaseService);
     }
 
     @Provides

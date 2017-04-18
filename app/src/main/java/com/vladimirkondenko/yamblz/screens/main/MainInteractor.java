@@ -22,13 +22,13 @@ import io.reactivex.schedulers.Schedulers;
 public class MainInteractor extends BaseInteractor {
 
     private Context context;
-    private LanguagesService service;
+    private LanguagesService netService;
     private LanguagesDatabaseService dbService;
 
     @Inject
-    public MainInteractor(Context context, LanguagesService service, LanguagesDatabaseService dbService) {
+    public MainInteractor(Context context, LanguagesService netService, LanguagesDatabaseService dbService) {
         this.context = context;
-        this.service = service;
+        this.netService = netService;
         this.dbService = dbService;
     }
 
@@ -59,7 +59,7 @@ public class MainInteractor extends BaseInteractor {
         Languages preferredLangs = LanguageUtils.getInputLanguages(context);
         String deviceLocale = LanguageUtils.getDeviceLocale();
         if (preferredLangs.getLanguages().keySet().contains(deviceLocale)) {
-            languagesSingle = service.getAvailableLanguages(deviceLocale);
+            languagesSingle = netService.getAvailableLanguages(deviceLocale);
         } else {
             languagesSingle = Single.just(preferredLangs);
         }

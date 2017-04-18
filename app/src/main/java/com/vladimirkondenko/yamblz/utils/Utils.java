@@ -75,6 +75,10 @@ public final class Utils {
         return json;
     }
 
+    public static long getCurrenttimeSec() {
+        return System.currentTimeMillis() / 1000;
+    }
+
     public static void disposeAll(Disposable... disposables) {
         for (Disposable disposable : disposables) {
             dispose(disposable);

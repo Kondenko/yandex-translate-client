@@ -2,17 +2,16 @@ package com.vladimirkondenko.yamblz.model.database;
 
 import com.vladimirkondenko.yamblz.model.entities.SelectedLangs;
 import com.vladimirkondenko.yamblz.model.services.LanguagesDatabaseService;
-import com.vladimirkondenko.yamblz.utils.base.RealmUserClass;
+import com.vladimirkondenko.yamblz.utils.base.DatabaseUserClass;
 
 import javax.inject.Inject;
 
-import io.realm.Realm;
+public class LanguagesServiceImpl extends DatabaseUserClass implements LanguagesDatabaseService {
 
-public class LanguagesServiceImpl extends RealmUserClass implements LanguagesDatabaseService {
 
     @Inject
-    public LanguagesServiceImpl(Realm realm) {
-        super(realm);
+    public LanguagesServiceImpl(Database database) {
+        super(database);
     }
 
     @Override

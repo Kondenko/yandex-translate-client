@@ -12,6 +12,8 @@ import io.reactivex.Single;
 
 public class TranslationPresenter extends BaseLifecyclePresenter<TranslationView, TranslationInteractor> {
 
+    private static final String TAG = "TranslationPresenter";
+
     private String inputLanguage;
     private String outputLanguage;
 
@@ -26,7 +28,7 @@ public class TranslationPresenter extends BaseLifecyclePresenter<TranslationView
 
     public void saveLastTranslation() {
         if (lastTranslation != null) {
-
+            interactor.saveToHistory(lastTranslation);
         }
     }
 

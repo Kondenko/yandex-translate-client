@@ -1,13 +1,15 @@
 package com.vladimirkondenko.yamblz.utils.base;
 
+import com.vladimirkondenko.yamblz.model.database.Database;
+
 import io.realm.Realm;
 
-public abstract class RealmUserClass {
+public abstract class DatabaseUserClass {
 
     protected Realm realm;
 
-    public RealmUserClass(Realm realm) {
-        this.realm = realm;
+    public DatabaseUserClass(Database database) {
+        this.realm = database.getRealm();
     }
 
     public void performTransaction(Runnable operation) {

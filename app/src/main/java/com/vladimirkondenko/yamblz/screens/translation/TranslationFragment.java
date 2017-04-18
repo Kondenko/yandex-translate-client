@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -103,8 +102,7 @@ public class TranslationFragment extends Fragment implements TranslationView {
                 });
 
         subscriptionInputTextEvents = RxTextView.editorActions(edittextTranslationInput)
-                .filter(code -> code == KeyEvent.KEYCODE_ENTER)
-                .subscribe(code -> {
+                .subscribe(event -> {
                     hideKeyboard();
                     presenter.saveLastTranslation();
                 });
@@ -128,7 +126,7 @@ public class TranslationFragment extends Fragment implements TranslationView {
         super.onPause();
         networkBroadcastReceiver.unregister();
         Bus.unsubscribe(this);
-        Utils.disposeAll(subscriptionClearButton, subscriptionInputTextChanges, subscriptionSelectDetectedLang, subscriptionInputTextEvents );
+        Utils.disposeAll(subscriptionClearButton, subscriptionInputTextChanges, subscriptionSelectDetectedLang, subscriptionInputTextEvents);
         presenter.detachView();
     }
 
@@ -184,12 +182,14 @@ public class TranslationFragment extends Fragment implements TranslationView {
     public void onInputLangChange(InputLanguageSelectionEvent event) {
         presenter.selectInputLanguage(event.getInputLang());
         showDetectedLangLayout(false);
+        presenter.saveLastTranslation();
         translate();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onOutputLangChange(OutputLanguageSelectionEvent event) {
         presenter.selectOutputLanguage(event.getOutputLang());
+        presenter.saveLastTranslation();
         translate();
     }
 
