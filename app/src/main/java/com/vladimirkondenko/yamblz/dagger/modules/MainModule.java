@@ -16,9 +16,9 @@ import dagger.Provides;
 import retrofit2.Retrofit;
 
 @Module
-public class MainPresenterModule extends BasePresenterModule<MainView> {
+public class MainModule extends BaseModule<MainView> {
 
-    public MainPresenterModule(MainView view) {
+    public MainModule(MainView view) {
         super(view);
     }
 

@@ -13,9 +13,9 @@ import dagger.Module;
 import dagger.Provides;
 
 @Module
-public class TestTranslationPresenterModule extends BasePresenterModule<TranslationView> {
+public class TestTranslationModule extends BaseModule<TranslationView> {
 
-    public TestTranslationPresenterModule(TranslationView view) {
+    public TestTranslationModule(TranslationView view) {
         super(view);
     }
 

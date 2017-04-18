@@ -4,14 +4,14 @@ import android.app.Application;
 
 import com.vladimirkondenko.yamblz.dagger.components.AppComponent;
 import com.vladimirkondenko.yamblz.dagger.components.DaggerAppComponent;
-import com.vladimirkondenko.yamblz.dagger.components.MainPresenterSubcomponent;
-import com.vladimirkondenko.yamblz.dagger.components.TranslationPresenterSubcomponent;
+import com.vladimirkondenko.yamblz.dagger.components.MainSubcomponent;
+import com.vladimirkondenko.yamblz.dagger.components.TranslationSubcomponent;
 import com.vladimirkondenko.yamblz.dagger.modules.AppModule;
 import com.vladimirkondenko.yamblz.dagger.modules.DatabaseModule;
 import com.vladimirkondenko.yamblz.dagger.modules.FragmentModule;
-import com.vladimirkondenko.yamblz.dagger.modules.MainPresenterModule;
+import com.vladimirkondenko.yamblz.dagger.modules.MainModule;
 import com.vladimirkondenko.yamblz.dagger.modules.NetModule;
-import com.vladimirkondenko.yamblz.dagger.modules.TranslationPresenterModule;
+import com.vladimirkondenko.yamblz.dagger.modules.TranslationModule;
 import com.vladimirkondenko.yamblz.model.database.Database;
 
 public class App extends Application {
@@ -19,8 +19,8 @@ public class App extends Application {
     protected static App instance;
 
     protected AppComponent appComponent = null;
-    protected TranslationPresenterSubcomponent translationPresenterComponent;
-    protected MainPresenterSubcomponent mainPresenterSubcomponent;
+    protected TranslationSubcomponent translationPresenterComponent;
+    protected MainSubcomponent mainPresenterSubcomponent;
 
     @Override
     public void onCreate() {
@@ -46,14 +46,14 @@ public class App extends Application {
         return appComponent;
     }
 
-    public MainPresenterSubcomponent plusMainSubcomponent(MainPresenterModule module) {
+    public MainSubcomponent plusMainSubcomponent(MainModule module) {
         if (mainPresenterSubcomponent == null) {
             mainPresenterSubcomponent = appComponent.plus(module);
         }
         return mainPresenterSubcomponent;
     }
 
-    public TranslationPresenterSubcomponent plusTranslationSubcomponent(TranslationPresenterModule module) {
+    public TranslationSubcomponent plusTranslationSubcomponent(TranslationModule module) {
         if (translationPresenterComponent == null) {
             translationPresenterComponent = appComponent.plus(module);
         }

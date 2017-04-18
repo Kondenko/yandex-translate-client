@@ -15,9 +15,9 @@ import dagger.Provides;
 import retrofit2.Retrofit;
 
 @Module
-public class TranslationPresenterModule extends BasePresenterModule<TranslationView> {
+public class TranslationModule extends BaseModule<TranslationView> {
 
-    public TranslationPresenterModule(TranslationView view) {
+    public TranslationModule(TranslationView view) {
         super(view);
     }
 

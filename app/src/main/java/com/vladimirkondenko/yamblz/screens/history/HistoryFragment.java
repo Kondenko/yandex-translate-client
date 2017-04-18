@@ -11,11 +11,9 @@ import android.view.ViewGroup;
 import com.vladimirkondenko.yamblz.R;
 import com.vladimirkondenko.yamblz.databinding.FragmentHistoryBinding;
 
-public class HistoryFragment extends Fragment {
-
+public class HistoryFragment extends Fragment implements HistoryView {
 
     public HistoryFragment() {}
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

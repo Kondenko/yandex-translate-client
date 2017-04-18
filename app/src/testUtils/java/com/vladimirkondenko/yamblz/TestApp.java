@@ -9,10 +9,10 @@ import com.vladimirkondenko.yamblz.dagger.components.TestMainPresenterSubcompone
 import com.vladimirkondenko.yamblz.dagger.components.TestServiceSubcomponent;
 import com.vladimirkondenko.yamblz.dagger.components.TestTranslationPresenterSubcomponent;
 import com.vladimirkondenko.yamblz.dagger.modules.TestAppModule;
-import com.vladimirkondenko.yamblz.dagger.modules.TestMainPresenterModule;
+import com.vladimirkondenko.yamblz.dagger.modules.TestMainModule;
 import com.vladimirkondenko.yamblz.dagger.modules.TestNetModule;
 import com.vladimirkondenko.yamblz.dagger.modules.TestServiceModule;
-import com.vladimirkondenko.yamblz.dagger.modules.TestTranslationPresenterModule;
+import com.vladimirkondenko.yamblz.dagger.modules.TestTranslationModule;
 
 public class TestApp extends Application {
 
@@ -55,14 +55,14 @@ public class TestApp extends Application {
         return testServiceSubcomponent;
     }
 
-    public TestMainPresenterSubcomponent plusTestMainPresenterSubcomponent(TestMainPresenterModule module) {
+    public TestMainPresenterSubcomponent plusTestMainPresenterSubcomponent(TestMainModule module) {
         if (testMainPresenterSubcomponent == null) {
             testMainPresenterSubcomponent = testAppComponent.plus(module);
         }
         return testMainPresenterSubcomponent;
     }
 
-    public TestTranslationPresenterSubcomponent plusTestTranslationPresenterSubcomponent(TestTranslationPresenterModule module) {
+    public TestTranslationPresenterSubcomponent plusTestTranslationPresenterSubcomponent(TestTranslationModule module) {
         if (testServiceSubcomponent == null) {
             testTranslationPresenterSubcomponent = testAppComponent.plus(module);
         }

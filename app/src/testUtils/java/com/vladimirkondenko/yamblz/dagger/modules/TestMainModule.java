@@ -14,9 +14,9 @@ import dagger.Module;
 import dagger.Provides;
 
 @Module
-public class TestMainPresenterModule extends BasePresenterModule<MainView> {
+public class TestMainModule extends BaseModule<MainView> {
 
-    public TestMainPresenterModule(MainView view) {
+    public TestMainModule(MainView view) {
         super(view);
     }
 

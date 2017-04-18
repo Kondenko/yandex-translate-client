@@ -18,7 +18,7 @@ import com.jakewharton.rxbinding2.widget.RxAdapterView;
 import com.vladimirkondenko.yamblz.App;
 import com.vladimirkondenko.yamblz.Const;
 import com.vladimirkondenko.yamblz.R;
-import com.vladimirkondenko.yamblz.dagger.modules.MainPresenterModule;
+import com.vladimirkondenko.yamblz.dagger.modules.MainModule;
 import com.vladimirkondenko.yamblz.databinding.ActivityMainBinding;
 import com.vladimirkondenko.yamblz.databinding.LayoutTranslationToolbarBinding;
 import com.vladimirkondenko.yamblz.model.entities.Languages;
@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        App.get().plusMainSubcomponent(new MainPresenterModule(this)).inject(this);
+        App.get().plusMainSubcomponent(new MainModule(this)).inject(this);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         binding.bottomnavMain.setOnNavigationItemSelectedListener(item -> {
             presenter.selectScreen(ScreenCodes.menuItemToScreenId(item.getItemId()));

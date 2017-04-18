@@ -2,7 +2,7 @@ package com.vladimirkondenko.yamblz.screens.translation;
 
 import com.vladimirkondenko.yamblz.CustomRobolectricTestRunner;
 import com.vladimirkondenko.yamblz.TestApp;
-import com.vladimirkondenko.yamblz.dagger.modules.TestTranslationPresenterModule;
+import com.vladimirkondenko.yamblz.dagger.modules.TestTranslationModule;
 import com.vladimirkondenko.yamblz.model.entities.Translation;
 
 import org.junit.After;
@@ -40,7 +40,7 @@ public class TranslationPresenterTest {
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        TestApp.get().plusTestTranslationPresenterSubcomponent(new TestTranslationPresenterModule(view)).inject(this);
+        TestApp.get().plusTestTranslationPresenterSubcomponent(new TestTranslationModule(view)).inject(this);
     }
 
     @After

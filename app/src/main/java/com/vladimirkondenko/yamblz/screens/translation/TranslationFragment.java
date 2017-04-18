@@ -18,7 +18,7 @@ import com.jakewharton.rxbinding2.widget.RxTextView;
 import com.vladimirkondenko.yamblz.App;
 import com.vladimirkondenko.yamblz.Const;
 import com.vladimirkondenko.yamblz.R;
-import com.vladimirkondenko.yamblz.dagger.modules.TranslationPresenterModule;
+import com.vladimirkondenko.yamblz.dagger.modules.TranslationModule;
 import com.vladimirkondenko.yamblz.databinding.FragmentTranslationBinding;
 import com.vladimirkondenko.yamblz.utils.AnimUtils;
 import com.vladimirkondenko.yamblz.utils.ErrorCodes;
@@ -69,7 +69,7 @@ public class TranslationFragment extends Fragment implements TranslationView {
     @Override
     public void onStart() {
         super.onStart();
-        App.get().plusTranslationSubcomponent(new TranslationPresenterModule(this)).inject(this);
+        App.get().plusTranslationSubcomponent(new TranslationModule(this)).inject(this);
     }
 
     @Override
