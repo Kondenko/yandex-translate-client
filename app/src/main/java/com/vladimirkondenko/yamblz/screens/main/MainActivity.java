@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.jakewharton.rxbinding2.view.RxView;
 import com.jakewharton.rxbinding2.widget.RxAdapterView;
@@ -21,6 +22,8 @@ import com.vladimirkondenko.yamblz.dagger.modules.MainPresenterModule;
 import com.vladimirkondenko.yamblz.databinding.ActivityMainBinding;
 import com.vladimirkondenko.yamblz.databinding.LayoutTranslationToolbarBinding;
 import com.vladimirkondenko.yamblz.model.entities.Languages;
+import com.vladimirkondenko.yamblz.screens.ScreenCodes;
+import com.vladimirkondenko.yamblz.screens.history.HistoryFragment;
 import com.vladimirkondenko.yamblz.screens.translation.TranslationFragment;
 import com.vladimirkondenko.yamblz.utils.AnimUtils;
 import com.vladimirkondenko.yamblz.utils.LanguageSpinnerAdapter;
@@ -41,51 +44,45 @@ import io.realm.Realm;
 
 public class MainActivity extends AppCompatActivity implements MainView {
 
-    private static final String TAG = "MainActivity";
-
-    @Inject
-    public Realm realm;
-
     @Inject
     public MainPresenter presenter;
+
+    @Inject
+    public TranslationFragment translationFragment;
+    @Inject
+    public HistoryFragment historyFragment;
+
+    private int currentFragment = ScreenCodes.Translation.SCREEN_ID;
 
     private ActivityMainBinding binding;
 
     private Spinner spinnerInputLangs;
+
     private Spinner spinnerOutputLangs;
-
     private LanguageSpinnerAdapter adapterInputLangs;
-    private LanguageSpinnerAdapter adapterOutputLangs;
 
+    private LanguageSpinnerAdapter adapterOutputLangs;
     private Disposable inputSpinnerSubscription;
+
     private Disposable outputSpinnerSubscription;
     private Disposable swapButtonSubscription;
+
+    @Inject
+    public Realm realm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         App.get().plusMainSubcomponent(new MainPresenterModule(this)).inject(this);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-
-        TranslationFragment translationFragment = new TranslationFragment();
         binding.bottomnavMain.setOnNavigationItemSelectedListener(item -> {
-            switch (item.getItemId()) {
-                case R.id.item_bottomnav_translation: {
-                    setTranslationFragment(translationFragment);
-                    break;
-                }
-                default: {
-                    throw new IllegalArgumentException("Wrong item id");
-                }
-            }
+            presenter.selectScreen(ScreenCodes.menuItemToScreenId(item.getItemId()));
             return false;
         });
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_main);
-        setSupportActionBar(toolbar);
-
         // Set initial screen
-        setTranslationFragment(translationFragment);
+        if (savedInstanceState != null) currentFragment = savedInstanceState.getInt(Const.BUNDLE_SELECTED_FRAGMENT);
+        setupCustomToolbar();
+        presenter.selectScreen(currentFragment);
     }
 
     @Override
@@ -93,7 +90,6 @@ public class MainActivity extends AppCompatActivity implements MainView {
         super.onResume();
         Bus.subscribe(this);
         presenter.attachView(this);
-        presenter.onResume();
     }
 
     @Override
@@ -118,6 +114,31 @@ public class MainActivity extends AppCompatActivity implements MainView {
     }
 
     @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(Const.BUNDLE_SELECTED_FRAGMENT, currentFragment);
+    }
+
+    @Override
+    public void onSelectTranslationScreen() {
+        currentFragment = ScreenCodes.Translation.SCREEN_ID;
+        setFragment(translationFragment);
+        getSupportActionBar().setDisplayShowCustomEnabled(true);
+    }
+
+    @Override
+    public void onSelectHistoryScreen() {
+        currentFragment = ScreenCodes.History.SCREEN_ID;
+        setFragment(historyFragment);
+        getSupportActionBar().setDisplayShowCustomEnabled(false);
+    }
+
+    @Override
+    public void onSelectBookmarksScreen() {
+        Toast.makeText(this, "To be implemented", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
     public void onSelectInputLang(String lang) {
         spinnerInputLangs.setSelection(adapterInputLangs.getItemPosition(lang));
     }
@@ -132,7 +153,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
         if (adapterInputLangs != null && adapterOutputLangs != null) {
             adapterInputLangs.setLangs(langs, true);
             adapterOutputLangs.setLangs(langs);
-            presenter.setupSelection(langs);
+            presenter.getSelectedLanguages(langs);
         }
     }
 
@@ -148,8 +169,16 @@ public class MainActivity extends AppCompatActivity implements MainView {
         spinnerInputLangs.setSelection(adapterInputLangs.getItemPosition(event.getSelectedLang()), true);
     }
 
-    private void setTranslationFragment(TranslationFragment fragment) {
-        setFragment(fragment);
+    private void setFragment(Fragment fragment) {
+        FragmentManager manager = getSupportFragmentManager();
+        FragmentTransaction transaction = manager.beginTransaction();
+        transaction.replace(R.id.framelayout_main_container, fragment);
+        transaction.commit();
+    }
+
+    private void setupCustomToolbar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_main);
+        setSupportActionBar(toolbar);
         // Toolbar layout
         ActionBar supportActionBar = getSupportActionBar();
         LayoutTranslationToolbarBinding toolbarBinding = DataBindingUtil.inflate(
@@ -158,7 +187,6 @@ public class MainActivity extends AppCompatActivity implements MainView {
                 binding.relativelayoutMainRoot,
                 false
         );
-        supportActionBar.setDisplayShowCustomEnabled(true);
         supportActionBar.setCustomView(toolbarBinding.relativelayoutTranslationToolbarRoot, new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.MATCH_PARENT));
         // Views
         ImageButton buttonSwapLanguage = toolbarBinding.buttonTranslationSwitchLanguage;
@@ -217,17 +245,13 @@ public class MainActivity extends AppCompatActivity implements MainView {
                             false,
                             animDistance,
                             animDuration,
-                            () -> {},
+                            () -> {
+                            },
                             () -> spinnerOutputLangs.setSelection(currentInputPosition - 1)
                     );
                 });
+        presenter.getLanguages();
     }
 
-    private void setFragment(Fragment fragment) {
-        FragmentManager manager = getSupportFragmentManager();
-        FragmentTransaction transaction = manager.beginTransaction();
-        transaction.replace(R.id.framelayout_main_container, fragment);
-        transaction.commit();
-    }
 
 }

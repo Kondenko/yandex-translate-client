@@ -90,7 +90,7 @@ public class MainPresenterTest {
     public void shouldFetchLanguages() {
         String locale = Const.LANG_CODE_EN;
         when(interactor.getLanguages()).thenReturn(Single.just(getLanguages(locale)));
-        presenter.getLanguagesList();
+        presenter.getLanguages();
         verify(view).onLoadLanguages(any(Languages.class));
     }
 

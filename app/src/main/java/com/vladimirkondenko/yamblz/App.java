@@ -8,6 +8,7 @@ import com.vladimirkondenko.yamblz.dagger.components.MainPresenterSubcomponent;
 import com.vladimirkondenko.yamblz.dagger.components.TranslationPresenterSubcomponent;
 import com.vladimirkondenko.yamblz.dagger.modules.AppModule;
 import com.vladimirkondenko.yamblz.dagger.modules.DatabaseModule;
+import com.vladimirkondenko.yamblz.dagger.modules.FragmentModule;
 import com.vladimirkondenko.yamblz.dagger.modules.MainPresenterModule;
 import com.vladimirkondenko.yamblz.dagger.modules.NetModule;
 import com.vladimirkondenko.yamblz.dagger.modules.TranslationPresenterModule;
@@ -37,6 +38,7 @@ public class App extends Application {
         if (appComponent == null) {
             appComponent = DaggerAppComponent.builder()
                     .appModule(new AppModule(this))
+                    .fragmentModule(new FragmentModule())
                     .netModule(new NetModule())
                     .databaseModule(new DatabaseModule())
                     .build();

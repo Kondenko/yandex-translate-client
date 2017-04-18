@@ -22,4 +22,6 @@ public final class Const {
     public static final int ANIM_DURATION_DEFAULT = 350;
     public static final int ANIM_DURATION_LANG_SWITCH_SPINNER = 200;
 
+    public static final String BUNDLE_SELECTED_FRAGMENT = "selected_fragment";
+
 }
