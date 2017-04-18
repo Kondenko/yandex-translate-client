@@ -44,18 +44,18 @@ public class App extends Application {
         return appComponent;
     }
 
-    public TranslationPresenterSubcomponent plusTranslationSubcomponent(TranslationPresenterModule module) {
-        if (translationPresenterComponent == null) {
-            translationPresenterComponent = appComponent.plus(module);
-        }
-        return translationPresenterComponent;
-    }
-
     public MainPresenterSubcomponent plusMainSubcomponent(MainPresenterModule module) {
         if (mainPresenterSubcomponent == null) {
             mainPresenterSubcomponent = appComponent.plus(module);
         }
         return mainPresenterSubcomponent;
+    }
+
+    public TranslationPresenterSubcomponent plusTranslationSubcomponent(TranslationPresenterModule module) {
+        if (translationPresenterComponent == null) {
+            translationPresenterComponent = appComponent.plus(module);
+        }
+        return translationPresenterComponent;
     }
 
 

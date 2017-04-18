@@ -15,11 +15,19 @@ public class TranslationPresenter extends BaseLifecyclePresenter<TranslationView
     private String inputLanguage;
     private String outputLanguage;
 
+    private Translation lastTranslation;
+
     private Single<Translation> translationSingle = null;
 
     @Inject
     public TranslationPresenter(TranslationView view, TranslationInteractor interactor) {
         super(view, interactor);
+    }
+
+    public void saveLastTranslation() {
+        if (lastTranslation != null) {
+
+        }
     }
 
     public void enqueueTranslation(String text) {
@@ -36,7 +44,10 @@ public class TranslationPresenter extends BaseLifecyclePresenter<TranslationView
     public void executePendingTranslation() {
         if (translationSingle != null && isViewAttached()) {
             translationSingle.subscribe(
-                    translation -> view.onTranslationSuccess(translation.getText().get(0)),
+                    translation -> {
+                        view.onTranslationSuccess(translation.getText().get(0).getValue());
+                        lastTranslation = translation;
+                    },
                     throwable -> view.onError(throwable, 0)
             );
         }

@@ -37,10 +37,14 @@ import org.greenrobot.eventbus.ThreadMode;
 import javax.inject.Inject;
 
 import io.reactivex.disposables.Disposable;
+import io.realm.Realm;
 
 public class MainActivity extends AppCompatActivity implements MainView {
 
     private static final String TAG = "MainActivity";
+
+    @Inject
+    public Realm realm;
 
     @Inject
     public MainPresenter presenter;
@@ -60,9 +64,8 @@ public class MainActivity extends AppCompatActivity implements MainView {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-
         App.get().plusMainSubcomponent(new MainPresenterModule(this)).inject(this);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
         TranslationFragment translationFragment = new TranslationFragment();
         binding.bottomnavMain.setOnNavigationItemSelectedListener(item -> {
@@ -83,7 +86,6 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
         // Set initial screen
         setTranslationFragment(translationFragment);
-
     }
 
     @Override
@@ -97,16 +99,22 @@ public class MainActivity extends AppCompatActivity implements MainView {
     @Override
     protected void onPause() {
         super.onPause();
-        Bus.unsubscribe(this);
         presenter.onPause();
         presenter.detachView();
+        Bus.unsubscribe(this);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
         Utils.disposeAll(inputSpinnerSubscription, outputSpinnerSubscription, swapButtonSubscription);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
         App.get().clearMainPresenterComponent();
+        if (realm != null && !realm.isClosed()) realm.close();
     }
 
     @Override

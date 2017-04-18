@@ -3,13 +3,12 @@ package com.vladimirkondenko.yamblz.model.entities;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
+import io.realm.RealmList;
+import io.realm.RealmObject;
 
-/**
- * Created by Kondenko on 05.04.2017.
- */
+public class Translation extends RealmObject {
 
-public class Translation {
+    public Translation() {}
 
     @SerializedName("code")
     @Expose
@@ -21,9 +20,9 @@ public class Translation {
 
     @SerializedName("text")
     @Expose
-    private List<String> text = null;
+    private RealmList<RealmString> text = null;
 
-    public Translation(Integer code, String lang, List<String> text) {
+    public Translation(Integer code, String lang, RealmList<RealmString> text) {
         this.code = code;
         this.lang = lang;
         this.text = text;
@@ -37,7 +36,7 @@ public class Translation {
         return lang;
     }
 
-    public List<String> getText() {
+    public RealmList<RealmString> getText() {
         return text;
     }
 

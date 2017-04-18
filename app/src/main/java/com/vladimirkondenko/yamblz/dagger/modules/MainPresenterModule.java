@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.vladimirkondenko.yamblz.dagger.PerView;
 import com.vladimirkondenko.yamblz.model.database.LanguagesServiceImpl;
-import com.vladimirkondenko.yamblz.model.services.LanguagesDbService;
+import com.vladimirkondenko.yamblz.model.services.LanguagesDatabaseService;
 import com.vladimirkondenko.yamblz.model.services.LanguagesService;
 import com.vladimirkondenko.yamblz.screens.main.MainInteractor;
 import com.vladimirkondenko.yamblz.screens.main.MainPresenter;
@@ -30,13 +30,13 @@ public class MainPresenterModule extends BasePresenterModule<MainView> {
 
     @Provides
     @PerView
-    public LanguagesDbService provideLanguagesDbService(Realm realm) {
+    public LanguagesDatabaseService provideLanguagesDbService(Realm realm) {
         return new LanguagesServiceImpl(realm);
     }
 
     @Provides
     @PerView
-    public MainInteractor provideMainInteractor(Context context, LanguagesService service, LanguagesDbService dbService) {
+    public MainInteractor provideMainInteractor(Context context, LanguagesService service, LanguagesDatabaseService dbService) {
         return new MainInteractor(context, service, dbService);
     }
 

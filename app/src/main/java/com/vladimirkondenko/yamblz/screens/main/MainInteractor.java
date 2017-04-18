@@ -5,7 +5,7 @@ import android.content.Context;
 
 import com.vladimirkondenko.yamblz.Const;
 import com.vladimirkondenko.yamblz.model.entities.Languages;
-import com.vladimirkondenko.yamblz.model.services.LanguagesDbService;
+import com.vladimirkondenko.yamblz.model.services.LanguagesDatabaseService;
 import com.vladimirkondenko.yamblz.model.services.LanguagesService;
 import com.vladimirkondenko.yamblz.utils.LanguageUtils;
 import com.vladimirkondenko.yamblz.utils.Utils;
@@ -23,10 +23,10 @@ public class MainInteractor extends BaseInteractor {
 
     private Context context;
     private LanguagesService service;
-    private LanguagesDbService dbService;
+    private LanguagesDatabaseService dbService;
 
     @Inject
-    public MainInteractor(Context context, LanguagesService service, LanguagesDbService dbService) {
+    public MainInteractor(Context context, LanguagesService service, LanguagesDatabaseService dbService) {
         this.context = context;
         this.service = service;
         this.dbService = dbService;
@@ -37,7 +37,9 @@ public class MainInteractor extends BaseInteractor {
     }
 
     public String getOutputLang(Languages languages) {
-        if (!dbService.areLangsSaved()) {
+        if (dbService.areLangsSaved()) {
+            return dbService.getSelectedLangs().getOutputLang();
+        } else {
             switch (languages.getUserLanguageCode()) {
                 case Const.LANG_CODE_EN: {
                     return languages.getLanguages().keySet().iterator().next();
@@ -45,8 +47,6 @@ public class MainInteractor extends BaseInteractor {
                 default:
                     return Const.LANG_CODE_EN;
             }
-        } else {
-            return dbService.getSelectedLangs().getOutputLang();
         }
     }
 
@@ -72,6 +72,5 @@ public class MainInteractor extends BaseInteractor {
                 })
                 .observeOn(AndroidSchedulers.mainThread());
     }
-
 
 }

@@ -1,12 +1,15 @@
 package com.vladimirkondenko.yamblz.screens.translation;
 
 
+import android.app.Activity;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -58,7 +61,8 @@ public class TranslationFragment extends Fragment implements TranslationView {
 
     private Disposable subscriptionClearButton;
     private Disposable subscriptionSelectDetectedLang;
-    private Disposable subscriptionInputText;
+    private Disposable subscriptionInputTextChanges;
+    private Disposable subscriptionInputTextEvents;
 
     public TranslationFragment() {
     }
@@ -82,9 +86,11 @@ public class TranslationFragment extends Fragment implements TranslationView {
                     showDetectedLangLayout(false);
                     edittextTranslationInput.getText().clear();
                     textviewTranslationResult.setText("");
+                    hideKeyboard();
+                    presenter.saveLastTranslation();
                 });
 
-        subscriptionInputText = RxTextView.textChanges(edittextTranslationInput)
+        subscriptionInputTextChanges = RxTextView.textChanges(edittextTranslationInput)
                 .debounce(225, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
                 .subscribe(text -> {
                     if (text.length() == 0) {
@@ -93,6 +99,13 @@ public class TranslationFragment extends Fragment implements TranslationView {
                     } else {
                         translate();
                     }
+                });
+
+        subscriptionInputTextEvents = RxTextView.editorActions(edittextTranslationInput)
+                .filter(code -> code == KeyEvent.KEYCODE_ENTER)
+                .subscribe(code -> {
+                    hideKeyboard();
+                    presenter.saveLastTranslation();
                 });
 
         return binding.getRoot();
@@ -114,7 +127,7 @@ public class TranslationFragment extends Fragment implements TranslationView {
         super.onPause();
         networkBroadcastReceiver.unregister();
         Bus.unsubscribe(this);
-        Utils.disposeAll(subscriptionClearButton, subscriptionInputText, subscriptionSelectDetectedLang);
+        Utils.disposeAll(subscriptionClearButton, subscriptionInputTextChanges, subscriptionSelectDetectedLang, subscriptionInputTextEvents );
         presenter.detachView();
     }
 
@@ -193,7 +206,7 @@ public class TranslationFragment extends Fragment implements TranslationView {
     }
 
     private void translate() {
-        if (!Utils.isEmpty(binding.edittextTranslationInput)) {
+        if (!Utils.isEmpty(binding.edittextTranslationInput) && presenter != null) {
             String text = String.valueOf(binding.edittextTranslationInput.getText());
             presenter.enqueueTranslation(text);
             if (networkBroadcastReceiver.isOnline()) presenter.executePendingTranslation();
@@ -204,8 +217,9 @@ public class TranslationFragment extends Fragment implements TranslationView {
         binding.framelayoutDetectedLang.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 
-    private String getTextToTranslate() {
-        return binding.edittextTranslationInput.getText().toString();
+    public void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager) this.getContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(binding.edittextTranslationInput.getWindowToken(), 0);
     }
 
     private void displayErrorMessage(int errorCode) {

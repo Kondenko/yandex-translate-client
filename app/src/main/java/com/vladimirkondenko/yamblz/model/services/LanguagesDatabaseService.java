@@ -1,8 +1,9 @@
 package com.vladimirkondenko.yamblz.model.services;
 
 import com.vladimirkondenko.yamblz.model.entities.SelectedLangs;
+import com.vladimirkondenko.yamblz.utils.base.BaseDatabaseService;
 
-public interface LanguagesDbService {
+public interface LanguagesDatabaseService extends BaseDatabaseService {
 
     void saveLangs(String inputLang, String outputLang);
 

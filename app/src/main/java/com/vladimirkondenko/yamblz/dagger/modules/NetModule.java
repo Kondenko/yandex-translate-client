@@ -2,6 +2,7 @@ package com.vladimirkondenko.yamblz.dagger.modules;
 
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.google.gson.Gson;
+import com.vladimirkondenko.yamblz.BuildConfig;
 import com.vladimirkondenko.yamblz.Const;
 import com.vladimirkondenko.yamblz.utils.RealmGson;
 import com.vladimirkondenko.yamblz.utils.interceptors.ApiKeyInterceptor;
@@ -21,10 +22,9 @@ public class NetModule {
     @Provides
     @Singleton
     public OkHttpClient provideHttpClient() {
-        return new OkHttpClient.Builder()
-                .addInterceptor(new ApiKeyInterceptor(Const.API_KEY))
-                .addInterceptor(new StethoInterceptor()) // Must be the last interceptor
-                .build();
+        OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder().addInterceptor(new ApiKeyInterceptor(Const.API_KEY));
+        if (BuildConfig.DEBUG) clientBuilder.addNetworkInterceptor(new StethoInterceptor()); // Must be the last interceptor
+        return clientBuilder.build();
     }
 
     @Provides

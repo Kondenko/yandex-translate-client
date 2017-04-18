@@ -1,28 +1,30 @@
 package com.vladimirkondenko.yamblz.model.database;
 
 import com.vladimirkondenko.yamblz.model.entities.SelectedLangs;
-import com.vladimirkondenko.yamblz.model.services.LanguagesDbService;
+import com.vladimirkondenko.yamblz.model.services.LanguagesDatabaseService;
+import com.vladimirkondenko.yamblz.utils.base.RealmUserClass;
 
 import javax.inject.Inject;
 
 import io.realm.Realm;
 
-public class LanguagesServiceImpl implements LanguagesDbService {
-
-    private Realm realm;
+public class LanguagesServiceImpl extends RealmUserClass implements LanguagesDatabaseService {
 
     @Inject
     public LanguagesServiceImpl(Realm realm) {
-        this.realm = realm;
+        super(realm);
     }
 
     @Override
     public void saveLangs(String inputLang, String outputLang) {
-        realm.executeTransaction(transaction -> {
-            SelectedLangs langs = realm.createObject(SelectedLangs.class);
-            langs.setInputLang(inputLang);
-            langs.setOutputLang(outputLang);
-        });
+        performTransaction(() -> {
+                    SelectedLangs langs = new SelectedLangs();
+                    langs.setInputLang(inputLang);
+                    langs.setOutputLang(outputLang);
+                    realm.copyToRealmOrUpdate(langs);
+                }
+        );
+
     }
 
     public SelectedLangs getSelectedLangs() {
