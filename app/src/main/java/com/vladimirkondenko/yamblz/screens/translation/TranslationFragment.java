@@ -92,6 +92,7 @@ public class TranslationFragment extends Fragment implements TranslationView {
 
         subscriptionInputTextChanges = RxTextView.textChanges(edittextTranslationInput)
                 .debounce(225, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
+                .filter(text -> text.length() < Const.MAX_TEXT_LENGTH)
                 .subscribe(text -> {
                     if (text.length() == 0) {
                         showDetectedLangLayout(false);
