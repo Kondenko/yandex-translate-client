@@ -18,10 +18,6 @@ public final class Const {
     public static final String LANG_CODE_EN = "en";
     public static final String LANG_CODE_RU = "ru";
 
-    // View state argument keys
-    public static final String MAIN_INPUT_LANG_POSITION_ARG = "input_lang_position";
-    public static final String MAIN_TRANSLATION_LANG_POSITION_ARG = "translation_lang_position";
-
     // Animation durations
     public static final int ANIM_DURATION_DEFAULT = 350;
     public static final int ANIM_DURATION_LANG_SWITCH_SPINNER = 200;

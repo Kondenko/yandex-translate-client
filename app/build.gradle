@@ -25,8 +25,8 @@ android {
             applicationIdSuffix ".release"
         }
         debug {
-            applicationIdSuffix ".debug"
             minifyEnabled false
+            applicationIdSuffix ".debug"
         }
     }
     dataBinding {
