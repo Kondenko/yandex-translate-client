@@ -7,10 +7,10 @@ import io.realm.RealmResults;
 
 public interface DbTranslationService extends BaseDatabaseService {
 
-    void saveToHistory(Translation translation);
-
     RealmResults<Translation> getHistory();
 
-    void setBookmarked(int translationId, boolean value);
+    void setBookmarked(Translation translation, boolean bookmarked);
+
+    void setSavedToHistory(Translation translation, boolean saveToHistory, long timestamp);
 
 }

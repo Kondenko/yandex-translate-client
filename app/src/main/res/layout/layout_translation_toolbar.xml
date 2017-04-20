@@ -22,6 +22,7 @@
             app:srcCompat="@drawable/ic_switch_language_black_24dp"
             />
 
+
         <Spinner
             android:id="@+id/spinner_translation_lang_input"
             style="@style/App.Translation.LanguageSpinner"

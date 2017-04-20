@@ -21,8 +21,12 @@ public class HistoryInteractor extends BaseInteractor {
         return databaseService.getHistory();
     }
 
-    public void setBookmarked(int id, boolean value) {
-        databaseService.setBookmarked(id, value);
+    public void removeFromHistory(Translation translation) {
+        databaseService.setSavedToHistory(translation, false, 0);
+    }
+
+    public void setBookmarked(Translation translation, boolean bookmarked) {
+        databaseService.setBookmarked(translation, bookmarked);
     }
 
     public void cleanup() {

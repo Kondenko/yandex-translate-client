@@ -3,10 +3,9 @@
     <style name="App.IconButton" parent="TextAppearance.AppCompat.Widget.Button.Borderless.Colored">
         <item name="android:background">?selectableItemBackgroundBorderless</item>
         <item name="android:padding">@dimen/padding_all_large</item>
+        <item name="android:gravity">center</item>
     </style>
 
-    <style name="App.Translation.BookmarkButton" parent="App.IconButton">
-    </style>
 
     <style name="App.Translation.LanguageSpinner" parent="AppTheme">
         <item name="android:maxWidth">@dimen/width_translation_language_spinner_min</item>
@@ -38,6 +37,7 @@
         <item name="android:textColor">@color/color_all_text_disabled</item>
     </style>
 
+
     <style name="App.History.Search.Layout" parent="AppTheme">
         <item name="android:padding">0dp</item>
         <item name="android:background">@color/color_all_background_light</item>
@@ -52,32 +52,27 @@
         <item name="android:imeOptions">actionSearch</item>
     </style>
 
-    <style name="App.History.Search.ButtonClear" parent="App.IconButton">
-    </style>
-
-    <style name="App.History.List.ItemLayout" parent="App.IconButton">
+    <style name="App.History.List.ItemLayout" parent="AppTheme">
         <item name="android:paddingStart">@dimen/padding_all_large</item>
         <item name="android:paddingEnd">@dimen/padding_all_large</item>
-        <item name="background">?selectableItemBackground</item>
+        <item name="android:background">?attr/selectableItemBackground</item>
     </style>
-
-
-    <style name="App.History.List.BookmarkButton" parent="App.IconButton">
-        <item name="android:layout_gravity">end|center_vertical</item>
-        <item name="android:layout_alignParentEnd">true</item>
-        <item name="android:layout_centerVertical">true</item>
-    </style>
-
 
     <style name="App.History.List.TextPrimary" parent="TextAppearance.AppCompat.Body2">
+        <item name="android:paddingEnd">@dimen/padding_all_large</item>
         <item name="android:textColor">@color/color_all_text_primary</item>
         <item name="android:textSize">@dimen/textsize_all_list_item_primary</item>
-        <item name="android:paddingBottom">@dimen/padding_all_text</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">end</item>
     </style>
 
     <style name="App.History.List.TextSecondary" parent="TextAppearance.AppCompat.Body2">
+        <item name="android:paddingEnd">@dimen/padding_all_large</item>
+        <item name="android:layout_marginTop">@dimen/padding_history_secondary_text_top</item>
         <item name="android:textColor">@color/color_all_text_secondary</item>
         <item name="android:textSize">@dimen/textsize_all_list_item_secondary</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">end</item>
     </style>
 
 </resources>

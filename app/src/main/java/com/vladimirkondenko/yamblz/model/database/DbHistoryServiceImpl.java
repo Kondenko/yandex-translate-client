@@ -14,18 +14,28 @@ public class DbHistoryServiceImpl extends DatabaseUserClass implements DbTransla
         super(database);
     }
 
-    @Override
-    public void saveToHistory(Translation translation) {
-        performTransaction(() -> realm.copyToRealmOrUpdate(translation));
+    public void setSavedToHistory(Translation translation, boolean saveToHistory, long timestamp) {
+        performTransaction(() -> {
+            if (!translation.isBookmarked() && !saveToHistory) {
+                delete(translation);
+            } else {
+                translation.setTimestamp(timestamp);
+                translation.setId(translation.calculateId());
+                translation.setSavedToHistory(saveToHistory);
+                realm.copyToRealmOrUpdate(translation);
+            }
+        });
     }
 
-    public void setBookmarked(int translationId, boolean value) {
-        performTransaction(() ->
-                realm.where(Translation.class)
-                .equalTo(Translation.FIELD_NAME_PRIMARY_KEY, translationId)
-                .findFirst()
-                .setBookmarked(value)
-        );
+    public void setBookmarked(Translation translation, boolean bookmarked) {
+        performTransaction(() -> {
+            if (!translation.isSavedToHistory() && !bookmarked) {
+                delete(translation);
+            } else {
+                translation.setBookmarked(bookmarked);
+                realm.copyToRealmOrUpdate(translation);
+            }
+        });
     }
 
     @Override

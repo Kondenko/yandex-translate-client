@@ -40,10 +40,8 @@ public class TranslationInteractor extends BaseInteractor {
     }
 
     public void saveToHistory(Translation translation) {
-        translation.setTimestamp(Utils.getCurrentTimeSec());
-        translation.setSavedToHistory(true);
-        translation.setId(translation.calculateId());
-        dbService.saveToHistory(translation);
+        long timestamp = Utils.getCurrentTimeSec();
+        dbService.setSavedToHistory(translation, true, timestamp);
     }
 
 }

@@ -19,7 +19,7 @@
         />
 
     <ImageButton
-        style="@style/App.History.Search.ButtonClear"
+        style="@style/App.IconButton"
         android:layout_width="@dimen/size_all_button_icon"
         android:layout_height="@dimen/size_all_button_icon"
         app:srcCompat="@drawable/ic_clear_text_black_24dp"

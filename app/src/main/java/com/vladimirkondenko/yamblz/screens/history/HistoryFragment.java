@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,9 +49,21 @@ public class HistoryFragment extends Fragment implements HistoryView {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_history, container, false);
         binding.recyclerviewHistoryTranslations.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.recyclerviewHistoryTranslations.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
+                int position = viewHolder.getAdapterPosition();
+                presenter.removeFromHistory(adapter.getData().get(position));
+            }
+        });
+        itemTouchHelper.attachToRecyclerView(binding.recyclerviewHistoryTranslations);
         presenter.attachView(this);
         presenter.onCreateView();
-        Bus.subscribe(this);
         return binding.getRoot();
     }
 
@@ -58,18 +72,12 @@ public class HistoryFragment extends Fragment implements HistoryView {
         super.onDestroyView();
         presenter.onDestroyView();
         presenter.detachView();
-        Bus.unsubscribe(this);
         App.get().clearHistorySubcomponent();
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    void onHistoryEntryBookmarked(BookmarkedEvent event) {
-        presenter.bookmarkTranslation(event.getTranslationId(), event.isTranslationBookmarked());
     }
 
     @Override
     public void displayHistory(OrderedRealmCollection<Translation> translations) {
-        adapter = new TranslationsAdapter(translations);
+        adapter = new TranslationsAdapter(presenter.getAdapterPresenter(), translations);
         binding.recyclerviewHistoryTranslations.setAdapter(adapter);
     }
 
