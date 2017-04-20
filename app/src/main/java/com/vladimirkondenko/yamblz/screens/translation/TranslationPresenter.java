@@ -17,9 +17,9 @@ public class TranslationPresenter extends BaseLifecyclePresenter<TranslationView
     private String inputLanguage;
     private String outputLanguage;
 
-    private Translation lastTranslation;
-
     private Single<Translation> translationSingle = null;
+
+    private Translation lastTranslation;
 
     @Inject
     public TranslationPresenter(TranslationView view, TranslationInteractor interactor) {
@@ -47,7 +47,7 @@ public class TranslationPresenter extends BaseLifecyclePresenter<TranslationView
         if (translationSingle != null && isViewAttached()) {
             translationSingle.subscribe(
                     translation -> {
-                        view.onTranslationSuccess(translation.getText().get(0).getValue());
+                        view.onTranslationSuccess(translation.getResult().get(0).getValue());
                         lastTranslation = translation;
                     },
                     throwable -> view.onError(throwable, 0)

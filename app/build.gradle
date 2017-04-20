@@ -63,6 +63,7 @@ dependencies {
     provided "org.glassfish:javax.annotation:10.0-b28"
 
     compile "org.greenrobot:eventbus:$eventbus_version"
+    compile "io.realm:android-adapters:$realm_adapters_version"
 
     // Retrofit
     compile "com.squareup.retrofit2:retrofit:$retrofit_version"
@@ -79,6 +80,7 @@ dependencies {
     compile "com.trello.rxlifecycle2:rxlifecycle-android:$rx_lifecycle_version"
     compile "com.jakewharton.rxbinding2:rxbinding:$rx_bindings_version"
     compile "com.jakewharton.rxbinding2:rxbinding-support-v4:$rx_bindings_version"
+    compile "com.jakewharton.rxbinding2:rxbinding-recyclerview-v7:$rx_bindings_version"
 
     // Support
     compile "com.android.support:support-v4:$support_lib_version"

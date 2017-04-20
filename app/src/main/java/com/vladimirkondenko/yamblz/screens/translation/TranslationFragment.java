@@ -67,12 +67,6 @@ public class TranslationFragment extends Fragment implements TranslationView {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        App.get().plusTranslationSubcomponent(new TranslationModule(this)).inject(this);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_translation, container, false);
@@ -111,6 +105,18 @@ public class TranslationFragment extends Fragment implements TranslationView {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        App.get().plusTranslationSubcomponent(new TranslationModule(this)).inject(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        App.get().clearTranslationPresenterComponent();
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         Bus.subscribe(this);
@@ -128,12 +134,6 @@ public class TranslationFragment extends Fragment implements TranslationView {
         Bus.unsubscribe(this);
         Utils.disposeAll(subscriptionClearButton, subscriptionInputTextChanges, subscriptionSelectDetectedLang, subscriptionInputTextEvents);
         presenter.detachView();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        App.get().clearTranslationPresenterComponent();
     }
 
     @Override

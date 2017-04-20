@@ -1,16 +1,15 @@
 package com.vladimirkondenko.yamblz.model.database;
 
 import com.vladimirkondenko.yamblz.model.entities.SelectedLangs;
-import com.vladimirkondenko.yamblz.model.services.LanguagesDatabaseService;
+import com.vladimirkondenko.yamblz.model.services.DbLanguagesService;
 import com.vladimirkondenko.yamblz.utils.base.DatabaseUserClass;
 
 import javax.inject.Inject;
 
-public class LanguagesServiceImpl extends DatabaseUserClass implements LanguagesDatabaseService {
-
+public class DbLanguagesServiceImpl extends DatabaseUserClass implements DbLanguagesService {
 
     @Inject
-    public LanguagesServiceImpl(Database database) {
+    public DbLanguagesServiceImpl(Database database) {
         super(database);
     }
 
@@ -34,4 +33,8 @@ public class LanguagesServiceImpl extends DatabaseUserClass implements Languages
         return getSelectedLangs() != null;
     }
 
+    @Override
+    public void cleanup() {
+
+    }
 }

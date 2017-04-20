@@ -4,11 +4,13 @@ import android.app.Application;
 
 import com.vladimirkondenko.yamblz.dagger.components.AppComponent;
 import com.vladimirkondenko.yamblz.dagger.components.DaggerAppComponent;
+import com.vladimirkondenko.yamblz.dagger.components.HistorySubcomponent;
 import com.vladimirkondenko.yamblz.dagger.components.MainSubcomponent;
 import com.vladimirkondenko.yamblz.dagger.components.TranslationSubcomponent;
 import com.vladimirkondenko.yamblz.dagger.modules.AppModule;
 import com.vladimirkondenko.yamblz.dagger.modules.DatabaseModule;
 import com.vladimirkondenko.yamblz.dagger.modules.FragmentModule;
+import com.vladimirkondenko.yamblz.dagger.modules.HistoryModule;
 import com.vladimirkondenko.yamblz.dagger.modules.MainModule;
 import com.vladimirkondenko.yamblz.dagger.modules.NetModule;
 import com.vladimirkondenko.yamblz.dagger.modules.TranslationModule;
@@ -19,8 +21,9 @@ public class App extends Application {
     protected static App instance;
 
     protected AppComponent appComponent = null;
-    protected TranslationSubcomponent translationPresenterComponent;
     protected MainSubcomponent mainPresenterSubcomponent;
+    protected TranslationSubcomponent translationPresenterComponent;
+    protected HistorySubcomponent historySubcomponent;
 
     @Override
     public void onCreate() {
@@ -60,13 +63,23 @@ public class App extends Application {
         return translationPresenterComponent;
     }
 
+    public HistorySubcomponent plusHistorySubcomponent(HistoryModule module) {
+        if (historySubcomponent == null) {
+            historySubcomponent = appComponent.plus(module);
+        }
+        return historySubcomponent;
+    }
+
+    public void clearMainPresenterComponent() {
+        mainPresenterSubcomponent = null;
+    }
 
     public void clearTranslationPresenterComponent() {
         translationPresenterComponent = null;
     }
 
-    public void clearMainPresenterComponent() {
-        mainPresenterSubcomponent = null;
+    public void clearHistorySubcomponent() {
+        historySubcomponent = null;
     }
 
 }

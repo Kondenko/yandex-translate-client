@@ -7,7 +7,7 @@ public abstract class BaseModule<T extends BaseView> {
 
     protected T view;
 
-    protected BaseModule(T view) {
+    public BaseModule(T view) {
         this.view = view;
     }
 

@@ -75,7 +75,7 @@ public final class Utils {
         return json;
     }
 
-    public static long getCurrenttimeSec() {
+    public static long getCurrentTimeSec() {
         return System.currentTimeMillis() / 1000;
     }
 
@@ -89,6 +89,13 @@ public final class Utils {
         if (disposable != null && !disposable.isDisposed()) {
             disposable.dispose();
         }
+    }
+
+    public static int hashCode(Object... objects) {
+        int prime = 31;
+        int result = 1;
+        for (Object o : objects) result = result * prime + o.hashCode();
+        return result;
     }
 
 }

@@ -17,14 +17,14 @@
         >
 
         <TextView
-            style="@style/App.Translation.TextOfflineBannerHead"
+            style="@style/App.Translation.OfflineBanner.TextHead"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/translation_error_offline_head"
             />
 
         <TextView
-            style="@style/App.Translation.TextOfflineBannerSubhead"
+            style="@style/App.Translation.OfflineBanner.TextSubhead"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/translation_error_offline_subhead"

@@ -1,8 +1,34 @@
 package com.vladimirkondenko.yamblz.screens.history;
 
-/**
- * Created by Kondenko on 18.04.2017.
- */
+import android.util.Log;
 
-public class HistoryPresenter {
+import com.vladimirkondenko.yamblz.model.entities.Translation;
+import com.vladimirkondenko.yamblz.utils.base.BaseLifecyclePresenter;
+
+import io.realm.Realm;
+import io.realm.RealmChangeListener;
+import io.realm.RealmResults;
+
+public class HistoryPresenter extends BaseLifecyclePresenter<HistoryView, HistoryInteractor> {
+
+    public HistoryPresenter(HistoryView view, HistoryInteractor interactor) {
+        super(view, interactor);
+    }
+
+    public void onCreateView() {
+        getHistory();
+    }
+
+    public void onDestroyView() {
+        interactor.cleanup();
+    }
+
+    public void bookmarkTranslation(int id, boolean bookmarked) {
+        interactor.setBookmarked(id, bookmarked);
+    }
+
+    public void getHistory() {
+        view.displayHistory(interactor.getHistory());
+    }
+
 }

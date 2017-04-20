@@ -5,8 +5,8 @@ import android.content.Context;
 
 import com.vladimirkondenko.yamblz.Const;
 import com.vladimirkondenko.yamblz.model.entities.Languages;
-import com.vladimirkondenko.yamblz.model.services.LanguagesDatabaseService;
-import com.vladimirkondenko.yamblz.model.services.LanguagesService;
+import com.vladimirkondenko.yamblz.model.services.DbLanguagesService;
+import com.vladimirkondenko.yamblz.model.services.NetLanguagesService;
 import com.vladimirkondenko.yamblz.utils.LanguageUtils;
 import com.vladimirkondenko.yamblz.utils.Utils;
 import com.vladimirkondenko.yamblz.utils.base.BaseInteractor;
@@ -22,11 +22,11 @@ import io.reactivex.schedulers.Schedulers;
 public class MainInteractor extends BaseInteractor {
 
     private Context context;
-    private LanguagesService netService;
-    private LanguagesDatabaseService dbService;
+    private NetLanguagesService netService;
+    private DbLanguagesService dbService;
 
     @Inject
-    public MainInteractor(Context context, LanguagesService netService, LanguagesDatabaseService dbService) {
+    public MainInteractor(Context context, NetLanguagesService netService, DbLanguagesService dbService) {
         this.context = context;
         this.netService = netService;
         this.dbService = dbService;

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+
+    <data>
+
+        <variable
+            name="translation"
+            type="com.vladimirkondenko.yamblz.model.entities.Translation"
+            />
+    </data>
+
+    <RelativeLayout
+        style="@style/App.History.List.ItemLayout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_all_list_item"
+        android:orientation="horizontal"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp"
+        >
+
+        <CheckBox
+            android:id="@+id/button_transation_bookmark"
+            style="@style/App.History.List.BookmarkButton"
+            android:layout_width="@dimen/size_all_button_icon"
+            android:layout_height="@dimen/size_all_button_icon"
+            android:checked="@{translation.bookmarked}"
+            android:drawable="@drawable/ic_bookmark_selector"
+            />
+
+        <TextView
+            android:id="@+id/textview_history_word"
+            style="@style/App.History.List.TextPrimary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{translation.result.first().getValue()}"
+            tools:text="Pineapple"
+            />
+
+        <TextView
+            android:id="@+id/textview_history_direction"
+            style="@style/App.History.List.TextSecondary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@id/textview_history_word"
+            android:layout_below="@id/textview_history_word"
+            android:text="@{translation.direction}"
+            tools:text="Ru-En"
+            />
+
+    </RelativeLayout>
+</layout>

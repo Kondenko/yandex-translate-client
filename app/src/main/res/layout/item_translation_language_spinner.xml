@@ -4,7 +4,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/height_translation_spinner_item"
+    android:layout_height="@dimen/height_all_list_item"
     android:gravity="start|center_vertical"
     android:minWidth="@dimen/width_translation_spinner_item"
     android:padding="@dimen/padding_all_small"
