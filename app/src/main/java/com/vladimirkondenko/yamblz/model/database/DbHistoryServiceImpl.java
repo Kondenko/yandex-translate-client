@@ -2,7 +2,6 @@ package com.vladimirkondenko.yamblz.model.database;
 
 import com.vladimirkondenko.yamblz.model.entities.Translation;
 import com.vladimirkondenko.yamblz.model.services.DbTranslationService;
-import com.vladimirkondenko.yamblz.utils.base.DatabaseUserClass;
 
 import io.realm.RealmResults;
 

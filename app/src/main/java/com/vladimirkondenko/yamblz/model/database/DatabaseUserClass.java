@@ -1,4 +1,4 @@
-package com.vladimirkondenko.yamblz.utils.base;
+package com.vladimirkondenko.yamblz.model.database;
 
 import com.vladimirkondenko.yamblz.model.database.Database;
 
@@ -22,7 +22,7 @@ public abstract class DatabaseUserClass {
     }
 
     protected void delete(RealmObject object) {
-        object.deleteFromRealm();
+        performTransaction(object::deleteFromRealm);
     }
 
 }

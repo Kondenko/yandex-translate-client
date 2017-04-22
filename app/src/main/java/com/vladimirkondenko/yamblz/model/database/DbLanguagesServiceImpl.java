@@ -2,7 +2,6 @@ package com.vladimirkondenko.yamblz.model.database;
 
 import com.vladimirkondenko.yamblz.model.entities.SelectedLangs;
 import com.vladimirkondenko.yamblz.model.services.DbLanguagesService;
-import com.vladimirkondenko.yamblz.utils.base.DatabaseUserClass;
 
 import javax.inject.Inject;
 
