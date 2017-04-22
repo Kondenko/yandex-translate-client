@@ -2,17 +2,22 @@ package com.vladimirkondenko.yamblz.dagger.components;
 
 
 import com.vladimirkondenko.yamblz.dagger.modules.AppModule;
-import com.vladimirkondenko.yamblz.dagger.modules.MainPresenterModule;
+import com.vladimirkondenko.yamblz.dagger.modules.DatabaseModule;
+import com.vladimirkondenko.yamblz.dagger.modules.FragmentModule;
+import com.vladimirkondenko.yamblz.dagger.modules.HistoryModule;
+import com.vladimirkondenko.yamblz.dagger.modules.MainModule;
 import com.vladimirkondenko.yamblz.dagger.modules.NetModule;
-import com.vladimirkondenko.yamblz.dagger.modules.TranslationPresenterModule;
+import com.vladimirkondenko.yamblz.dagger.modules.TranslationModule;
+import com.vladimirkondenko.yamblz.model.database.Database;
 
 import javax.inject.Singleton;
 
 import dagger.Component;
 
 @Singleton
-@Component(modules = {AppModule.class, NetModule.class})
+@Component(modules = {AppModule.class, FragmentModule.class, NetModule.class, DatabaseModule.class})
 public interface AppComponent {
-    TranslationPresenterSubcomponent plus(TranslationPresenterModule translationPresenterModule);
-    MainPresenterSubcomponent plus(MainPresenterModule translationPresenterModule);
+    MainSubcomponent plus(MainModule mainModule);
+    TranslationSubcomponent plus(TranslationModule translationPresenterModule);
+    HistorySubcomponent plus(HistoryModule historyModule);
 }

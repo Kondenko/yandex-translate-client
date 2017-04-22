@@ -5,7 +5,7 @@ import com.vladimirkondenko.yamblz.CustomRobolectricTestRunner;
 import com.vladimirkondenko.yamblz.R;
 import com.vladimirkondenko.yamblz.RxRule;
 import com.vladimirkondenko.yamblz.TestApp;
-import com.vladimirkondenko.yamblz.dagger.modules.TestMainPresenterModule;
+import com.vladimirkondenko.yamblz.dagger.modules.TestMainModule;
 import com.vladimirkondenko.yamblz.model.entities.Languages;
 import com.vladimirkondenko.yamblz.utils.LanguageUtils;
 
@@ -26,8 +26,6 @@ import javax.inject.Inject;
 
 import io.reactivex.Single;
 
-import static junit.framework.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
@@ -54,7 +52,7 @@ public class MainPresenterTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        TestApp.get().plusTestMainPresenterSubcomponent(new TestMainPresenterModule(view)).inject(this);
+        TestApp.get().plusTestMainPresenterSubcomponent(new TestMainModule(view)).inject(this);
     }
 
     @After

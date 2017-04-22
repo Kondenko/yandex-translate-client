@@ -22,9 +22,10 @@
             app:srcCompat="@drawable/ic_switch_language_black_24dp"
             />
 
+
         <Spinner
             android:id="@+id/spinner_translation_lang_input"
-            style="@style/LanguageSpinner"
+            style="@style/App.Translation.LanguageSpinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_toStartOf="@id/button_translation_switch_language"
@@ -32,7 +33,7 @@
 
         <Spinner
             android:id="@+id/spinner_translation_lang_translation"
-            style="@style/LanguageSpinner"
+            style="@style/App.Translation.LanguageSpinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_toEndOf="@id/button_translation_switch_language"

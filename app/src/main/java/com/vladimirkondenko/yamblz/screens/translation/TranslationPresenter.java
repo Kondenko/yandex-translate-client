@@ -12,14 +12,24 @@ import io.reactivex.Single;
 
 public class TranslationPresenter extends BaseLifecyclePresenter<TranslationView, TranslationInteractor> {
 
+    private static final String TAG = "TranslationPresenter";
+
     private String inputLanguage;
     private String outputLanguage;
 
     private Single<Translation> translationSingle = null;
 
+    private Translation lastTranslation;
+
     @Inject
     public TranslationPresenter(TranslationView view, TranslationInteractor interactor) {
         super(view, interactor);
+    }
+
+    public void saveLastTranslation() {
+        if (lastTranslation != null) {
+            interactor.saveToHistory(lastTranslation);
+        }
     }
 
     public void enqueueTranslation(String text) {
@@ -36,24 +46,21 @@ public class TranslationPresenter extends BaseLifecyclePresenter<TranslationView
     public void executePendingTranslation() {
         if (translationSingle != null && isViewAttached()) {
             translationSingle.subscribe(
-                    translation -> view.onTranslationSuccess(translation.getText().get(0)),
+                    translation -> {
+                        view.onTranslationSuccess(translation.getResult().get(0).getValue());
+                        lastTranslation = translation;
+                    },
                     throwable -> view.onError(throwable, 0)
             );
         }
     }
 
-    public void setInputLanguage(String inputLanguage) {
+    public void selectInputLanguage(String inputLanguage) {
         this.inputLanguage = inputLanguage;
     }
 
-    public void setOutputLanguage(String outputLanguage) {
+    public void selectOutputLanguage(String outputLanguage) {
         this.outputLanguage = outputLanguage;
-    }
-
-    public void swapLanguages() {
-        String temp = inputLanguage;
-        inputLanguage = outputLanguage;
-        outputLanguage = temp;
     }
 
 }

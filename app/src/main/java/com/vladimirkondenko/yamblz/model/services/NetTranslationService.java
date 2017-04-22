@@ -6,7 +6,7 @@ import io.reactivex.Single;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 
-public interface TranslationService {
+public interface NetTranslationService {
 
     String KEY_LANG = "lang";
     String KEY_TEXT = "text";

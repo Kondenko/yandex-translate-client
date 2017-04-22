@@ -1,33 +1,78 @@
 <resources xmlns:android="http://schemas.android.com/tools">
 
-    <style name="LanguageSpinner">
+    <style name="App.IconButton" parent="TextAppearance.AppCompat.Widget.Button.Borderless.Colored">
+        <item name="android:background">?selectableItemBackgroundBorderless</item>
+        <item name="android:padding">@dimen/padding_all_large</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+
+    <style name="App.Translation.LanguageSpinner" parent="AppTheme">
         <item name="android:maxWidth">@dimen/width_translation_language_spinner_min</item>
         <item name="android:layout_centerVertical">true</item>
     </style>
 
-    <style name="App.Translation.LayoutDetectedLanguage" parent="TextAppearance.AppCompat.Widget.Button.Borderless.Colored">
+    <style name="App.Translation.DetectedLanguage.Layout" parent="TextAppearance.AppCompat.Widget.Button.Borderless.Colored">
         <item name="android:background">@color/color_all_background_light_gray</item>
-        <item name="android:paddingStart">@dimen/padding_all_large</item>
-        <item name="android:paddingEnd">@dimen/padding_all_small</item>
         <item name="android:layout_gravity">bottom</item>
     </style>
 
-    <style name="App.Translation.TextDetectedLanguage" parent="TextAppearance.AppCompat.Body2">
+    <style name="App.Translation.DetectedLanguage.Text" parent="TextAppearance.AppCompat.Body2">
         <item name="android:textColor">@color/color_all_text_secondary</item>
         <item name="android:gravity">start|center_vertical</item>
         <item name="android:textSize">@dimen/textsize_translation_detected_language_text</item>
-        <item name="android:padding">0dp</item>
+        <item name="android:paddingStart">@dimen/padding_all_large</item>
+        <item name="android:paddingEnd">@dimen/padding_all_small</item>
+        <item name="android:background">?selectableItemBackgroundBorderless</item>
     </style>
 
-    <style name="App.Translation.TextOfflineBannerHead" parent="TextAppearance.AppCompat.Body2">
+    <style name="App.Translation.OfflineBanner.TextHead" parent="TextAppearance.AppCompat.Body2">
         <item name="android:gravity">center</item>
         <item name="android:textColor">@color/color_all_text_disabled</item>
     </style>
 
-    <style name="App.Translation.TextOfflineBannerSubhead" parent="TextAppearance.AppCompat.Body1">
+    <style name="App.Translation.OfflineBanner.TextSubhead" parent="TextAppearance.AppCompat.Body1">
         <item name="android:gravity">center</item>
         <item name="android:paddingTop">@dimen/padding_translation_offline_banner_text</item>
         <item name="android:textColor">@color/color_all_text_disabled</item>
+    </style>
+
+
+    <style name="App.History.Search.Layout" parent="AppTheme">
+        <item name="android:padding">0dp</item>
+        <item name="android:background">@color/color_all_background_light</item>
+    </style>
+
+    <style name="App.History.Search.TextField" parent="AppTheme.Transparent">
+        <item name="android:textColor">@color/color_all_text_secondary</item>
+        <item name="android:textSize">@dimen/textsize_history_search_field</item>
+        <item name="android:paddingEnd">@dimen/size_all_button_icon</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:inputType">textFilter</item>
+        <item name="android:imeOptions">actionSearch</item>
+    </style>
+
+    <style name="App.History.List.ItemLayout" parent="AppTheme">
+        <item name="android:paddingStart">@dimen/padding_all_large</item>
+        <item name="android:paddingEnd">@dimen/padding_all_large</item>
+        <item name="android:background">?attr/selectableItemBackground</item>
+    </style>
+
+    <style name="App.History.List.TextPrimary" parent="TextAppearance.AppCompat.Body2">
+        <item name="android:paddingEnd">@dimen/padding_all_large</item>
+        <item name="android:textColor">@color/color_all_text_primary</item>
+        <item name="android:textSize">@dimen/textsize_all_list_item_primary</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="App.History.List.TextSecondary" parent="TextAppearance.AppCompat.Body2">
+        <item name="android:paddingEnd">@dimen/padding_all_large</item>
+        <item name="android:layout_marginTop">@dimen/padding_history_secondary_text_top</item>
+        <item name="android:textColor">@color/color_all_text_secondary</item>
+        <item name="android:textSize">@dimen/textsize_all_list_item_secondary</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">end</item>
     </style>
 
 </resources>

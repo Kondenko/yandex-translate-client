@@ -7,4 +7,10 @@
         <item name="colorAccent">@color/color_accent</item>
     </style>
 
+    <style name="AppTheme.Transparent" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@null</item>
+        <item name="colorPrimaryDark">@null</item>
+        <item name="colorAccent">@null</item>
+    </style>
+
 </resources>

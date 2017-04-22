@@ -13,7 +13,9 @@ import io.reactivex.Observable;
 import io.reactivex.subjects.BehaviorSubject;
 
 
-public abstract class BaseLifecyclePresenter<V extends BaseView, I extends BaseInteractor> extends BasePresenter<V, I> implements LifecycleProvider<Integer> {
+public abstract class BaseLifecyclePresenter<V extends BaseView, I extends BaseInteractor>
+        extends BasePresenter<V, I>
+        implements LifecycleProvider<Integer> {
 
     private static final String TAG = "BaseLifecyclePresenter";
 

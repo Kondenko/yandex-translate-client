@@ -1,4 +1,4 @@
-package com.vladimirkondenko.yamblz.utils;
+package com.vladimirkondenko.yamblz.utils.adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;

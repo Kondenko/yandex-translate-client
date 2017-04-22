@@ -25,7 +25,7 @@ import okhttp3.mockwebserver.MockWebServer;
 public class LanguagesServiceTest {
 
     @Inject
-    public LanguagesService service;
+    public NetLanguagesService service;
 
     @Inject
     public MockWebServer server;

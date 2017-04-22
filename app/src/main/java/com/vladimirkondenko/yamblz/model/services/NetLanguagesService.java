@@ -6,7 +6,7 @@ import io.reactivex.Single;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 
-public interface LanguagesService {
+public interface NetLanguagesService {
 
     @POST("getLangs")
     Single<Languages> getAvailableLanguages(@Query("ui") String ui);

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+
+    <data>
+
+        <variable
+            name="translation"
+            type="com.vladimirkondenko.yamblz.model.entities.Translation"
+            />
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        style="@style/App.History.List.ItemLayout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_all_list_item_two_row"
+        android:orientation="horizontal"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp"
+        >
+
+        <com.vladimirkondenko.yamblz.utils.AppCompatCheckableImageButton
+            style="@style/App.IconButton"
+            android:id="@+id/button_transation_bookmark"
+            android:layout_width="@dimen/size_all_button_icon"
+            android:layout_height="@dimen/size_all_button_icon"
+            app:srcCompat="@drawable/ic_bookmark_selector"
+            android:checked="@{translation.bookmarked}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+        <TextView
+            android:id="@+id/textview_history_word"
+            style="@style/App.History.List.TextPrimary"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@{translation.result.first().getValue()}"
+            app:layout_constraintBottom_toTopOf="@+id/guideline3"
+            app:layout_constraintEnd_toStartOf="@id/button_transation_bookmark"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0"
+            tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+            />
+
+        <TextView
+            android:id="@+id/textview_history_direction"
+            style="@style/App.History.List.TextSecondary"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/padding_history_secondary_text_top"
+            android:text="@{translation.direction}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/button_transation_bookmark"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/guideline3"
+            app:layout_constraintVertical_bias="0.058"
+            tools:text="Ru-En"
+            />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/guideline3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.5"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="61dp"
+            />
+
+    </android.support.constraint.ConstraintLayout>
+
+</layout>

@@ -21,7 +21,7 @@ import okhttp3.mockwebserver.MockWebServer;
 public class TranslationServiceTest {
 
     @Inject
-    public TranslationService service;
+    public NetTranslationService service;
 
     @Inject
     public MockWebServer server;

@@ -1,5 +1,6 @@
 apply plugin: "com.android.application"
 apply plugin: "me.tatarka.retrolambda"
+apply plugin: 'realm-android'
 
 android {
     compileSdkVersion 25
@@ -19,8 +20,13 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            applicationIdSuffix ".release"
+        }
+        debug {
+            minifyEnabled false
+            applicationIdSuffix ".debug"
         }
     }
     dataBinding {
@@ -57,6 +63,7 @@ dependencies {
     provided "org.glassfish:javax.annotation:10.0-b28"
 
     compile "org.greenrobot:eventbus:$eventbus_version"
+    compile "io.realm:android-adapters:$realm_adapters_version"
 
     // Retrofit
     compile "com.squareup.retrofit2:retrofit:$retrofit_version"
@@ -73,6 +80,7 @@ dependencies {
     compile "com.trello.rxlifecycle2:rxlifecycle-android:$rx_lifecycle_version"
     compile "com.jakewharton.rxbinding2:rxbinding:$rx_bindings_version"
     compile "com.jakewharton.rxbinding2:rxbinding-support-v4:$rx_bindings_version"
+    compile "com.jakewharton.rxbinding2:rxbinding-recyclerview-v7:$rx_bindings_version"
 
     // Support
     compile "com.android.support:support-v4:$support_lib_version"
@@ -93,4 +101,8 @@ dependencies {
 
     testCompile "com.google.dagger:dagger:$dagger_version"
     testAnnotationProcessor "com.google.dagger:dagger-compiler:$dagger_version"
+
+    debugCompile "com.facebook.stetho:stetho:$stetho_version"
+    debugCompile "com.facebook.stetho:stetho-okhttp3:$stetho_version"
+    debugCompile "com.uphyca:stetho_realm:$stetho_realm_version"
 }
