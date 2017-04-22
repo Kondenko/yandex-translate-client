@@ -67,9 +67,6 @@ public class MainActivity extends AppCompatActivity implements MainView {
     private Disposable outputSpinnerSubscription;
     private Disposable swapButtonSubscription;
 
-    @Inject
-    public Realm realm;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -110,7 +107,6 @@ public class MainActivity extends AppCompatActivity implements MainView {
     protected void onDestroy() {
         super.onDestroy();
         App.get().clearMainPresenterComponent();
-        if (realm != null && !realm.isClosed()) realm.close();
     }
 
     @Override

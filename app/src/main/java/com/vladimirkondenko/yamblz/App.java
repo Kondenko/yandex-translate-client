@@ -71,6 +71,7 @@ public class App extends Application {
     }
 
     public void clearMainPresenterComponent() {
+        mainPresenterSubcomponent.getDatabase().close();
         mainPresenterSubcomponent = null;
     }
 

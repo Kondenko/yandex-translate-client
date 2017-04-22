@@ -8,6 +8,7 @@ import com.vladimirkondenko.yamblz.dagger.modules.HistoryModule;
 import com.vladimirkondenko.yamblz.dagger.modules.MainModule;
 import com.vladimirkondenko.yamblz.dagger.modules.NetModule;
 import com.vladimirkondenko.yamblz.dagger.modules.TranslationModule;
+import com.vladimirkondenko.yamblz.model.database.Database;
 
 import javax.inject.Singleton;
 
