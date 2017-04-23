@@ -75,6 +75,8 @@ public class MainActivity extends AppCompatActivity implements MainView {
             presenter.selectScreen(ScreenCodes.menuItemToScreenId(item.getItemId()));
             return false;
         });
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_main);
+        setSupportActionBar(toolbar);
         supportActionBar = getSupportActionBar();
         // Set initial screen
         if (savedInstanceState != null) currentFragment = savedInstanceState.getInt(Const.BUNDLE_SELECTED_FRAGMENT);
@@ -130,7 +132,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
     public void onSelectTranslationScreen() {
         currentFragment = ScreenCodes.Translation.SCREEN_ID;
         setupCustomToolbar();
-        getSupportActionBar().setDisplayShowCustomEnabled(true);
+        supportActionBar.setDisplayShowCustomEnabled(true);
         setFragment(translationFragment);
     }
 
@@ -138,7 +140,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
     public void onSelectHistoryScreen() {
         currentFragment = ScreenCodes.History.SCREEN_ID;
         setFragment(historyFragment);
-        getSupportActionBar().setDisplayShowCustomEnabled(false);
+        supportActionBar.setDisplayShowCustomEnabled(false);
     }
 
     @Override
@@ -180,8 +182,6 @@ public class MainActivity extends AppCompatActivity implements MainView {
     }
 
     private void setupCustomToolbar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_main);
-        setSupportActionBar(toolbar);
         // Toolbar layout
         LayoutTranslationToolbarBinding toolbarBinding = DataBindingUtil.inflate(
                 getLayoutInflater(),
