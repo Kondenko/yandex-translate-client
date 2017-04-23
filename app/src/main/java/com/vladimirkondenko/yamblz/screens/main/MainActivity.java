@@ -130,7 +130,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
     public void onSelectTranslationScreen() {
         currentFragment = ScreenCodes.Translation.SCREEN_ID;
         setupCustomToolbar();
-        supportActionBar.setDisplayShowCustomEnabled(true);
+        getSupportActionBar().setDisplayShowCustomEnabled(true);
         setFragment(translationFragment);
     }
 
@@ -138,7 +138,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
     public void onSelectHistoryScreen() {
         currentFragment = ScreenCodes.History.SCREEN_ID;
         setFragment(historyFragment);
-        supportActionBar.setDisplayShowCustomEnabled(false);
+        getSupportActionBar().setDisplayShowCustomEnabled(false);
     }
 
     @Override

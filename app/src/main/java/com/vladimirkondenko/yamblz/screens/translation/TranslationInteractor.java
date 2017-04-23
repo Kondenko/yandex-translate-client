@@ -1,6 +1,7 @@
 package com.vladimirkondenko.yamblz.screens.translation;
 
 import com.vladimirkondenko.yamblz.Const;
+import com.vladimirkondenko.yamblz.model.entities.DetectedLanguage;
 import com.vladimirkondenko.yamblz.model.entities.Translation;
 import com.vladimirkondenko.yamblz.model.services.DbSavedTranslationsService;
 import com.vladimirkondenko.yamblz.model.services.NetTranslationService;
@@ -27,11 +28,11 @@ public class TranslationInteractor extends BaseInteractor {
         this.dbService = dbService;
     }
 
-    public Single<Translation> translate(String fromLang, String toLang, String inputText) {
-        boolean shouldDetectLanguage = fromLang == null || fromLang.equals(Const.LANG_CODE_AUTO);
-        String direction = shouldDetectLanguage ? toLang : LanguageUtils.langsToDirection(fromLang, toLang);
+    public Single<Translation> translate(String inputLang, String targetLang, String inputText) {
+        boolean shouldDetectLanguage = inputLang == null || inputLang.equals(Const.LANG_CODE_AUTO);
+        String direction = shouldDetectLanguage ? targetLang : LanguageUtils.langsToDirection(inputLang, targetLang);
         return Single.defer(() ->
-                dbService.getIfSaved(inputText, direction)
+                         dbService.getIfSaved(inputText, direction)
                         .subscribeOn(Schedulers.newThread())
                         .onErrorResumeNext(netService.getTranslation(inputText, direction))
                         .observeOn(AndroidSchedulers.mainThread())
@@ -40,6 +41,12 @@ public class TranslationInteractor extends BaseInteractor {
                             if (shouldDetectLanguage) Bus.post(new LanguageDetectionEvent(translation.getDirection()));
                         })
         );
+    }
+
+    private Single<DetectedLanguage> detect(String text) {
+        return netService.detectLanguage(text)
+                .doOnSuccess(language -> Bus.post(new LanguageDetectionEvent(language.lang)));
+
     }
 
     public void saveToHistory(Translation translation) {
