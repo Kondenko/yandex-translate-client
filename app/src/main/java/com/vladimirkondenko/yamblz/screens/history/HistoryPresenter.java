@@ -24,11 +24,13 @@ public class HistoryPresenter extends BaseLifecyclePresenter<HistoryView, Histor
             case TabCodes.History.SCREEN_ID: {
                 getHistory();
                 selectedTab = TabCodes.History.SCREEN_ID;
+                view.onHistorySelected();
                 break;
             }
             case TabCodes.Bookmarks.SCREEN_ID: {
                 getBookmarks();
                 selectedTab = TabCodes.Bookmarks.SCREEN_ID;
+                view.onBookmarksSelected();
                 break;
             }
             default: {
