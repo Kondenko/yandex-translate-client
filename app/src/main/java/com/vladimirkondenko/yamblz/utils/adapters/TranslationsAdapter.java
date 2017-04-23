@@ -55,7 +55,7 @@ public class TranslationsAdapter extends RealmRecyclerViewAdapter<Translation, T
 
         public void bind(Translation translation) {
             binding.setTranslation(translation);
-            binding.buttonTransationBookmark.setOnCheckedChangeListener(isChecked -> {
+            binding.includeItemTranslationsListBookmark.buttonTransationBookmark.setOnCheckedChangeListener(isChecked -> {
                         presenter.setBookmarked(translation, isChecked);
                     }
             );

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="@dimen/width_history_bottom_tab"
+              android:layout_height="@dimen/height_history_bottom_tab"
+              android:background="@drawable/background_bookmarks_bottom_tab"
+              android:elevation="@dimen/elevation_history_bottom_tab"
+              android:orientation="vertical"
+    >
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        >
+
+        <android.support.v7.widget.AppCompatRadioButton
+            style="@style/App.History.BottomTab.Button"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:drawableLeft="@drawable/ic_history_black_24px"
+            />
+
+        <android.support.v7.widget.AppCompatRadioButton
+            style="@style/App.History.BottomTab.Button"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:drawableLeft="@drawable/ic_bookmark_black_24px"
+            />
+
+    </RadioGroup>
+
+</LinearLayout>

@@ -1,8 +1,8 @@
 package com.vladimirkondenko.yamblz.screens.translation;
 
-import com.vladimirkondenko.yamblz.Const;
+import android.util.Log;
+
 import com.vladimirkondenko.yamblz.model.entities.Translation;
-import com.vladimirkondenko.yamblz.utils.ErrorCodes;
 import com.vladimirkondenko.yamblz.utils.base.BaseLifecyclePresenter;
 
 import javax.inject.Inject;
@@ -26,20 +26,51 @@ public class TranslationPresenter extends BaseLifecyclePresenter<TranslationView
         super(view, interactor);
     }
 
+    public void onCreateView() {
+        view.onBookmarkingEnabled(false);
+    }
+
+    public void onInputTextChange(String text, boolean isConnected) {
+        if (text.length() == 0) {
+            clearText();
+        } else {
+            enqueueTranslation(text);
+            if (isConnected) executePendingTranslation();
+        }
+    }
+
+    public void clickClearButton() {
+        view.onClearButtonClicked();
+        view.onBookmarkingEnabled(false);
+        saveLastTranslation();
+    }
+
+    public void clearText() {
+        view.onTextCleared();
+        view.onBookmarkingEnabled(false);
+    }
+
+    public void pressEnter() {
+        view.onEnterKeyPressed();
+        saveLastTranslation();
+    }
+
+    public void bookmarkTranslation(boolean bookmarked) {
+        if (lastTranslation != null) {
+            interactor.setBookmakred(lastTranslation, bookmarked);
+        }
+    }
+
     public void saveLastTranslation() {
         if (lastTranslation != null) {
             interactor.saveToHistory(lastTranslation);
         }
     }
 
-    public void enqueueTranslation(String text) {
-        if (text.length() > 0 && inputLanguage != null && outputLanguage != null) {
-            if (text.length() == Const.MAX_TEXT_LENGTH) {
-                view.onError(null, ErrorCodes.TEXT_TOO_LONG);
-            } else {
-                translationSingle = interactor.translate(inputLanguage, outputLanguage, text)
-                        .compose(bindToLifecycle());
-            }
+    public void enqueueTranslation(String originalText) {
+        if (inputLanguage != null && outputLanguage != null) {
+            translationSingle = interactor.translate(inputLanguage, outputLanguage, originalText)
+                    .compose(bindToLifecycle());
         }
     }
 
@@ -47,7 +78,8 @@ public class TranslationPresenter extends BaseLifecyclePresenter<TranslationView
         if (translationSingle != null && isViewAttached()) {
             translationSingle.subscribe(
                     translation -> {
-                        view.onTranslationSuccess(translation.getResult().get(0).getValue());
+                        view.onTranslationSuccess(translation);
+                        view.onBookmarkingEnabled(true);
                         lastTranslation = translation;
                     },
                     throwable -> view.onError(throwable, 0)

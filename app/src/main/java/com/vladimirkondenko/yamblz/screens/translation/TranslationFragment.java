@@ -3,14 +3,13 @@ package com.vladimirkondenko.yamblz.screens.translation;
 
 import android.app.Activity;
 import android.databinding.DataBindingUtil;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jakewharton.rxbinding2.view.RxView;
@@ -20,7 +19,7 @@ import com.vladimirkondenko.yamblz.Const;
 import com.vladimirkondenko.yamblz.R;
 import com.vladimirkondenko.yamblz.dagger.modules.TranslationModule;
 import com.vladimirkondenko.yamblz.databinding.FragmentTranslationBinding;
-import com.vladimirkondenko.yamblz.utils.AnimUtils;
+import com.vladimirkondenko.yamblz.model.entities.Translation;
 import com.vladimirkondenko.yamblz.utils.ErrorCodes;
 import com.vladimirkondenko.yamblz.utils.LanguageUtils;
 import com.vladimirkondenko.yamblz.utils.RxNetworkBroadcastReceiver;
@@ -31,6 +30,8 @@ import com.vladimirkondenko.yamblz.utils.events.LanguageDetectionEvent;
 import com.vladimirkondenko.yamblz.utils.events.OutputLanguageSelectionEvent;
 import com.vladimirkondenko.yamblz.utils.events.SelectLanguageEvent;
 import com.vladimirkondenko.yamblz.utils.events.SwapLanguageEvent;
+import com.vladimirkondenko.yamblz.utils.ui.AnimUtils;
+import com.vladimirkondenko.yamblz.utils.ui.RxCheckableImageButton;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -48,8 +49,6 @@ import io.reactivex.disposables.Disposable;
  */
 public class TranslationFragment extends Fragment implements TranslationView {
 
-    private final String TAG = "TranslationFragment";
-
     @Inject
     public RxNetworkBroadcastReceiver networkBroadcastReceiver;
 
@@ -62,6 +61,7 @@ public class TranslationFragment extends Fragment implements TranslationView {
     private Disposable subscriptionSelectDetectedLang;
     private Disposable subscriptionInputTextChanges;
     private Disposable subscriptionInputTextEvents;
+    private Disposable subscriptionBookmarkClicks;
 
     public TranslationFragment() {
     }
@@ -70,37 +70,6 @@ public class TranslationFragment extends Fragment implements TranslationView {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_translation, container, false);
-
-        EditText edittextTranslationInput = binding.edittextTranslationInput;
-        TextView textviewTranslationResult = binding.textviewTranslationResult;
-
-        subscriptionClearButton = RxView.clicks(binding.buttonTranslationClearInput)
-                .subscribe(o -> {
-                    showDetectedLangLayout(false);
-                    edittextTranslationInput.getText().clear();
-                    textviewTranslationResult.setText("");
-                    hideKeyboard();
-                    presenter.saveLastTranslation();
-                });
-
-        subscriptionInputTextChanges = RxTextView.textChanges(edittextTranslationInput)
-                .debounce(225, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
-                .filter(text -> text.length() < Const.MAX_TEXT_LENGTH)
-                .subscribe(text -> {
-                    if (text.length() == 0) {
-                        showDetectedLangLayout(false);
-                        textviewTranslationResult.setText("");
-                    } else {
-                        translate();
-                    }
-                });
-
-        subscriptionInputTextEvents = RxTextView.editorActions(edittextTranslationInput)
-                .subscribe(event -> {
-                    hideKeyboard();
-                    presenter.saveLastTranslation();
-                });
-
         return binding.getRoot();
     }
 
@@ -108,11 +77,36 @@ public class TranslationFragment extends Fragment implements TranslationView {
     public void onStart() {
         super.onStart();
         App.get().plusTranslationSubcomponent(new TranslationModule(this)).inject(this);
+        presenter.attachView(this);
+        Drawable bookmarkDrawable = Utils.getTintedIcon(getContext(), R.drawable.selector_all_bookmark);
+        binding.includeTranslationBookmarkButton.buttonTransationBookmark.setImageDrawable(bookmarkDrawable);
+        subscriptionBookmarkClicks = RxCheckableImageButton.checks(binding.includeTranslationBookmarkButton.buttonTransationBookmark)
+                .subscribe(presenter::bookmarkTranslation);
+        subscriptionClearButton = RxView.clicks(binding.buttonTranslationClearInput)
+                .subscribe(o -> presenter.clickClearButton());
+        subscriptionInputTextChanges = RxTextView.textChanges(binding.edittextTranslationInput)
+                .skipInitialValue()
+                .debounce(225, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
+                .filter(text -> text.length() < Const.MAX_TEXT_LENGTH)
+                .map(String::valueOf)
+                .map(String::trim)
+                .subscribe(text -> presenter.onInputTextChange(text, networkBroadcastReceiver.isOnline()));
+        subscriptionInputTextEvents = RxTextView.editorActions(binding.edittextTranslationInput)
+                .subscribe(event -> presenter.pressEnter());
+        presenter.onCreateView();
     }
 
     @Override
     public void onStop() {
         super.onStop();
+        presenter.detachView();
+        Utils.disposeAll(
+                subscriptionClearButton,
+                subscriptionInputTextChanges,
+                subscriptionSelectDetectedLang,
+                subscriptionInputTextEvents,
+                subscriptionBookmarkClicks
+        );
         App.get().clearTranslationPresenterComponent();
     }
 
@@ -120,7 +114,6 @@ public class TranslationFragment extends Fragment implements TranslationView {
     public void onResume() {
         super.onResume();
         Bus.subscribe(this);
-        presenter.attachView(this);
         networkBroadcastReceiver.register().subscribe(isOnline -> {
             binding.includeTranslationOfflineBanner.linearlayoutTranslationOfflineBannerRoot.setVisibility(isOnline ? View.GONE : View.VISIBLE);
             if (isOnline) presenter.executePendingTranslation();
@@ -132,8 +125,6 @@ public class TranslationFragment extends Fragment implements TranslationView {
         super.onPause();
         networkBroadcastReceiver.unregister();
         Bus.unsubscribe(this);
-        Utils.disposeAll(subscriptionClearButton, subscriptionInputTextChanges, subscriptionSelectDetectedLang, subscriptionInputTextEvents);
-        presenter.detachView();
     }
 
     @Override
@@ -194,8 +185,9 @@ public class TranslationFragment extends Fragment implements TranslationView {
     }
 
     @Override
-    public void onTranslationSuccess(String result) {
-        binding.textviewTranslationResult.setText(result);
+    public void onTranslationSuccess(Translation translation) {
+        binding.textviewTranslationResult.setText(translation.getFormattedTranslatedText());
+        binding.includeTranslationBookmarkButton.buttonTransationBookmark.setChecked(translation.isBookmarked());
     }
 
     @Override
@@ -204,6 +196,43 @@ public class TranslationFragment extends Fragment implements TranslationView {
             t.printStackTrace();
         }
         displayErrorMessage(errorCode);
+    }
+
+    @Override
+    public void onClearButtonClicked() {
+        binding.edittextTranslationInput.getText().clear();
+        binding.textviewTranslationResult.setText("");
+        showDetectedLangLayout(false);
+    }
+
+    @Override
+    public void onTextCleared() {
+        showDetectedLangLayout(false);
+        binding.textviewTranslationResult.setText("");
+    }
+
+    @Override
+    public void onEnterKeyPressed() {
+        hideKeyboard();
+    }
+
+    @Override
+    public void onBookmarkingEnabled(boolean enabled) {
+        binding.includeTranslationBookmarkButton.buttonTransationBookmark.setEnabled(enabled);
+        if (!enabled) binding.includeTranslationBookmarkButton.buttonTransationBookmark.setChecked(false);
+    }
+
+    private void displayErrorMessage(int errorCode) {
+        int errorMessageResId;
+        switch (errorCode) {
+            case ErrorCodes.TEXT_TOO_LONG: {
+                errorMessageResId = R.string.translation_error_text_too_long;
+            }
+            default: {
+                errorMessageResId = R.string.all_error_generic;
+            }
+        }
+        Toast.makeText(getContext(), errorMessageResId, Toast.LENGTH_SHORT).show();
     }
 
     private void translate() {
@@ -218,22 +247,9 @@ public class TranslationFragment extends Fragment implements TranslationView {
         binding.framelayoutDetectedLang.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 
-    public void hideKeyboard() {
+    private void hideKeyboard() {
         InputMethodManager imm = (InputMethodManager) this.getContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(binding.edittextTranslationInput.getWindowToken(), 0);
-    }
-
-    private void displayErrorMessage(int errorCode) {
-        int errorMessageResId;
-        switch (errorCode) {
-            case ErrorCodes.TEXT_TOO_LONG: {
-                errorMessageResId = R.string.translation_error_text_too_long;
-            }
-            default: {
-                errorMessageResId = R.string.all_error_generic;
-            }
-        }
-        Toast.makeText(getContext(), errorMessageResId, Toast.LENGTH_SHORT).show();
     }
 
 }

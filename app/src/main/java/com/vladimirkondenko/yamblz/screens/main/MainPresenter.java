@@ -16,6 +16,10 @@ public class MainPresenter extends BaseLifecyclePresenter<MainView, MainInteract
         super(view, interactor);
     }
 
+    public void onResume() {
+        getLanguages();
+    }
+
     public void onPause() {
         saveLanguages();
     }
@@ -28,9 +32,6 @@ public class MainPresenter extends BaseLifecyclePresenter<MainView, MainInteract
             }
             case ScreenCodes.History.SCREEN_ID:
                 view.onSelectHistoryScreen();
-                break;
-            case ScreenCodes.Bookmarks.SCREEN_ID:
-                view.onSelectBookmarksScreen();
                 break;
             default: {
                 view.onSelectTranslationScreen();

@@ -2,8 +2,8 @@ package com.vladimirkondenko.yamblz.dagger.modules;
 
 import com.vladimirkondenko.yamblz.dagger.PerView;
 import com.vladimirkondenko.yamblz.model.database.Database;
-import com.vladimirkondenko.yamblz.model.database.DbHistoryServiceImpl;
-import com.vladimirkondenko.yamblz.model.services.DbTranslationService;
+import com.vladimirkondenko.yamblz.model.database.DbSavedTranslationsServiceImpl;
+import com.vladimirkondenko.yamblz.model.services.DbSavedTranslationsService;
 import com.vladimirkondenko.yamblz.screens.history.HistoryInteractor;
 import com.vladimirkondenko.yamblz.screens.history.HistoryPresenter;
 import com.vladimirkondenko.yamblz.screens.history.HistoryView;
@@ -20,13 +20,13 @@ public class HistoryModule extends BaseModule<HistoryView> {
 
     @Provides
     @PerView
-    public DbTranslationService provideDatabaseService(Database database) {
-        return new DbHistoryServiceImpl(database);
+    public DbSavedTranslationsService provideDatabaseService(Database database) {
+        return new DbSavedTranslationsServiceImpl(database);
     }
 
     @Provides
     @PerView
-    public HistoryInteractor provideHistoryInteractor(DbTranslationService service) {
+    public HistoryInteractor provideHistoryInteractor(DbSavedTranslationsService service) {
         return new HistoryInteractor(service);
     }
 

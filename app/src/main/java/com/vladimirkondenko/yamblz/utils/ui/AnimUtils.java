@@ -1,4 +1,4 @@
-package com.vladimirkondenko.yamblz.utils;
+package com.vladimirkondenko.yamblz.utils.ui;
 
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
