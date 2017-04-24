@@ -1,13 +1,14 @@
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     >
 
-    <LinearLayout
+    <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="com.vladimirkondenko.yamblz.screens.history.HistoryFragment"
         android:orientation="vertical"
+        tools:context="com.vladimirkondenko.yamblz.screens.history.HistoryFragment"
         >
 
         <!--
@@ -19,11 +20,43 @@
             -->
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerview_history_translations"
+            android:id="@+id/recyclerview_translations"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+
             />
 
-    </LinearLayout>
+        <RadioGroup
+            android:id="@+id/radiogroup_history_tabs"
+            android:layout_width="@dimen/width_history_bottom_tab"
+            android:layout_height="@dimen/height_history_bottom_tab"
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_marginBottom="@dimen/padding_history_bottom_tab_bottom"
+            android:background="@drawable/background_bookmarks_bottom_tab"
+            android:elevation="@dimen/elevation_history_bottom_tab"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            >
+
+            <android.support.v7.widget.AppCompatRadioButton
+                android:id="@+id/radiobutton_history_tab_history"
+                style="@style/App.History.BottomTab.Button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:drawableLeft="@drawable/ic_history_black_24px"
+                android:checked="true"
+                />
+
+            <android.support.v7.widget.AppCompatRadioButton
+                android:id="@+id/radiobutton_history_tab_bookmarks"
+                style="@style/App.History.BottomTab.Button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:drawableLeft="@drawable/ic_bookmark_black_24px"
+                />
+
+        </RadioGroup>
+
+    </android.support.design.widget.CoordinatorLayout>
 
 </layout>

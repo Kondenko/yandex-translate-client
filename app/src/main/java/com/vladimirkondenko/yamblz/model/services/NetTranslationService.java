@@ -12,6 +12,6 @@ public interface NetTranslationService {
     String KEY_TEXT = "text";
 
     @POST("translate")
-    Single<Translation> getTranslation(@Query(KEY_LANG) String lang, @Query(KEY_TEXT) String text);
+    Single<Translation> getTranslation(@Query(KEY_TEXT) String text, @Query(KEY_LANG) String direction);
 
 }

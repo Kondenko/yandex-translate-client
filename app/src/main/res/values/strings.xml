@@ -2,8 +2,10 @@
     <string name="app_name">Yamblz 2017</string>
 
     <string name="bottomnav_item_translation">Translation </string>
-    <string name="bottomnav_item_history">History</string>
-    <string name="bottomnav_item_bookmarks">Bookmarks</string>
+    <string name="bottomnav_item_history">History and bookmarks</string>
+
+    <string name="history_title_history">History</string>
+    <string name="history_title_bookmarks">Bookmarks</string>
 
     <string name="main_detect_language">Detect language</string>
 

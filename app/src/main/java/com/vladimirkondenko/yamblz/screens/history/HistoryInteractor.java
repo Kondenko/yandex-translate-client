@@ -1,7 +1,8 @@
 package com.vladimirkondenko.yamblz.screens.history;
 
 import com.vladimirkondenko.yamblz.model.entities.Translation;
-import com.vladimirkondenko.yamblz.model.services.DbTranslationService;
+import com.vladimirkondenko.yamblz.model.services.DbSavedTranslationsService;
+import com.vladimirkondenko.yamblz.utils.Utils;
 import com.vladimirkondenko.yamblz.utils.base.BaseInteractor;
 
 import javax.inject.Inject;
@@ -10,10 +11,10 @@ import io.realm.RealmResults;
 
 public class HistoryInteractor extends BaseInteractor {
 
-    private DbTranslationService databaseService;
+    private DbSavedTranslationsService databaseService;
 
     @Inject
-    public HistoryInteractor(DbTranslationService databaseService) {
+    public HistoryInteractor(DbSavedTranslationsService databaseService) {
         this.databaseService = databaseService;
     }
 
@@ -21,16 +22,17 @@ public class HistoryInteractor extends BaseInteractor {
         return databaseService.getHistory();
     }
 
+    public RealmResults<Translation> getBookmarks() {
+        return databaseService.getBookmarks();
+    }
+
     public void removeFromHistory(Translation translation) {
         databaseService.setSavedToHistory(translation, false, 0);
     }
 
     public void setBookmarked(Translation translation, boolean bookmarked) {
-        databaseService.setBookmarked(translation, bookmarked);
-    }
-
-    public void cleanup() {
-        databaseService.cleanup();
+        long timestamp = Utils.getCurrentTimeSec();
+        databaseService.setBookmarked(translation, bookmarked, timestamp);
     }
 
 }

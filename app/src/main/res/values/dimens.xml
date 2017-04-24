@@ -6,11 +6,12 @@
     <dimen name="padding_all_large">16dp</dimen>
     <dimen name="padding_all_small">8dp</dimen>
     <dimen name="elevation_all_toolbar">4dp</dimen>
-    <dimen name="elevation_all_bottomnav">4dp</dimen>
+    <dimen name="elevation_all_bottomnav">8dp</dimen>
     <dimen name="height_all_list_item">48dp</dimen>
     <dimen name="height_all_list_item_two_row">72dp</dimen>
     <dimen name="textsize_all_list_item_primary">16dp</dimen>
     <dimen name="textsize_all_list_item_secondary">14dp</dimen>
+
 
     <dimen name="width_translation_switch_lang_button">48dp</dimen>
 
@@ -27,8 +28,15 @@
     <dimen name="padding_translation_offline_banner_horizontal">16dp</dimen>
     <dimen name="padding_translation_offline_banner_text">2dp</dimen>
 
+
     <dimen name="padding_history_secondary_text_top">2dp</dimen>
     <dimen name="height_history_search_field">56dp</dimen>
     <dimen name="textsize_history_search_field">16dp</dimen>
+
+    <dimen name="elevation_history_bottom_tab">4dp</dimen>
+    <dimen name="radius_history_bottom_tab">90dp</dimen>
+    <dimen name="height_history_bottom_tab">48dp</dimen>
+    <dimen name="width_history_bottom_tab">128dp</dimen>
+    <dimen name="padding_history_bottom_tab_bottom">16dp</dimen>
 
 </resources>

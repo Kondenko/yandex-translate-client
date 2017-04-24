@@ -6,5 +6,7 @@ import com.vladimirkondenko.yamblz.utils.base.BaseView;
 import io.realm.OrderedRealmCollection;
 
 public interface HistoryView extends BaseView {
-    void displayHistory(OrderedRealmCollection<Translation> translations);
+    void onHistorySelected();
+    void onBookmarksSelected();
+    void displayList(OrderedRealmCollection<Translation> translations);
 }

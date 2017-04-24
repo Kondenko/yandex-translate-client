@@ -32,8 +32,4 @@ public class DbLanguagesServiceImpl extends DatabaseUserClass implements DbLangu
         return getSelectedLangs() != null;
     }
 
-    @Override
-    public void cleanup() {
-
-    }
 }

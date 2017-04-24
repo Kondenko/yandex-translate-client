@@ -10,6 +10,8 @@ import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.content.res.AppCompatResources;
 import android.widget.TextView;
 
+import com.vladimirkondenko.yamblz.R;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collections;
@@ -33,6 +35,10 @@ public final class Utils {
 
     public static boolean isEmpty(TextView textView) {
         return textView.getText() == null || textView.getText().toString().trim().length() == 0;
+    }
+
+    public static Drawable getTintedIcon(Context context, @DrawableRes int drawableId) {
+        return getTintedDrawable(context, drawableId, R.color.all_icon_statelist);
     }
 
     public static Drawable getTintedDrawable(Context context, @DrawableRes int drawableId, @ColorRes int colorSelector) {

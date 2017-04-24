@@ -88,12 +88,21 @@
             android:elevation="@dimen/elevation_translation_textfield"
             >
 
+            <include
+                android:id="@+id/include_translation_bookmark_button"
+                layout="@layout/layout_all_bookmark_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|top"
+                />
+
             <TextView
                 android:id="@+id/textview_translation_result"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:padding="@dimen/padding_all_large"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:paddingEnd="@dimen/size_all_button_icon"
                 tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Blandit nullam dapibus egestas rutrum pellentesque mus."
                 />
 

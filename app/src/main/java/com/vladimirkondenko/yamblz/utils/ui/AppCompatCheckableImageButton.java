@@ -1,4 +1,4 @@
-package com.vladimirkondenko.yamblz.utils;
+package com.vladimirkondenko.yamblz.utils.ui;
 
 import android.content.Context;
 import android.util.AttributeSet;

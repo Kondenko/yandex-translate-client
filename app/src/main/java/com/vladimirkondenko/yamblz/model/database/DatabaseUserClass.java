@@ -2,8 +2,12 @@ package com.vladimirkondenko.yamblz.model.database;
 
 import com.vladimirkondenko.yamblz.model.database.Database;
 
+import io.reactivex.Observable;
+import io.reactivex.Single;
 import io.realm.Realm;
+import io.realm.RealmChangeListener;
 import io.realm.RealmObject;
+import io.realm.RealmResults;
 
 public abstract class DatabaseUserClass {
 
@@ -22,7 +26,7 @@ public abstract class DatabaseUserClass {
     }
 
     protected void delete(RealmObject object) {
-        performTransaction(object::deleteFromRealm);
+        object.deleteFromRealm();
     }
 
 }

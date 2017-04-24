@@ -4,8 +4,6 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.vladimirkondenko.yamblz.utils.Utils;
 
-import java.util.Objects;
-
 import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
@@ -14,6 +12,9 @@ public class Translation extends RealmObject {
 
     public static final String FIELD_NAME_PRIMARY_KEY = "id";
     public static final String FIELD_NAME_TIMESTAMP = "timestamp";
+    public static final String FIELD_NAME_DIRECTION = "direction";
+    public static final String FIELD_NAME_INPUT_TEXT = "inputText";
+    public static final String FIELD_NAME_TRANSLATED_TEXT = "translatedText";
     public static final String FIELD_NAME_BOOKMARKED = "isBookmarked";
     public static final String FIELD_NAME_SAVED_TO_HISTORY = "isSavedToHistory";
 
@@ -38,15 +39,29 @@ public class Translation extends RealmObject {
 
     @SerializedName("text")
     @Expose
-    private RealmList<RealmString> result;
+    private RealmList<RealmString> translatedText;
 
-    public Translation() {}
+    public Translation() {
+    }
 
-    public Translation(long timestamp, Integer code, String direction, RealmList<RealmString> result) {
-        this.timestamp = timestamp;
-        this.code = code;
-        this.direction = direction;
-        this.result = result;
+    public String getFormattedTranslatedText() {
+        StringBuilder resultsBuilder = new StringBuilder();
+        for (RealmString string : translatedText) {
+            resultsBuilder.append(String.format("%s\n", string.getValue()));
+        }
+        return new String(resultsBuilder);
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int calculateId() {
+        return Utils.hashCode(translatedText, direction);
     }
 
     public void setTimestamp(long timestamp) {
@@ -69,14 +84,6 @@ public class Translation extends RealmObject {
         isSavedToHistory = savedToHistory;
     }
 
-    public String getDirection() {
-        return direction;
-    }
-
-    public RealmList<RealmString> getResult() {
-        return result;
-    }
-
     public void setInputText(String inputText) {
         this.inputText = inputText;
     }
@@ -85,15 +92,12 @@ public class Translation extends RealmObject {
         return inputText;
     }
 
-    public int calculateId() {
-        return Utils.hashCode(inputText, direction);
+    public String getDirection() {
+        return direction;
     }
 
-    public int getId() {
-        return id;
+    public RealmList<RealmString> getTranslatedText() {
+        return translatedText;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
 }

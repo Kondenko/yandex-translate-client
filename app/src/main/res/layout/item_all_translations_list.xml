@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
     >
 
     <data>
@@ -22,16 +23,10 @@
         tools:layout_editor_absoluteY="0dp"
         >
 
-        <com.vladimirkondenko.yamblz.utils.AppCompatCheckableImageButton
-            style="@style/App.IconButton"
-            android:id="@+id/button_transation_bookmark"
-            android:layout_width="@dimen/size_all_button_icon"
-            android:layout_height="@dimen/size_all_button_icon"
-            app:srcCompat="@drawable/ic_bookmark_selector"
-            android:checked="@{translation.bookmarked}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+        <include
+            android:id="@+id/include_item_translations_list_bookmark"
+            bind:translation="@{translation}"
+            layout="@layout/layout_all_bookmark_icon"
             />
 
         <TextView
@@ -39,9 +34,9 @@
             style="@style/App.History.List.TextPrimary"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@{translation.result.first().getValue()}"
+            android:text="@{translation.translatedText.first().getValue()}"
             app:layout_constraintBottom_toTopOf="@+id/guideline3"
-            app:layout_constraintEnd_toStartOf="@id/button_transation_bookmark"
+            app:layout_constraintEnd_toStartOf="@id/include_item_translations_list_bookmark"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="1.0"
@@ -56,7 +51,7 @@
             android:layout_marginTop="@dimen/padding_history_secondary_text_top"
             android:text="@{translation.direction}"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/button_transation_bookmark"
+            app:layout_constraintEnd_toStartOf="@id/include_item_translations_list_bookmark"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="@+id/guideline3"
             app:layout_constraintVertical_bias="0.058"
