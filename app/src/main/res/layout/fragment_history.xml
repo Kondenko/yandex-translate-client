@@ -43,7 +43,7 @@
                 style="@style/App.History.BottomTab.Button"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:drawableLeft="@drawable/ic_history_black_24px"
+                tools:drawableLeft="@drawable/ic_history_black_24px"
                 android:checked="true"
                 />
 
@@ -52,7 +52,7 @@
                 style="@style/App.History.BottomTab.Button"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:drawableLeft="@drawable/ic_bookmark_black_24px"
+                tools:drawableLeft="@drawable/ic_bookmark_black_24px"
                 />
 
         </RadioGroup>

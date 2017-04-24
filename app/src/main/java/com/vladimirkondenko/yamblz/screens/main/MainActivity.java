@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageButton;
@@ -40,7 +41,13 @@ import javax.inject.Inject;
 
 import io.reactivex.disposables.Disposable;
 
+
 public class MainActivity extends AppCompatActivity implements MainView {
+
+    static {
+        // VectorDrawable support for pre-Lollipop devices
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+    }
 
     @Inject
     public MainPresenter presenter;
@@ -85,14 +92,23 @@ public class MainActivity extends AppCompatActivity implements MainView {
     @Override
     protected void onStart() {
         super.onStart();
+        Bus.subscribe(this);
         presenter.attachView(this);
         presenter.selectScreen(currentFragment);
+        setupCustomToolbar();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+         presenter.detachView();
+        Bus.unsubscribe(this);
+        Utils.disposeAll(inputSpinnerSubscription, outputSpinnerSubscription, swapButtonSubscription);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        Bus.subscribe(this);
         presenter.onResume();
     }
 
@@ -100,14 +116,6 @@ public class MainActivity extends AppCompatActivity implements MainView {
     protected void onPause() {
         super.onPause();
         presenter.onPause();
-        Bus.unsubscribe(this);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        presenter.detachView();
-        Utils.disposeAll(inputSpinnerSubscription, outputSpinnerSubscription, swapButtonSubscription);
     }
 
     @Override
@@ -131,7 +139,6 @@ public class MainActivity extends AppCompatActivity implements MainView {
     @Override
     public void onSelectTranslationScreen() {
         currentFragment = ScreenCodes.Translation.SCREEN_ID;
-        setupCustomToolbar();
         supportActionBar.setDisplayShowCustomEnabled(true);
         setFragment(translationFragment);
     }
@@ -139,8 +146,8 @@ public class MainActivity extends AppCompatActivity implements MainView {
     @Override
     public void onSelectHistoryScreen() {
         currentFragment = ScreenCodes.History.SCREEN_ID;
-        setFragment(historyFragment);
         supportActionBar.setDisplayShowCustomEnabled(false);
+        setFragment(historyFragment);
     }
 
     @Override
@@ -193,7 +200,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
         supportActionBar.setCustomView(toolbarBinding.relativelayoutTranslationToolbarRoot, new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.MATCH_PARENT));
         // Views
         ImageButton buttonSwapLanguage = toolbarBinding.buttonTranslationSwitchLanguage;
-        buttonSwapLanguage.setImageDrawable(Utils.getTintedDrawable(this, R.drawable.ic_switch_language_black_24dp, R.color.all_icon_statelist));
+        buttonSwapLanguage.setImageDrawable(Utils.getTintedIcon(this, R.drawable.ic_switch_language_black_24dp));
         spinnerInputLangs = toolbarBinding.spinnerTranslationLangInput;
         spinnerOutputLangs = toolbarBinding.spinnerTranslationLangTranslation;
         // Adapters
@@ -253,7 +260,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
                             () -> spinnerOutputLangs.setSelection(currentInputPosition - 1)
                     );
                 });
-        presenter.getLanguages();
+        presenter.getLanguagesList();
     }
 
 

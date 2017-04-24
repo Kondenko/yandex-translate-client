@@ -5,6 +5,7 @@ import android.databinding.DataBindingUtil;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -29,6 +30,11 @@ import io.reactivex.disposables.Disposable;
 import io.realm.OrderedRealmCollection;
 
 public class HistoryFragment extends Fragment implements HistoryView {
+
+    static {
+        // VectorDrawable support for pre-Lollipop devices
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+    }
 
     private static final String TAG = "HistoryFragment";
 
@@ -79,12 +85,12 @@ public class HistoryFragment extends Fragment implements HistoryView {
 
     @Override
     public void onHistorySelected() {
-        ((MainActivity) this.getActivity()).setTitle(R.string.history_title_history);
+        this.getActivity().setTitle(R.string.history_title_history);
     }
 
     @Override
     public void onBookmarksSelected() {
-        ((MainActivity) this.getActivity()).setTitle(R.string.history_title_bookmarks);
+        this.getActivity().setTitle(R.string.history_title_bookmarks);
     }
 
     @Override
@@ -104,6 +110,10 @@ public class HistoryFragment extends Fragment implements HistoryView {
             }
         });
         itemTouchHelper.attachToRecyclerView(binding.recyclerviewTranslations);
+    }
+
+    private void animateBottomTabs(boolean in) {
+
     }
 
 }
