@@ -2,7 +2,7 @@
 
 _This is a test task for [Yandex Mobile Development School](https://academy.yandex.ru/events/mobdev/msk-2017/)_ 
 
-#### Build with:
+#### Built with:
 
 - [Yandex.Translate API](https://tech.yandex.ru/translate/)
 - [RxJava 2](https://github.com/ReactiveX/RxJava) / [RxBinding](https://github.com/JakeWharton/RxBinding) / [RxLifecycle](https://github.com/trello/RxLifecycle) 🚀
