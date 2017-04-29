@@ -1,5 +1,6 @@
-# Yandex Mobilization 2017 Test Task
 ### Simple translation app for Android
+
+_This is a test task for [Yandex Mobile Development School](https://academy.yandex.ru/events/mobdev/msk-2017/)_ 
 
 #### Build with:
 
