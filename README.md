@@ -1,5 +1,5 @@
 # Yandex Mobilization2017 Test Task
-A simple translator app for Android.
+### Simple translator app for Android
 
 Build with:
 
@@ -11,3 +11,5 @@ Build with:
 - [EventBus](http://greenrobot.github.io/EventBus/)
 - [Mockito](http://site.mockito.org/), [Robolectric](https://github.com/robolectric/robolectric), [MockWebServer](https://github.com/square/okhttp/tree/master/mockwebserver) and [Espresso](https://google.github.io/android-testing-support-library/docs/espresso/) for testing.
 - [Stetho](http://facebook.github.io/stetho/) and [Stetho-Realm](https://github.com/uPhyca/stetho-realm) for debugging
+
+<img src="https://github.com/Kondenko/Yandex-Mobilization-2017-Test-Task/blob/develop/screenshots/screen_translation.png" width="240" height="427"> <img src="https://github.com/Kondenko/Yandex-Mobilization-2017-Test-Task/blob/develop/screenshots/screen_history.png" width="240" height="427"> <img src="https://github.com/Kondenko/Yandex-Mobilization-2017-Test-Task/blob/develop/screenshots/screen_translation_offline.png" width="240" height="427">
