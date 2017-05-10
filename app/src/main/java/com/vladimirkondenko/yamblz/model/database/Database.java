@@ -1,7 +1,6 @@
 package com.vladimirkondenko.yamblz.model.database;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.facebook.stetho.Stetho;
 import com.uphyca.stetho_realm.RealmInspectorModulesProvider;
