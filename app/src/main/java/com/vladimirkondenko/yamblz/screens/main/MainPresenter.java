@@ -17,7 +17,7 @@ public class MainPresenter extends BaseLifecyclePresenter<MainView, MainInteract
     }
 
     public void onResume() {
-        getLanguages();
+        getLanguagesList();
     }
 
     public void onPause() {
@@ -34,25 +34,26 @@ public class MainPresenter extends BaseLifecyclePresenter<MainView, MainInteract
                 view.onSelectHistoryScreen();
                 break;
             default: {
+                // Go to the translation screen by default to avoid errors
                 view.onSelectTranslationScreen();
                 break;
             }
         }
     }
 
-    public void getLanguages() {
+    public void getLanguagesList() {
         interactor.getLanguages()
                 .compose(bindToLifecycle())
                 .subscribe(view::onLoadLanguages, view::onError);
     }
 
-    public void saveLanguages() {
-        if (inputLang != null && outputLang != null) interactor.saveLangs(inputLang, outputLang);
-    }
-
     public void getSelectedLanguages(Languages languages) {
         view.onSelectInputLang(interactor.getInputLang());
         view.onSelectOutputLang(interactor.getOutputLang(languages));
+    }
+
+    public void saveLanguages() {
+        if (inputLang != null && outputLang != null) interactor.saveLangs(inputLang, outputLang);
     }
 
     public void setInputLang(String inputLang) {

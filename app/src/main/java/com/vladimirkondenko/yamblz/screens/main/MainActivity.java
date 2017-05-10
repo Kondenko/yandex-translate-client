@@ -1,6 +1,8 @@
 package com.vladimirkondenko.yamblz.screens.main;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -37,6 +39,8 @@ import com.vladimirkondenko.yamblz.utils.events.SwapLanguageEvent;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.net.URL;
+
 import javax.inject.Inject;
 
 import io.reactivex.disposables.Disposable;
@@ -69,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
     private Spinner spinnerOutputLangs;
     private LanguageSpinnerAdapter adapterOutputLangs;
 
+    private Disposable bannerClicksSubscription;
     private Disposable inputSpinnerSubscription;
     private Disposable outputSpinnerSubscription;
     private Disposable swapButtonSubscription;
@@ -82,6 +87,8 @@ public class MainActivity extends AppCompatActivity implements MainView {
             presenter.selectScreen(ScreenCodes.menuItemToScreenId(item.getItemId()));
             return false;
         });
+        bannerClicksSubscription = RxView.clicks(binding.textviewAllBannerYandex)
+                .subscribe(o -> onBannerClicked());
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_main);
         setSupportActionBar(toolbar);
         supportActionBar = getSupportActionBar();
@@ -103,7 +110,12 @@ public class MainActivity extends AppCompatActivity implements MainView {
         super.onStop();
          presenter.detachView();
         Bus.unsubscribe(this);
-        Utils.disposeAll(inputSpinnerSubscription, outputSpinnerSubscription, swapButtonSubscription);
+        Utils.disposeAll(
+                inputSpinnerSubscription,
+                outputSpinnerSubscription,
+                swapButtonSubscription,
+                bannerClicksSubscription
+        );
     }
 
     @Override
@@ -184,8 +196,16 @@ public class MainActivity extends AppCompatActivity implements MainView {
     private void setFragment(Fragment fragment) {
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
+        transaction.setTransitionStyle(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        transaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
         transaction.replace(R.id.framelayout_main_container, fragment);
         transaction.commit();
+    }
+
+    private void onBannerClicked() {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse(Const.BANNER_URL));
+        startActivity(intent);
     }
 
     private void setupCustomToolbar() {

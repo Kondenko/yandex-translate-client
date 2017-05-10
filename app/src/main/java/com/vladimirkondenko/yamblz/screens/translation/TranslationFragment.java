@@ -70,14 +70,13 @@ public class TranslationFragment extends Fragment implements TranslationView {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_translation, container, false);
-        return binding.getRoot();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
         App.get().plusTranslationSubcomponent(new TranslationModule(this)).inject(this);
         presenter.attachView(this);
+        Bus.subscribe(this);
+        networkBroadcastReceiver.register().subscribe(isOnline -> {
+            binding.includeTranslationOfflineBanner.linearlayoutTranslationOfflineBannerRoot.setVisibility(isOnline ? View.GONE : View.VISIBLE);
+            if (isOnline) presenter.executePendingTranslation();
+        });
         Drawable bookmarkDrawable = Utils.getTintedIcon(getContext(), R.drawable.selector_all_bookmark);
         binding.includeTranslationBookmarkButton.buttonTransationBookmark.setImageDrawable(bookmarkDrawable);
         subscriptionBookmarkClicks = RxCheckableImageButton.checks(binding.includeTranslationBookmarkButton.buttonTransationBookmark)
@@ -94,11 +93,12 @@ public class TranslationFragment extends Fragment implements TranslationView {
         subscriptionInputTextEvents = RxTextView.editorActions(binding.edittextTranslationInput)
                 .subscribe(event -> presenter.pressEnter());
         presenter.onCreateView();
+        return binding.getRoot();
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
+    public void onDestroyView() {
+        super.onDestroyView();
         presenter.detachView();
         Utils.disposeAll(
                 subscriptionClearButton,
@@ -107,24 +107,9 @@ public class TranslationFragment extends Fragment implements TranslationView {
                 subscriptionInputTextEvents,
                 subscriptionBookmarkClicks
         );
-        App.get().clearTranslationPresenterComponent();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Bus.subscribe(this);
-        networkBroadcastReceiver.register().subscribe(isOnline -> {
-            binding.includeTranslationOfflineBanner.linearlayoutTranslationOfflineBannerRoot.setVisibility(isOnline ? View.GONE : View.VISIBLE);
-            if (isOnline) presenter.executePendingTranslation();
-        });
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
         networkBroadcastReceiver.unregister();
         Bus.unsubscribe(this);
+        App.get().clearTranslationPresenterComponent();
     }
 
     @Override
@@ -219,7 +204,8 @@ public class TranslationFragment extends Fragment implements TranslationView {
     @Override
     public void onBookmarkingEnabled(boolean enabled) {
         binding.includeTranslationBookmarkButton.buttonTransationBookmark.setEnabled(enabled);
-        if (!enabled) binding.includeTranslationBookmarkButton.buttonTransationBookmark.setChecked(false);
+        if (!enabled)
+            binding.includeTranslationBookmarkButton.buttonTransationBookmark.setChecked(false);
     }
 
     private void displayErrorMessage(int errorCode) {

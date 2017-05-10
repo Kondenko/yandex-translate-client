@@ -6,6 +6,8 @@ public final class Const {
 
     public static final String BASE_URL = "https://translate.yandex.net/api/v1.5/tr.json/";
 
+    public static final String BANNER_URL = "http://translate.yandex.ru/";
+
     public static final int MAX_TEXT_LENGTH = 10000;
 
     // Request keys
@@ -21,6 +23,7 @@ public final class Const {
     // Animation durations
     public static final int ANIM_DURATION_DEFAULT = 350;
     public static final int ANIM_DURATION_LANG_SWITCH_SPINNER = 200;
+    public static final int ANIM_DURATION_HISTORY_TABS_HIDE = 200;
 
     public static final String BUNDLE_SELECTED_FRAGMENT = "selected_fragment";
 

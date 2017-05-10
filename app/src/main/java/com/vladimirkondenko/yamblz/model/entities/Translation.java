@@ -61,7 +61,7 @@ public class Translation extends RealmObject {
     }
 
     public int calculateId() {
-        return Utils.hashCode(translatedText, direction);
+        return Utils.hashCode(inputText, direction);
     }
 
     public void setTimestamp(long timestamp) {

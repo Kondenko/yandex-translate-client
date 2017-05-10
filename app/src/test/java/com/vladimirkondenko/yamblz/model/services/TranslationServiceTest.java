@@ -43,7 +43,7 @@ public class TranslationServiceTest {
         MockResponse response = new MockResponse().setBody(json);
         server.enqueue(response);
         TestObserver<Translation> observer = TestObserver.create();
-        service.getTranslation("en-ru", "Hello, world!")
+        service.getTranslation("Hello, world!", "en-ru")
                 .subscribe(observer);
         observer.assertComplete();
         observer.assertNoErrors();

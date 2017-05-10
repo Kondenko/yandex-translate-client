@@ -27,13 +27,13 @@
             app:popupTheme="@style/AppTheme"
             />
 
-        <FrameLayout
-            android:id="@+id/framelayout_main_container"
+        <TextView
+            android:id="@+id/textview_all_banner_yandex"
+            style="@style/App.Banner"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_above="@+id/bottomnav_main"
+            android:layout_height="@dimen/height_all_banner_yandex"
             android:layout_below="@id/toolbar_main"
-            android:background="@color/color_all_background_dark"
+            android:text="@string/all_banner_yandex"
             />
 
         <android.support.design.widget.BottomNavigationView
@@ -46,8 +46,17 @@
             app:itemIconTint="@color/all_icon_statelist"
             app:itemTextColor="@color/bottomnav_text_statelist"
             app:menu="@menu/menu_bottomnav"
-            tools:targetApi="lollipop"
             />
+
+        <FrameLayout
+            android:id="@+id/framelayout_main_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/textview_all_banner_yandex"
+            android:background="@color/color_all_background_dark"
+            android:layout_above="@id/bottomnav_main"
+            />
+
 
     </RelativeLayout>
 </layout>

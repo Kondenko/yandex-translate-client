@@ -1,12 +1,25 @@
 <resources>
     <string name="app_name">Yamblz 2017</string>
 
-    <string name="bottomnav_item_translation">Перевод</string>
-    <string name="bottomnav_item_history">История</string>
-    <string name="bottomnav_item_bookmarks">Закладки</string>
+    <string name="all_banner_yandex">Переведено сервисом Яндекс.Переводчик</string>
+
+    <string name="bottomnav_item_translation">Перевод </string>
+    <string name="bottomnav_item_history">История и закладки</string>
 
     <string name="main_detect_language">Определить язык</string>
 
-    <string name="translation_hint">текст для перевода</string>
+    <string name="translation_hint">Текст для перевода</string>
+
+    <string name="translation_error_offline_head">Нет соединения</string>
+    <string name="translation_error_offline_subhead">Перевод появится ниже</string>
+
+    <string name="history_title_history">История</string>
+    <string name="history_title_bookmarks">Закладки</string>
+    <string name="history_empty_state_head">Нет переводов</string>
+
+    <!-- Errors -->
+    <string name="all_error_generic">Ошибка</string>
+    <string name="translation_error_text_too_long">Слишком длинный текст</string>
+
 
 </resources>

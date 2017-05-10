@@ -2,8 +2,9 @@
 <resources>
 
     <!-- Main set -->
-    <color name="color_primary">#ffdc61</color>
-    <color name="color_primary_dark">#e1c255</color>
+    <color name="color_primary">#ffcc00</color>
+    <color name="color_primary_dark">#c79c00</color>
+    <color name="color_primary_light">#ffeeae</color>
     <color name="color_accent">#000000</color>
 
     <!-- Background -->

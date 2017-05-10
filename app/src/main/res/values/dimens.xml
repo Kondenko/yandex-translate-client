@@ -11,6 +11,7 @@
     <dimen name="height_all_list_item_two_row">72dp</dimen>
     <dimen name="textsize_all_list_item_primary">16dp</dimen>
     <dimen name="textsize_all_list_item_secondary">14dp</dimen>
+    <dimen name="height_all_banner_yandex">32dp</dimen>
 
 
     <dimen name="width_translation_switch_lang_button">48dp</dimen>

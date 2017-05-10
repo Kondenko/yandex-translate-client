@@ -1,5 +1,6 @@
 package com.vladimirkondenko.yamblz.model.services;
 
+import com.vladimirkondenko.yamblz.model.entities.DetectedLanguage;
 import com.vladimirkondenko.yamblz.model.entities.Translation;
 
 import io.reactivex.Single;
@@ -13,5 +14,8 @@ public interface NetTranslationService {
 
     @POST("translate")
     Single<Translation> getTranslation(@Query(KEY_TEXT) String text, @Query(KEY_LANG) String direction);
+
+    @POST("detect")
+    Single<DetectedLanguage> detectLanguage(@Query(KEY_TEXT) String text);
 
 }

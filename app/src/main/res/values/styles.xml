@@ -6,6 +6,10 @@
         <item name="android:gravity">center</item>
     </style>
 
+    <style name="App.Banner" parent="Base.TextAppearance.AppCompat.Body1">
+        <item name="android:background">@color/color_primary_light</item>
+        <item name="android:gravity">center</item>
+    </style>
 
     <style name="App.Translation.LanguageSpinner" parent="AppTheme">
         <item name="android:maxWidth">@dimen/width_translation_language_spinner_min</item>

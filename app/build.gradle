@@ -20,13 +20,14 @@ android {
     }
     buildTypes {
         release {
+            applicationIdSuffix ".release"
             minifyEnabled true
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
-            applicationIdSuffix ".release"
         }
         debug {
-            minifyEnabled false
             applicationIdSuffix ".debug"
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
     }
     dataBinding {
