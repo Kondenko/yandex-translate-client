@@ -82,7 +82,9 @@ public class TranslationPresenter extends BaseLifecyclePresenter<TranslationView
                         view.onBookmarkingEnabled(true);
                         lastTranslation = translation;
                     },
-                    throwable -> view.onError(throwable, 0)
+                    throwable -> {
+                        if (isViewAttached()) view.onError(throwable, 0);
+                    }
             );
         }
     }
