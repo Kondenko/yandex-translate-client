@@ -14,8 +14,6 @@
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar_main"
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
@@ -32,7 +30,7 @@
             style="@style/App.Banner"
             android:layout_width="match_parent"
             android:layout_height="@dimen/height_all_banner_yandex"
-            android:layout_below="@id/toolbar_main"
+            android:layout_below="@+id/toolbar_main"
             android:text="@string/all_banner_yandex"
             />
 
@@ -41,7 +39,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:background="?attr/colorPrimary"
+            android:background="@color/color_all_background_light"
             android:elevation="@dimen/elevation_all_bottomnav"
             app:itemIconTint="@color/all_icon_statelist"
             app:itemTextColor="@color/bottomnav_text_statelist"

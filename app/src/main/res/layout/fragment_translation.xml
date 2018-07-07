@@ -86,6 +86,8 @@
             android:background="@color/color_all_background_light"
             android:clipToPadding="false"
             android:elevation="@dimen/elevation_translation_textfield"
+            android:layout_marginBottom="@dimen/padding_all_small"
+
             >
 
             <include
