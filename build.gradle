@@ -1,44 +1,47 @@
-ext {
-    generatedSourcesDir = "build/generated/source/apt/test/debug"
-
-    eventbus_version = "3.0.0"
-    rx_android_version = "2.0.1"
-    rx_java_version = "2.0.7"
-    rx_lifecycle_version = "2.0.1"
-    rx_bindings_version = "2.0.0"
-    dagger_version = "2.9"
-    retrofit_version = "2.2.0"
-    support_lib_version = "25.3.1"
-    constraint_layout_version = "1.0.2"
-    junit_version = "4.12"
-    robolectric_version = "3.3.1"
-    mockito_version = "2.7.19"
-    okhttp_version = "3.6.0"
-    realm_adapters_version = "2.0.0"
-    stetho_version = "1.5.0"
-    stetho_realm_version = "2.0.0"
-}
-
 buildscript {
-    ext.gradle_version = "2.3.1"
-    ext.retrolambda_version = "3.6.0"
-    ext.realm_version = "3.1.2"
+    def gradle_version = "3.3.0-alpha01"
+    def retrolambda_version = "3.6.0"
+
+    ext {
+        generatedSourcesDir = "build/generated/source/apt/test/debug"
+
+        support_lib_version = "27.1.1"
+        constraint_layout_version = "1.1.2"
+        eventbus_version = "3.0.0"
+        rx_android_version = "2.0.1"
+        rx_java_version = "2.0.7"
+        rx_lifecycle_version = "2.0.1"
+        rx_bindings_version = "2.0.0"
+        dagger_version = "2.9"
+        retrofit_version = "2.2.0"
+        okhttp_version = "3.6.0"
+        realm_version = "3.1.2"
+        realm_adapters_version = "2.0.0"
+        stetho_version = "1.5.0"
+        stetho_realm_version = "2.0.0"
+
+        junit_version = "4.12"
+        robolectric_version = "3.3.1"
+        mockito_version = "2.7.19"
+        espresso_version = "2.2.2"
+    }
 
     repositories {
         jcenter()
+        google()
     }
 
     dependencies {
         classpath "com.android.tools.build:gradle:$gradle_version"
         classpath "me.tatarka:gradle-retrolambda:$retrolambda_version"
         classpath "io.realm:realm-gradle-plugin:$realm_version"
-
     }
 }
 
 allprojects {
     repositories {
         jcenter()
+        google()
         maven {
             url 'https://github.com/uPhyca/stetho-realm/raw/master/maven-repo'
         }
