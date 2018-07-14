@@ -2,6 +2,7 @@ package com.vladimirkondenko.yamblz.utils.adapters;
 
 
 import android.databinding.DataBindingUtil;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -20,10 +21,10 @@ public class TranslationsAdapter extends RealmRecyclerViewAdapter<Translation, T
 
     public TranslationsAdapter(HistoryPresenter.AdapterPresenter presenter, OrderedRealmCollection<Translation> data) {
         super(data, true);
-        setHasStableIds(true);
         this.presenter = presenter;
     }
 
+    @NonNull
     @Override
     public TranslationViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
@@ -37,11 +38,6 @@ public class TranslationsAdapter extends RealmRecyclerViewAdapter<Translation, T
         if (item != null) {
             holder.bind(item);
         }
-    }
-
-    @Override
-    public int getItemCount() {
-        return getData().size();
     }
 
     public class TranslationViewHolder extends RecyclerView.ViewHolder {

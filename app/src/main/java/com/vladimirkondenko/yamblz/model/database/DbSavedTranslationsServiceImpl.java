@@ -1,14 +1,10 @@
 package com.vladimirkondenko.yamblz.model.database;
 
-import android.util.Log;
-
 import com.vladimirkondenko.yamblz.model.entities.Translation;
 import com.vladimirkondenko.yamblz.model.services.DbSavedTranslationsService;
 
 import io.reactivex.Single;
 import io.realm.RealmResults;
-
-import static android.content.ContentValues.TAG;
 
 public class DbSavedTranslationsServiceImpl extends DatabaseUserClass implements DbSavedTranslationsService {
 
@@ -23,10 +19,8 @@ public class DbSavedTranslationsServiceImpl extends DatabaseUserClass implements
                 .equalTo(Translation.FIELD_NAME_DIRECTION, direction)
                 .findFirst();
         if (existingTranslation != null) {
-            Log.i(TAG, "getIfSaved: translation found in database");
             return Single.just(existingTranslation);
         }
-        Log.i(TAG, "getIfSaved: not found in database, returning error");
         return Single.error(new NullPointerException("Translation not saved in database"));
     }
 
@@ -64,14 +58,16 @@ public class DbSavedTranslationsServiceImpl extends DatabaseUserClass implements
     public RealmResults<Translation> getHistory() {
         return realm.where(Translation.class)
                 .equalTo(Translation.FIELD_NAME_SAVED_TO_HISTORY, true)
-                .findAllSortedAsync(Translation.FIELD_NAME_TIMESTAMP);
+                .sort(Translation.FIELD_NAME_TIMESTAMP)
+                .findAllAsync();
     }
 
     @Override
     public RealmResults<Translation> getBookmarks() {
         return realm.where(Translation.class)
                 .equalTo(Translation.FIELD_NAME_BOOKMARKED, true)
-                .findAllSortedAsync(Translation.FIELD_NAME_TIMESTAMP);
+                .sort(Translation.FIELD_NAME_TIMESTAMP)
+                .findAllAsync();
     }
 
 

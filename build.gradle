@@ -14,7 +14,7 @@ buildscript {
         dagger_version = "2.9"
         retrofit_version = "2.2.0"
         okhttp_version = "3.6.0"
-        realm_version = "3.1.2"
+        realm_version = "5.3.1"
         realm_adapters_version = "2.0.0"
         stetho_version = "1.5.0"
         stetho_realm_version = "2.0.0"
