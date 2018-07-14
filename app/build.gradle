@@ -19,17 +19,32 @@ android {
         vectorDrawables.useSupportLibrary = true
     }
 
+    signingConfigs {
+        config {
+            def props = new Properties()
+            props.load(new FileInputStream(rootProject.file("release.properties")))
+
+            storeFile rootProject.file(props.keyStore)
+            keyAlias props.keyAlias
+            keyPassword props.keyPassword
+            storePassword props.storePassword
+        }
+    }
+
     buildTypes {
         release {
-            applicationIdSuffix ".release"
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            minifyEnabled true
+            shrinkResources true
+
+            def configFiles = fileTree(dir: "./proguard", include: ["*.pro"]).asList()
+            configFiles.add(getDefaultProguardFile('proguard-android.txt'))
+            proguardFiles configFiles.toArray()
         }
 
         debug {
             applicationIdSuffix ".debug"
             minifyEnabled false
-            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            shrinkResources false
         }
     }
 

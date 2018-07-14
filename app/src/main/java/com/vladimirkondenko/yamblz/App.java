@@ -21,8 +21,11 @@ public class App extends Application {
     protected static App instance;
 
     protected AppComponent appComponent = null;
+
     protected MainSubcomponent mainPresenterSubcomponent;
+
     protected TranslationSubcomponent translationPresenterComponent;
+
     protected HistorySubcomponent historySubcomponent;
 
     @Override

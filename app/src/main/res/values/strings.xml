@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Yamblz 2017</string>
+    <string name="app_name" translatable="false">Yamblz Translate</string>
 
     <string name="all_banner_yandex">Translated with Yandex.Translate</string>
 

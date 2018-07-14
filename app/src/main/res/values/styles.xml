@@ -1,4 +1,4 @@
-<resources xmlns:android="http://schemas.android.com/tools">
+<resources>
 
     <style name="App.IconButton" parent="TextAppearance.AppCompat.Widget.Button.Borderless.Colored">
         <item name="android:background">?selectableItemBackgroundBorderless</item>
