@@ -21,5 +21,6 @@
     <!-- Errors -->
     <string name="all_error_generic">Sorry, error occurred</string>
     <string name="translation_error_text_too_long">Text is too long</string>
+    <string name="translation_error_wrong_lang">Can\'t use a language you selected</string>
 
 </resources>

@@ -10,4 +10,7 @@ public abstract class ErrorCodes {
     public static final int TEXT_CANT_BE_TRANSLATED = 422;
     public static final int UNSUPPORTED_TRANSLATION_DIRECTION = 501;
 
+    // Internal
+    public static final int WRONG_LANGUAGE = 0;
+
 }

@@ -19,6 +19,7 @@
     <!-- Errors -->
     <string name="all_error_generic">Ошибка</string>
     <string name="translation_error_text_too_long">Слишком длинный текст</string>
+    <string name="translation_error_wrong_lang">Невозможно использовать один из выбранных языков</string>
 
 
 </resources>

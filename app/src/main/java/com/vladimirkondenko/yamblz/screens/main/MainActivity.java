@@ -27,7 +27,6 @@ import com.vladimirkondenko.yamblz.model.entities.Languages;
 import com.vladimirkondenko.yamblz.screens.ScreenCodes;
 import com.vladimirkondenko.yamblz.screens.history.HistoryFragment;
 import com.vladimirkondenko.yamblz.screens.translation.TranslationFragment;
-import com.vladimirkondenko.yamblz.utils.ui.AnimUtils;
 import com.vladimirkondenko.yamblz.utils.Utils;
 import com.vladimirkondenko.yamblz.utils.adapters.LanguageSpinnerAdapter;
 import com.vladimirkondenko.yamblz.utils.events.Bus;
@@ -35,15 +34,14 @@ import com.vladimirkondenko.yamblz.utils.events.InputLanguageSelectionEvent;
 import com.vladimirkondenko.yamblz.utils.events.OutputLanguageSelectionEvent;
 import com.vladimirkondenko.yamblz.utils.events.SelectLanguageEvent;
 import com.vladimirkondenko.yamblz.utils.events.SwapLanguageEvent;
+import com.vladimirkondenko.yamblz.utils.ui.AnimUtils;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.net.URL;
-
 import javax.inject.Inject;
 
-import io.reactivex.disposables.Disposable;
+import io.reactivex.disposables.CompositeDisposable;
 
 
 public class MainActivity extends AppCompatActivity implements MainView {
@@ -58,6 +56,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
     @Inject
     public TranslationFragment translationFragment;
+
     @Inject
     public HistoryFragment historyFragment;
 
@@ -68,15 +67,14 @@ public class MainActivity extends AppCompatActivity implements MainView {
     private ActionBar supportActionBar;
 
     private Spinner spinnerInputLangs;
+
     private LanguageSpinnerAdapter adapterInputLangs;
 
     private Spinner spinnerOutputLangs;
+
     private LanguageSpinnerAdapter adapterOutputLangs;
 
-    private Disposable bannerClicksSubscription;
-    private Disposable inputSpinnerSubscription;
-    private Disposable outputSpinnerSubscription;
-    private Disposable swapButtonSubscription;
+    private CompositeDisposable disposables = new CompositeDisposable();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,9 +85,9 @@ public class MainActivity extends AppCompatActivity implements MainView {
             presenter.selectScreen(ScreenCodes.menuItemToScreenId(item.getItemId()));
             return false;
         });
-        bannerClicksSubscription = RxView.clicks(binding.textviewAllBannerYandex)
-                .subscribe(o -> onBannerClicked());
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_main);
+        disposables.add(RxView.clicks(binding.textviewAllBannerYandex)
+                .subscribe(o -> onBannerClicked()));
+        Toolbar toolbar = findViewById(R.id.toolbar_main);
         setSupportActionBar(toolbar);
         supportActionBar = getSupportActionBar();
         // Set initial screen
@@ -100,22 +98,18 @@ public class MainActivity extends AppCompatActivity implements MainView {
     protected void onStart() {
         super.onStart();
         Bus.subscribe(this);
-        presenter.attachView(this);
-        presenter.selectScreen(currentFragment);
         setupCustomToolbar();
+        presenter.selectScreen(currentFragment);
+        presenter.attachView(this);
+        presenter.getLanguagesList();
     }
 
     @Override
     protected void onStop() {
-        super.onStop();
-         presenter.detachView();
+        disposables.dispose();
         Bus.unsubscribe(this);
-        Utils.disposeAll(
-                inputSpinnerSubscription,
-                outputSpinnerSubscription,
-                swapButtonSubscription,
-                bannerClicksSubscription
-        );
+        presenter.detachView();
+        super.onStop();
     }
 
     @Override
@@ -142,11 +136,6 @@ public class MainActivity extends AppCompatActivity implements MainView {
         outState.putInt(Const.BUNDLE_SELECTED_FRAGMENT, currentFragment);
     }
 
-    @Override
-    public void setTitle(CharSequence title) {
-        super.setTitle(title);
-
-    }
 
     @Override
     public void onSelectTranslationScreen() {
@@ -229,58 +218,59 @@ public class MainActivity extends AppCompatActivity implements MainView {
         spinnerInputLangs.setAdapter(adapterInputLangs);
         spinnerOutputLangs.setAdapter(adapterOutputLangs);
         // Reactive event listeners
-        inputSpinnerSubscription = RxAdapterView
-                .itemSelections(toolbarBinding.spinnerTranslationLangInput)
-                .subscribe(position -> {
-                    String language = adapterInputLangs.getItem(position);
-                    // Disable the swap button if the language is not specified
-                    toolbarBinding.buttonTranslationSwitchLanguage.setEnabled(!language.equals(Const.LANG_CODE_AUTO));
-                    Bus.post(new InputLanguageSelectionEvent(language));
-                    presenter.setInputLang(language);
-                });
-        outputSpinnerSubscription = RxAdapterView
-                .itemSelections(toolbarBinding.spinnerTranslationLangTranslation)
-                .subscribe(position -> {
-                    String language = adapterOutputLangs.getItem(position);
-                    Bus.post(new OutputLanguageSelectionEvent(language));
-                    presenter.setOutputLang(language);
-                });
-        // Language swapping button
-        swapButtonSubscription = RxView.clicks(buttonSwapLanguage)
-                .subscribe(event -> {
-                    Bus.post(new SwapLanguageEvent());
-                    int animDistance = 4;
-                    int animDuration = Const.ANIM_DURATION_LANG_SWITCH_SPINNER;
-                    // +/- 1's are used because of the "Detect language" item
-                    // We have to shift the position to get the actual selected language
-                    int currentInputPosition = spinnerInputLangs.getSelectedItemPosition();
-                    int currentOutputPosition = spinnerOutputLangs.getSelectedItemPosition();
-                    toolbarBinding.buttonTranslationSwitchLanguage.animate()
-                            .rotationBy(180)
-                            .setInterpolator(new AccelerateDecelerateInterpolator())
-                            .setDuration(Const.ANIM_DURATION_DEFAULT);
-                    AnimUtils.slideInAndOut(
-                            spinnerInputLangs,
-                            true,
-                            animDistance,
-                            animDuration,
-                            () -> buttonSwapLanguage.setClickable(false), // Disable button clicks to prevent multiple animations from being executed
-                            () -> {
-                                spinnerInputLangs.setSelection(currentOutputPosition + 1);
-                                buttonSwapLanguage.setClickable(true); // Enable button clicks when the animation ends
-                            }
-                    );
-                    AnimUtils.slideInAndOut(
-                            spinnerOutputLangs,
-                            false,
-                            animDistance,
-                            animDuration,
-                            () -> {
-                            },
-                            () -> spinnerOutputLangs.setSelection(currentInputPosition - 1)
-                    );
-                });
-        presenter.getLanguagesList();
+        disposables.addAll(
+                RxAdapterView.itemSelections(toolbarBinding.spinnerTranslationLangInput)
+                        .skipInitialValue()
+                        .subscribe(position -> {
+                            String language = adapterInputLangs.getItem(position);
+                            // Disable the swap button if the language is not specified
+                            toolbarBinding.buttonTranslationSwitchLanguage.setEnabled(!language.equals(Const.LANG_CODE_AUTO));
+                            Bus.post(new InputLanguageSelectionEvent(language));
+                            presenter.setInputLang(language);
+                        }),
+                RxAdapterView.itemSelections(toolbarBinding.spinnerTranslationLangTranslation)
+                        .skipInitialValue()
+                        .subscribe(position -> {
+                            String language = adapterOutputLangs.getItem(position);
+                            Bus.post(new OutputLanguageSelectionEvent(language));
+                            presenter.setOutputLang(language);
+                        }),
+                // Language swapping button
+                RxView.clicks(buttonSwapLanguage)
+                        .subscribe(event -> {
+                            Bus.post(new SwapLanguageEvent());
+                            int animDistance = 4;
+                            int animDuration = Const.ANIM_DURATION_LANG_SWITCH_SPINNER;
+                            // +/- 1's are used because of the "Detect language" item
+                            // We have to shift the position to get the actual selected language
+                            int currentInputPosition = spinnerInputLangs.getSelectedItemPosition();
+                            int currentOutputPosition = spinnerOutputLangs.getSelectedItemPosition();
+                            toolbarBinding.buttonTranslationSwitchLanguage.animate()
+                                    .rotationBy(180)
+                                    .setInterpolator(new AccelerateDecelerateInterpolator())
+                                    .setDuration(Const.ANIM_DURATION_DEFAULT);
+                            AnimUtils.slideInAndOut(
+                                    spinnerInputLangs,
+                                    true,
+                                    animDistance,
+                                    animDuration,
+                                    () -> buttonSwapLanguage.setClickable(false), // Disable button clicks to prevent multiple animations from being executed
+                                    () -> {
+                                        spinnerInputLangs.setSelection(currentOutputPosition + 1);
+                                        buttonSwapLanguage.setClickable(true); // Enable button clicks when the animation ends
+                                    }
+                            );
+                            AnimUtils.slideInAndOut(
+                                    spinnerOutputLangs,
+                                    false,
+                                    animDistance,
+                                    animDuration,
+                                    () -> {
+                                    },
+                                    () -> spinnerOutputLangs.setSelection(currentInputPosition - 1)
+                            );
+                        })
+        );
     }
 
 

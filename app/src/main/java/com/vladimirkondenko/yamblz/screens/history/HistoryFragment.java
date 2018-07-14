@@ -1,7 +1,6 @@
 package com.vladimirkondenko.yamblz.screens.history;
 
 
-import android.animation.ObjectAnimator;
 import android.databinding.DataBindingUtil;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -16,10 +15,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
-import android.view.animation.Animation;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
-import android.view.animation.TranslateAnimation;
 
 import com.jakewharton.rxbinding2.widget.RxRadioGroup;
 import com.vladimirkondenko.yamblz.App;
@@ -36,16 +33,12 @@ import javax.inject.Inject;
 import io.reactivex.disposables.Disposable;
 import io.realm.OrderedRealmCollection;
 
-import static android.R.attr.y;
-
 public class HistoryFragment extends Fragment implements HistoryView {
 
     static {
         // VectorDrawable support for pre-Lollipop devices
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
     }
-
-    private static final String TAG = "HistoryFragment";
 
     @Inject
     public HistoryPresenter presenter;
@@ -123,18 +116,6 @@ public class HistoryFragment extends Fragment implements HistoryView {
 
     private void animateBottomTabs(boolean in) {
         View view = binding.radiogroupHistoryTabs;
-        /*
-        float height = view.getHeight() + view.getPaddingBottom();
-        Interpolator interpolator = in ? new DecelerateInterpolator() : new AccelerateInterpolator();
-        Animation anim = new TranslateAnimation(0, 0, 0f, 1f);
-        anim.setDuration(Const.ANIM_DURATION_HISTORY_TABS_HIDE);
-        anim.setInterpolator(interpolator);
-        view.startAnimation(anim);
-        */
-//        float offScreen = (in ? -1 : 1) * binding.radiogroupHistoryTabs.getHeight();
-//        float fromValue = in ? 0f : offScreen;
-//        float toValue = in ? offScreen : 0f;
-//        binding.radiogroupHistoryTabs.animate().y().translationY(in ? 1f : -1f).
         float height = view.getHeight() + view.getPaddingBottom();
         float y = in ? binding.getRoot().getBottom() : view.getTop();
         Interpolator interpolator = in ? new DecelerateInterpolator() : new AccelerateInterpolator();

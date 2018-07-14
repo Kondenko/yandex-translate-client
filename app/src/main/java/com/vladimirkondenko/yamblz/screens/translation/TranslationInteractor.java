@@ -54,7 +54,7 @@ public class TranslationInteractor extends BaseInteractor {
         dbService.setSavedToHistory(translation, true, timestamp);
     }
 
-    public void setBookmakred(Translation translation, boolean bookmarked) {
+    public void setBookmarked(Translation translation, boolean bookmarked) {
         long timestamp = Utils.getCurrentTimeSec();
         dbService.setBookmarked(translation, bookmarked, timestamp);
     }

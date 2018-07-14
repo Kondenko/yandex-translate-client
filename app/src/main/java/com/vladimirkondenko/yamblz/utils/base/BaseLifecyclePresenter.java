@@ -54,8 +54,8 @@ public abstract class BaseLifecyclePresenter<V extends BaseView, I extends BaseI
     @Override
     @CallSuper
     public void detachView() {
-        super.detachView();
         lifecycleSubject.onNext(PresenterEvent.DETACH);
+        super.detachView();
     }
 
 }

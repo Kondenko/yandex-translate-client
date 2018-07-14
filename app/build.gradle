@@ -20,7 +20,7 @@ android {
     }
 
     signingConfigs {
-        config {
+        release {
             def props = new Properties()
             props.load(new FileInputStream(rootProject.file("release.properties")))
 
@@ -35,6 +35,7 @@ android {
         release {
             minifyEnabled true
             shrinkResources true
+            signingConfig signingConfigs.release
 
             def configFiles = fileTree(dir: "./proguard", include: ["*.pro"]).asList()
             configFiles.add(getDefaultProguardFile('proguard-android.txt'))

@@ -85,12 +85,6 @@ public final class Utils {
         return System.currentTimeMillis() / 1000;
     }
 
-    public static void disposeAll(Disposable... disposables) {
-        for (Disposable disposable : disposables) {
-            dispose(disposable);
-        }
-    }
-
     public static void dispose(Disposable disposable) {
         if (disposable != null && !disposable.isDisposed()) {
             disposable.dispose();

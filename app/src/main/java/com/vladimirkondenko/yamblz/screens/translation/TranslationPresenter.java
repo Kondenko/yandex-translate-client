@@ -1,8 +1,7 @@
 package com.vladimirkondenko.yamblz.screens.translation;
 
-import android.util.Log;
-
 import com.vladimirkondenko.yamblz.model.entities.Translation;
+import com.vladimirkondenko.yamblz.utils.ErrorCodes;
 import com.vladimirkondenko.yamblz.utils.base.BaseLifecyclePresenter;
 
 import javax.inject.Inject;
@@ -15,6 +14,7 @@ public class TranslationPresenter extends BaseLifecyclePresenter<TranslationView
     private static final String TAG = "TranslationPresenter";
 
     private String inputLanguage;
+
     private String outputLanguage;
 
     private Single<Translation> translationSingle = null;
@@ -57,7 +57,7 @@ public class TranslationPresenter extends BaseLifecyclePresenter<TranslationView
 
     public void bookmarkTranslation(boolean bookmarked) {
         if (lastTranslation != null) {
-            interactor.setBookmakred(lastTranslation, bookmarked);
+            interactor.setBookmarked(lastTranslation, bookmarked);
         }
     }
 
@@ -68,9 +68,11 @@ public class TranslationPresenter extends BaseLifecyclePresenter<TranslationView
     }
 
     public void enqueueTranslation(String originalText) {
-        if (inputLanguage != null && outputLanguage != null) {
+        if (isValid(inputLanguage) && isValid(outputLanguage)) {
             translationSingle = interactor.translate(inputLanguage, outputLanguage, originalText)
                     .compose(bindToLifecycle());
+        } else {
+            view.onError(new IllegalArgumentException(String.format("Can\'t use this direction: \"%s\" \"%s\"", inputLanguage, outputLanguage)), ErrorCodes.WRONG_LANGUAGE);
         }
     }
 
@@ -95,6 +97,10 @@ public class TranslationPresenter extends BaseLifecyclePresenter<TranslationView
 
     public void selectOutputLanguage(String outputLanguage) {
         this.outputLanguage = outputLanguage;
+    }
+
+    private boolean isValid(String lang) {
+        return lang != null && !lang.isEmpty();
     }
 
 }
