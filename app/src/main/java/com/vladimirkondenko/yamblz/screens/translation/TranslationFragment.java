@@ -5,7 +5,9 @@ import android.app.Activity;
 import android.databinding.DataBindingUtil;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,6 +51,10 @@ import io.reactivex.disposables.CompositeDisposable;
  */
 public class TranslationFragment extends Fragment implements TranslationView {
 
+    private static final String ARG_LANG_IN = "lang_in";
+
+    private static final String ARG_LANG_OUT = "lang_out";
+
     @Inject
     public RxNetworkBroadcastReceiver networkBroadcastReceiver;
 
@@ -59,49 +65,65 @@ public class TranslationFragment extends Fragment implements TranslationView {
 
     private CompositeDisposable disposables = new CompositeDisposable();
 
+    private String inputLanguage;
+
+    private String outputLanguage;
+
     public TranslationFragment() {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_translation, container, false);
+        if (savedInstanceState != null) {
+            inputLanguage = savedInstanceState.getString(ARG_LANG_IN);
+            outputLanguage = savedInstanceState.getString(ARG_LANG_OUT);
+        }
         App.get().plusTranslationSubcomponent(new TranslationModule(this)).inject(this);
         Bus.subscribe(this);
         presenter.attachView(this);
         Drawable bookmarkDrawable = Utils.getTintedIcon(getContext(), R.drawable.selector_all_bookmark);
         binding.includeTranslationBookmarkButton.buttonTransationBookmark.setImageDrawable(bookmarkDrawable);
+        networkBroadcastReceiver.register().subscribe(isOnline -> {
+            binding.includeTranslationOfflineBanner.linearlayoutTranslationOfflineBannerRoot.setVisibility(isOnline ? View.GONE : View.VISIBLE);
+            if (isOnline) presenter.executePendingTranslation();
+        });
         disposables.addAll(
-                networkBroadcastReceiver.register().subscribe(isOnline -> {
-                    binding.includeTranslationOfflineBanner.linearlayoutTranslationOfflineBannerRoot.setVisibility(isOnline ? View.GONE : View.VISIBLE);
-                    if (isOnline) presenter.executePendingTranslation();
-                }),
                 RxCheckableImageButton.checks(binding.includeTranslationBookmarkButton.buttonTransationBookmark)
                         .subscribe(presenter::bookmarkTranslation),
                 RxView.clicks(binding.buttonTranslationClearInput)
                         .subscribe(o -> presenter.clickClearButton()),
                 RxTextView.textChanges(binding.edittextTranslationInput)
                         .skipInitialValue()
+                        .doOnSubscribe(d -> Log.i(this.getClass().getSimpleName(), "Subscribed to text changes"))
+                        .doOnDispose(() -> Log.i(this.getClass().getSimpleName(), "Unsubscribed from text changes"))
                         .debounce(225, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
                         .filter(text -> text.length() < Const.MAX_TEXT_LENGTH)
                         .map(String::valueOf)
                         .map(String::trim)
-                        .subscribe(text -> presenter.onInputTextChange(text, networkBroadcastReceiver.isOnline())),
+                        .subscribe(text -> presenter.onInputTextChange(inputLanguage, outputLanguage, text, networkBroadcastReceiver.isOnline())),
                 RxTextView.editorActions(binding.edittextTranslationInput)
                         .subscribe(event -> presenter.pressEnter())
         );
-        presenter.onCreateView();
         return binding.getRoot();
     }
 
     @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putString(ARG_LANG_IN, inputLanguage);
+        outState.putString(ARG_LANG_OUT, outputLanguage);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
     public void onDestroyView() {
-        super.onDestroyView();
-        disposables.dispose();
+        disposables.clear();
+        presenter.detachView();
         networkBroadcastReceiver.unregister();
         Bus.unsubscribe(this);
-        presenter.detachView();
         App.get().clearTranslationPresenterComponent();
+        super.onDestroyView();
     }
 
     @Override
@@ -149,7 +171,7 @@ public class TranslationFragment extends Fragment implements TranslationView {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onInputLangChange(InputLanguageSelectionEvent event) {
-        presenter.selectInputLanguage(event.getInputLang());
+        inputLanguage = event.getInputLang();
         showDetectedLangLayout(false);
         presenter.saveLastTranslation();
         translate();
@@ -157,7 +179,7 @@ public class TranslationFragment extends Fragment implements TranslationView {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onOutputLangChange(OutputLanguageSelectionEvent event) {
-        presenter.selectOutputLanguage(event.getOutputLang());
+        outputLanguage = event.getOutputLang();
         presenter.saveLastTranslation();
         translate();
     }
@@ -196,7 +218,7 @@ public class TranslationFragment extends Fragment implements TranslationView {
     private void translate() {
         if (!Utils.isEmpty(binding.edittextTranslationInput) && presenter != null) {
             String text = String.valueOf(binding.edittextTranslationInput.getText());
-            presenter.enqueueTranslation(text);
+            presenter.enqueueTranslation(inputLanguage, outputLanguage, text);
             if (networkBroadcastReceiver.isOnline()) presenter.executePendingTranslation();
         }
     }

@@ -11,12 +11,6 @@ import io.reactivex.Single;
 
 public class TranslationPresenter extends BaseLifecyclePresenter<TranslationView, TranslationInteractor> {
 
-    private static final String TAG = "TranslationPresenter";
-
-    private String inputLanguage;
-
-    private String outputLanguage;
-
     private Single<Translation> translationSingle = null;
 
     private Translation lastTranslation;
@@ -26,15 +20,17 @@ public class TranslationPresenter extends BaseLifecyclePresenter<TranslationView
         super(view, interactor);
     }
 
-    public void onCreateView() {
+    @Override
+    public void attachView(TranslationView view) {
+        super.attachView(view);
         view.onBookmarkingEnabled(false);
     }
 
-    public void onInputTextChange(String text, boolean isConnected) {
+    public void onInputTextChange(String inputLanguage, String outputLanguage, String text, boolean isConnected) {
         if (text.length() == 0) {
             clearText();
         } else {
-            enqueueTranslation(text);
+            enqueueTranslation(inputLanguage, outputLanguage, text);
             if (isConnected) executePendingTranslation();
         }
     }
@@ -67,7 +63,7 @@ public class TranslationPresenter extends BaseLifecyclePresenter<TranslationView
         }
     }
 
-    public void enqueueTranslation(String originalText) {
+    public void enqueueTranslation(String inputLanguage, String outputLanguage, String originalText) {
         if (isValid(inputLanguage) && isValid(outputLanguage)) {
             translationSingle = interactor.translate(inputLanguage, outputLanguage, originalText)
                     .compose(bindToLifecycle());
@@ -78,8 +74,7 @@ public class TranslationPresenter extends BaseLifecyclePresenter<TranslationView
 
     public void executePendingTranslation() {
         if (translationSingle != null && isViewAttached()) {
-            translationSingle.subscribe(
-                    translation -> {
+            translationSingle.subscribe(translation -> {
                         view.onTranslationSuccess(translation);
                         view.onBookmarkingEnabled(true);
                         lastTranslation = translation;
@@ -89,14 +84,6 @@ public class TranslationPresenter extends BaseLifecyclePresenter<TranslationView
                     }
             );
         }
-    }
-
-    public void selectInputLanguage(String inputLanguage) {
-        this.inputLanguage = inputLanguage;
-    }
-
-    public void selectOutputLanguage(String outputLanguage) {
-        this.outputLanguage = outputLanguage;
     }
 
     private boolean isValid(String lang) {

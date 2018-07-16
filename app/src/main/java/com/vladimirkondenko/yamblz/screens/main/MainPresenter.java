@@ -9,15 +9,12 @@ import javax.inject.Inject;
 public class MainPresenter extends BaseLifecyclePresenter<MainView, MainInteractor> {
 
     private String inputLang;
+
     private String outputLang;
 
     @Inject
     public MainPresenter(MainView view, MainInteractor interactor) {
         super(view, interactor);
-    }
-
-    public void onResume() {
-        getLanguagesList();
     }
 
     public void onPause() {
