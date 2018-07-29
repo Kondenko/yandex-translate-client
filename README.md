@@ -2,6 +2,8 @@
 
 _This is a test task for [Yandex Mobile Development School](https://academy.yandex.ru/events/mobdev/msk-2017/)_ 
 
+<a data-v-fe447242="" href="https://play.google.com/store/apps/details?id=com.vladimirkondenko.yamblz&amp;utm_source=personal-website&amp;pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1"><img width="200" height="-1" alt="Get it on Google Play" src="https://play.google.com/intl/en_gb/badges/images/generic/en_badge_web_generic.png" class="badge"></a>
+
 #### Built with:
 
 - [Yandex.Translate API](https://tech.yandex.ru/translate/)
